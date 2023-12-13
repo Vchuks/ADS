@@ -1,0 +1,41 @@
+@import url('https://fonts.googleapis.com/css2?family=Quicksand:wght@500;600;700&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Roboto:wght@400;500;700&display=swap');
+
+*{box-sizing: border-box;}
+body{
+  font-family: 'Quicksand', sans-serif;
+}
+.dash-height{
+  height: 100dvh;
+}
+.navbar a.active{
+  background-color: #0055FD;
+}
+.device-box{
+  border-radius: 16px;
+  background: #FFF;
+  box-shadow: 0px 2px 16px 0px rgba(0, 0, 0, 0.08)
+}
+.maph{
+  height: 280px;
+  overflow-y: scroll;
+}
+
+@media (min-width: 1000px) and (max-width: 1200px) {
+  .maph{
+    height: 260px;
+  }
+}
+
+@media (max-width: 992px) {
+  .dash-height{
+    height: 90dvh;
+  }
+  .maph{
+    height: auto;
+  }
+  .maph-device{
+    height: 300px;
+    overflow-y: scroll;
+  }
+}
