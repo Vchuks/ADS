@@ -12,7 +12,7 @@ import { RxAvatar } from "react-icons/rx";
 const Sidebar = () => {
  
   return (
-    <div className="bg-[#020062] fixed top-[83px] w-11/12 lg:top-0 lg:relative dash-height p-4 box-border" id='sidebar'>
+    <div className="bg-[#020062] fixed lg:top-0 z-10 h-[90%] md:h-[100%] p-4 box-border" id='sidebar'>
       <div className="flex gap-1 items-center">
         <div className="w-6">
           <Image className="w-full" alt="" src={logo} />
@@ -32,7 +32,7 @@ const Sidebar = () => {
             Dashboard
           </NavLink>
           <NavLink
-            to="/"
+            to="/device_report"
             className="flex items-center gap-3 p-3 rounded  text-lg text-white"
           >
             <div className="w-6 ">
@@ -41,7 +41,7 @@ const Sidebar = () => {
             Device Report
           </NavLink>
           <NavLink
-            to="/"
+            to="/responder"
             className="flex items-center gap-3 p-3 rounded text-lg text-white"
           >
             <MdOutlinePeopleAlt className="text-2xl" />

@@ -13,7 +13,10 @@ export default {
       colors: {
         'bcolor': '#0055FD',
         'tcolor': '#4D5657'
-      }
+      },
+      screens:{
+        xxxl:'2250px'
+      },
     },
   },
   plugins: [],
