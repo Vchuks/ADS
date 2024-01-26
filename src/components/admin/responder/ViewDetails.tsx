@@ -106,35 +106,35 @@ const ViewDetails = () => {
           {/* <>
             <div className=" grid grid-cols-2 lg:grid-cols-3 gap-4  py-4 ">
               <Box
-                mainClass="w-full text-center px-2 py-4  rounded-lg bg-[#62C554]"
+                mainClass="w-full border hover:border-bcolor cursor-pointer text-center px-2 py-4  rounded-lg bg-[#62C554]"
                 firstText="Resolved"
                 secondText="2058"
                 firstClass="text-white"
                 secondClass="text-white"
               />
               <Box
-                mainClass="w-full text-center px-2 py-4  rounded-lg bg-[#FFD1D1]"
+                mainClass="w-full border hover:border-bcolor cursor-pointer text-center px-2 py-4  rounded-lg bg-[#FFD1D1]"
                 firstText="Rejected"
                 secondText="2058"
                 firstClass=""
                 secondClass=""
               />
               <Box
-                mainClass="w-full text-center px-2  py-4  rounded-lg bg-[#FFE5B0]"
+                mainClass="w-full border hover:border-bcolor cursor-pointer text-center px-2  py-4  rounded-lg bg-[#FFE5B0]"
                 firstText="Pending"
                 secondText="2058"
                 firstClass=""
                 secondClass=""
               />
               <Box
-                mainClass="w-full text-center px-2  py-4  rounded-lg bg-[#B3CBFB]"
+                mainClass="w-full border hover:border-bcolor cursor-pointer text-center px-2  py-4  rounded-lg bg-[#B3CBFB]"
                 firstText="Accepted"
                 secondText="2058"
                 firstClass=""
                 secondClass=""
               />
               <Box
-                mainClass="w-full text-center px-2  py-4 rounded-lg bg-[#CCFFE7]"
+                mainClass="w-full border hover:border-bcolor cursor-pointer text-center px-2  py-4 rounded-lg bg-[#CCFFE7]"
                 firstText="In-progress"
                 secondText="2058"
                 firstClass=""
