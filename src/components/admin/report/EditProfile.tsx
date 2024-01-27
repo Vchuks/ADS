@@ -1,10 +1,10 @@
 import Text from "../../atom/Text";
-import { IoArrowBackOutline } from "react-icons/io5";
+// import { IoArrowBackOutline } from "react-icons/io5";
 
 const EditProfile = () => {
   return (
     <div className="px-5 py-4">
-        <IoArrowBackOutline className="lg:hidden text-xl text-tcolor" onClick={()=>window.history.back()} />
+        {/* <IoArrowBackOutline className="lg:hidden text-xl text-tcolor" onClick={()=>window.history.back()} /> */}
       <div className="md:w-[80%] xl:w-2/4 m-auto py-4">
         <Text
           className="lg:text-2xl pb-1 font-bold text-tcolor text-center"
