@@ -144,7 +144,7 @@ const Login = () => {
                 Log-in
               </button>
             </div>
-            {/* <p className="text-center text-tcolor pt-4">Don't have an account? <span className="font-bold text-bcolor"><TextLink body='Create a account' to="" className="" /></span></p> */}
+        
           </div>
         </form>
       </div>

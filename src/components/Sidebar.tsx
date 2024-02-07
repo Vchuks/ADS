@@ -44,7 +44,7 @@ const Sidebar = () => {
       <div className="flex flex-col box-border pt-6 h-[85%] navbar justify-between">
         <div className="flex flex-col gap-5">
           <NavLink
-            to={dashBoardLink}
+            to='/dashboard'
             className="flex items-center gap-3 p-3 rounded text-lg text-white"
           >
             <PiClockBold className="text-2xl " />
