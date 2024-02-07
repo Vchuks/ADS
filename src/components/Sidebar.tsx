@@ -13,7 +13,7 @@ import { useEffect, useState } from "react";
 const Sidebar = () => {
   const loginDetails = JSON.parse(localStorage.getItem("user") || "");
   const [userData] = useState(loginDetails);
-  const [dashBoardLink, setDashboardLink] = useState('/responder');
+  // const [ setDashboardLink] = useState('/responder');
   const [reportLink, setReportLink] = useState('/responder');
  
   useEffect(()=>{
@@ -21,10 +21,10 @@ const Sidebar = () => {
     if (
       userData?.message[0]?.type === "responder" 
     ) {
-      setDashboardLink('/responder');
+      // setDashboardLink('/responder');
       setReportLink('/responder');
     } else {
-      setDashboardLink('/dashboard');
+      // setDashboardLink('/dashboard');
       setReportLink('/device_report');
     }
   },[userData])
