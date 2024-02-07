@@ -13,7 +13,7 @@ import { useEffect, useState } from "react";
 const Sidebar = () => {
   const loginDetails = JSON.parse(localStorage.getItem("user") || "");
   const [userData] = useState(loginDetails);
-  // const [ setDashboardLink] = useState('/responder');
+  const [dashBoardLink, setDashboardLink] = useState('/responder');
   const [reportLink, setReportLink] = useState('/responder');
  
   useEffect(()=>{
@@ -21,10 +21,10 @@ const Sidebar = () => {
     if (
       userData?.message[0]?.type === "responder" 
     ) {
-      // setDashboardLink('/responder');
+      setDashboardLink('/responder');
       setReportLink('/responder');
     } else {
-      // setDashboardLink('/dashboard');
+      setDashboardLink('/dashboard');
       setReportLink('/device_report');
     }
   },[userData])
@@ -44,7 +44,7 @@ const Sidebar = () => {
       <div className="flex flex-col box-border pt-6 h-[85%] navbar justify-between">
         <div className="flex flex-col gap-5">
           <NavLink
-            to='/dashboard'
+            to={dashBoardLink}
             className="flex items-center gap-3 p-3 rounded text-lg text-white"
           >
             <PiClockBold className="text-2xl " />
