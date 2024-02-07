@@ -8,9 +8,28 @@ import { MdOutlinePeopleAlt } from "react-icons/md";
 import { FiSettings } from "react-icons/fi";
 import { FiLogOut } from "react-icons/fi";
 import { RxAvatar } from "react-icons/rx";
+import { useEffect, useState } from "react";
 
 const Sidebar = () => {
+  const loginDetails = JSON.parse(localStorage.getItem("user") || "");
+  const [userData] = useState(loginDetails);
+  const [dashBoardLink, setDashboardLink] = useState('/responder');
+  const [reportLink, setReportLink] = useState('/responder');
  
+  useEffect(()=>{
+
+    if (
+      userData?.message[0]?.type === "responder" 
+    ) {
+      setDashboardLink('/responder');
+      setReportLink('/responder');
+    } else {
+      setDashboardLink('/dashboard');
+      setReportLink('/device_report');
+    }
+  },[userData])
+
+
   return (
     <div className="bg-[#020062] fixed lg:top-0 z-10 h-[90%] md:h-[100%] p-4 box-border" id='sidebar'>
       <div className="flex gap-1 items-center">
@@ -25,14 +44,14 @@ const Sidebar = () => {
       <div className="flex flex-col box-border pt-6 h-[85%] navbar justify-between">
         <div className="flex flex-col gap-5">
           <NavLink
-            to="/dashboard"
+            to={dashBoardLink}
             className="flex items-center gap-3 p-3 rounded text-lg text-white"
           >
             <PiClockBold className="text-2xl " />
             Dashboard
           </NavLink>
           <NavLink
-            to="/device_report"
+            to={reportLink}
             className="flex items-center gap-3 p-3 rounded  text-lg text-white"
           >
             <div className="w-6 ">
