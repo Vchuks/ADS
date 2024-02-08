@@ -1,7 +1,7 @@
 import { FaPlus } from "react-icons/fa6";
 import { useState } from "react";
 
-const ResponderHeader = () => {
+const AgentHeader = () => {
   const loginDetails = JSON.parse(localStorage.getItem("user") || "");
   const [userData] = useState(loginDetails);
   const [isButtonDisabled, setButtonDisabled] = useState(false);
@@ -19,7 +19,7 @@ const ResponderHeader = () => {
       setButtonDisabled(true);
     } else {
       setButtonDisabled(false);
-      location.href = "/emergency_responder";
+      location.href = "/agent_form";
     }
   };
   return (
@@ -37,8 +37,8 @@ const ResponderHeader = () => {
           <div className="w-full box-border relative lg:col-start-4 xl:col-start-5 cursor-pointer">
             <input
               type="text"
-              placeholder="Add Responder"
-              defaultValue="Add Responder"
+              placeholder="Add Agent"
+              defaultValue="Add Agent"
               readOnly
               className="border w-full border-[#1410B4] rounded-lg placeholder:font-sm cursor-pointer placeholder:text-[#1410B4] ps-6 pe-4 outline-none py-2"
               disabled={isButtonDisabled}
@@ -51,4 +51,4 @@ const ResponderHeader = () => {
   );
 };
 
-export default ResponderHeader;
+export default AgentHeader;

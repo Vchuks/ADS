@@ -63,8 +63,7 @@ const Login = () => {
       data?.message[0]?.type === "responder"
     ) {
       spin.style.display = "none";
-
-      location.href = "/responder";
+      location.href = "/responder/details_page";
     } else if (data?.message === "Invalid credential") {
       spin.style.display = "none";
 

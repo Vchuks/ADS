@@ -2,7 +2,7 @@ import { useState } from "react"
 import { GoDotFill } from "react-icons/go";
 import TextLink from "../../atom/TextLink";
 
-const Responder = () => {
+const Agent = () => {
     const [all, setAll] = useState(true)
     const [active, setActive] = useState(false)
     const [inActive, setInActive] = useState(false);
@@ -25,19 +25,19 @@ const Responder = () => {
   return (
     <div className="px-5 py-4">
       <div className="w-full md:w-auto flex">
-        <button className={`w-full md:w-auto md:py-2 md:px-6 font-semibold ${color && `text-[#1410B4] border-b-2 border-[#1410B4]`}`} onClick={handleView}>All Responder</button>
-        <button className={`w-full md:w-auto md:py-2 md:px-6 font-semibold`} onClick={handleView}>Active Responder</button>
-        <button className={`w-full md:w-auto md:py-2 md:px-6 font-semibold`} onClick={handleView}>Inactive Responder</button>
+        <button className={`w-full md:w-auto md:py-2 md:px-6 font-semibold ${color && `text-[#1410B4] border-b-2 border-[#1410B4]`}`} onClick={handleView}>All Agent</button>
+        <button className={`w-full md:w-auto md:py-2 md:px-6 font-semibold`} onClick={handleView}>Active Agent</button>
+        <button className={`w-full md:w-auto md:py-2 md:px-6 font-semibold`} onClick={handleView}>Inactive Agent</button>
       </div>
       {all && <div className="overflow-x-scroll md:overflow-auto w-full">
         
           <TextLink to='details_page' className="" body={<>
             <div className="w-max lg:w-full grid grid-cols-6 text-sm  bg-white text-[#6E7680] ">
             <div className="w-full border-b font-bold py-4 border-[#DDE5E9]">
-            Respondent Team Name
+            Agent Team Name
             </div>
             <div className="w-full border-b font-bold py-4 border-[#DDE5E9]">
-            Respondent Address
+            Agent Address
             </div>
 
             <div className="w-full border-b pe-2 lg:pe-0 font-bold py-4 border-[#DDE5E9]">
@@ -142,4 +142,4 @@ const Responder = () => {
   )
 }
 
-export default Responder
+export default Agent

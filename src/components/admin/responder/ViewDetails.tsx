@@ -3,9 +3,9 @@ import Text from "../../atom/Text";
 import Image from "../../atom/Image";
 import profile from "../../../assets/image/Group 20454.png";
 import carlogo from "../../../assets/image/Frame 20511.png";
+import { useState } from "react";
 // import Box from "../../atom/Box";
 // import Map from "../Map";
-// import { useState } from "react";
 // import { MyContext } from "../../context/MyContext";
 // import Respondent from "../report/Respondent";
 // import TextLink from "../../atom/TextLink";
@@ -14,6 +14,22 @@ const ViewDetails = () => {
   //   const { setModal } = useContext(MyContext);
   //   const [side, setSide] = useState(true);
   //   const [respondent, setRespondent] = useState(false);
+  const loginDetails = JSON.parse(localStorage.getItem("user") || "");
+  const [userData] = useState(loginDetails);
+  const [isButtonDisabled, setButtonDisabled] = useState(false);
+  
+
+  const disableButton = () => {
+    if (
+      userData?.message[0]?.type === "responder" ||
+      userData?.message[0]?.type === "agent"
+    ) {
+      setButtonDisabled(true);
+    } else {
+      setButtonDisabled(false);
+      location.href = "#";
+    }
+  };
 
   return (
     <div className="flex flex-col lg:flex-row px-5 py-4 gap-4 lg:gap-0 items-center">
@@ -84,7 +100,9 @@ const ViewDetails = () => {
           <button className="text-tcolor flex mb-2  border border-tcolor py-1 md:py-2 px-6 rounded font-bold cursor-pointer">
             View All Assigned Task
           </button>
-          <button className="text-[#A5640C] flex mb-2  border border-[#A5640C] py-1 md:py-2 px-6 rounded font-bold cursor-pointer">
+          <button className="text-[#A5640C] flex mb-2  border border-[#A5640C] py-1 md:py-2 px-6 rounded font-bold cursor-pointer"
+          disabled={isButtonDisabled}
+          onClick={disableButton}>
             Suspend Respondent
           </button>
         </div>

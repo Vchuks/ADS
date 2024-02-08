@@ -16,6 +16,7 @@ import CreateDevice from "./components/admin/report/CreateDevice";
 import ResponderPage from "./components/pages/ResponderPage";
 import EmergencyRes from "./components/admin/responder/EmergencyRes";
 import ResponderView from "./components/pages/ResponderView";
+import AgentPage from "./components/pages/AgentPage";
 
 function App() {
   const location = useLocation();
@@ -62,6 +63,7 @@ function App() {
             <Route path="edit_profile" element={<EditProfilePage />} />
             <Route path="create_device" element={<CreateDevice />} />
             <Route path="responder" element={<ResponderPage />} />
+            <Route path="agent" element={<AgentPage />} />
             <Route path="emergency_responder" element={<EmergencyRes />} />
             <Route path="responder/details_page" element={<ResponderView />} />
             <Route path="*" element={<p className='h-[20vh] p-4 lg:px-14 w-full text-4xl flex items-center '>Page not found!!!</p>} />

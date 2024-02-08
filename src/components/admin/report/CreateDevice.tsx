@@ -1,10 +1,10 @@
 import Text from "../../atom/Text";
-// import { IoArrowBackOutline } from "react-icons/io5";
+import { IoArrowBackOutline } from "react-icons/io5";
 
 const CreateDevice = () => {
   return (
     <div className="px-5 py-4">
-        {/* <IoArrowBackOutline className="lg:hidden text-xl text-tcolor" onClick={()=>window.history.back()} /> */}
+        <IoArrowBackOutline className="lg:hidden text-xl text-tcolor" onClick={()=>window.history.back()} />
       <div className="md:w-[80%] xl:w-2/4 m-auto py-4">
         <Text
           className="lg:text-2xl pb-1 font-bold text-tcolor text-center"
@@ -16,7 +16,7 @@ const CreateDevice = () => {
         />
       </div>
       {/* device */}
-      <div className="text-tcolor font-bold py-2 lg:px-4">
+      <div className="text-tcolor font-bold py-2 lg:pb-8 lg:px-4">
         <Text className="font-semibold text-lg py-1" body="Device Info" />
         <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
           <div className="w-full">
@@ -48,8 +48,9 @@ const CreateDevice = () => {
           </div>
         </div>
       </div>
+      <hr/>
       {/* owner */}
-      <div className="text-tcolor font-bold py-2 lg:px-4">
+      <div className="text-tcolor font-bold py-2 lg:pb-8 lg:px-4">
         <Text className="font-semibold text-lg py-1" body="Owner's Info" />
         <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
           <div className="w-full">
@@ -90,8 +91,9 @@ const CreateDevice = () => {
           </div>
         </div>
       </div>
+      <hr />
       {/* vehicle info */}
-      <div className="text-tcolor font-bold py-2 lg:px-4">
+      <div className="text-tcolor font-bold py-2 lg:pb-8 lg:px-4">
         <Text className="font-semibold text-lg py-1" body="Vehicle Info" />
         <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
           <div className="w-full">

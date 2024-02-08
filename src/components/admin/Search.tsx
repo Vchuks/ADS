@@ -55,7 +55,7 @@ const Search = () => {
           defaultValue="Create New Device"
           readOnly
           placeholder="Create New Device"
-          className="border w-full border-[#1410B4] rounded-lg placeholder:font-sm placeholder:text-[#1410B4] ps-6 pe-4 outline-none py-2"
+          className="border w-full border-[#1410B4] rounded-lg placeholder:font-sm cursor-pointer placeholder:text-[#1410B4] ps-6 pe-4 outline-none py-2"
           disabled={isButtonDisabled}
           onClick={disableButton}
         />

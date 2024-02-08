@@ -3,7 +3,7 @@ import logo from "../assets/image/icon.png";
 import device from "../assets/image/memory.png";
 import Text from "./atom/Text";
 import { NavLink } from "react-router-dom";
-import { PiClockBold } from "react-icons/pi";
+import { PiClockBold, PiTrendUp } from "react-icons/pi";
 import { MdOutlinePeopleAlt } from "react-icons/md";
 import { FiSettings } from "react-icons/fi";
 import { FiLogOut } from "react-icons/fi";
@@ -13,19 +13,26 @@ import { useEffect, useState } from "react";
 const Sidebar = () => {
   const loginDetails = JSON.parse(localStorage.getItem("user") || "");
   const [userData] = useState(loginDetails);
-  const [dashBoardLink, setDashboardLink] = useState('/responder');
-  const [reportLink, setReportLink] = useState('/responder');
+  const [dashBoardLink, setDashboardLink] = useState(PiTrendUp);
+  const [reportLink, setReportLink] = useState(true);
+  const [agentLink, setAgentLink] = useState(true);
+  const [responderLink, setResponderLink] = useState('');
  
   useEffect(()=>{
-
+// const btnRef = useRef<HTMLInputElement>(null)
     if (
       userData?.message[0]?.type === "responder" 
     ) {
-      setDashboardLink('/responder');
-      setReportLink('/responder');
+      setDashboardLink(false);
+      setReportLink(false);
+      setAgentLink(false);
+      setResponderLink('/responder/details_page');
+      
     } else {
-      setDashboardLink('/dashboard');
-      setReportLink('/device_report');
+      setDashboardLink(true);
+      setReportLink(true);
+      setAgentLink(true);
+      setResponderLink('/responder')
     }
   },[userData])
 
@@ -43,29 +50,36 @@ const Sidebar = () => {
       </div>
       <div className="flex flex-col box-border pt-6 h-[85%] navbar justify-between">
         <div className="flex flex-col gap-5">
-          <NavLink
-            to={dashBoardLink}
+          {dashBoardLink &&<NavLink
+            to='/dashboard'
             className="flex items-center gap-3 p-3 rounded text-lg text-white"
           >
             <PiClockBold className="text-2xl " />
             Dashboard
-          </NavLink>
-          <NavLink
-            to={reportLink}
+          </NavLink>}
+          {reportLink && <NavLink
+            to='/device_report'
             className="flex items-center gap-3 p-3 rounded  text-lg text-white"
           >
             <div className="w-6 ">
               <Image className="w-full" alt="" src={device} />
             </div>
             Device Report
-          </NavLink>
+          </NavLink>}
           <NavLink
-            to="/responder"
-            className="flex items-center gap-3 p-3 rounded text-lg text-white"
+            to={responderLink}
+            className="flex items-center gap-3 p-3 rounded text-lg text-white res"
           >
             <MdOutlinePeopleAlt className="text-2xl" />
             Responder
           </NavLink>
+          {agentLink && <NavLink
+            to="/agent"
+            className="flex items-center gap-3 p-3 rounded text-lg text-white"
+          >
+            <MdOutlinePeopleAlt className="text-2xl" />
+            Agent
+          </NavLink>}
         </div>
         <div>
           <NavLink
