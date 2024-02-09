@@ -17,7 +17,7 @@ const Header = (props: textProps) => {
   }
   return (
     <>
-    <div className="bg-white px-5 py-4 w-full sticky top-0 flex items-center gap-x-3 lg:gap-x-0 justify-between">
+    <div className="bg-white px-5 z-10 py-4 w-full sticky top-0 flex items-center gap-x-3 lg:gap-x-0 justify-between">
         <div className="flex items-center gap-2 lg:gap-5">
       <GiHamburgerMenu className='text-2xl lg:hidden' onClick={handleNav} />
       <div>

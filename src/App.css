@@ -62,6 +62,10 @@ input[type="date"]::-webkit-calendar-picker-indicator {
 }
 #loader{
   display: none;
+  color: #9f2727;
+}
+.hh{
+  min-width: 100%;
 }
 
 @media (min-width: 1000px) and (max-width: 1200px) {
