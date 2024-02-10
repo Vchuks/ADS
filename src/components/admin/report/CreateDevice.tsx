@@ -15,7 +15,7 @@ type Data = {
   owner_address: string
   vehicle_model_year: string,
   vehicle_plate_number: string,
-  vehicle_chasses_number: string
+  vehicle_chasses_number: string,
 }
 const CreateDevice = () => {
   const user = JSON.parse(localStorage.getItem("user") || "");
@@ -89,7 +89,7 @@ const CreateDevice = () => {
   return (
     <div className="px-5 py-4">
       <IoArrowBackOutline
-        className="lg:hidden text-xl text-tcolor"
+        className=" text-xl text-tcolor"
         onClick={() => window.history.back()}
       />
       <div className="md:w-[80%] xl:w-2/4 m-auto py-4">
