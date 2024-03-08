@@ -93,7 +93,7 @@ const Login = () => {
               type="email"
               className="border outline-bcolor border-bcolor rounded-lg px-6 py-4"
               name="email"
-              value={login.email || ''}
+              value={login.email || ""}
               onChange={handleChange}
               placeholder="email@mail.com"
             />
@@ -107,7 +107,7 @@ const Login = () => {
                 type={pass}
                 className="border border-bcolor rounded-lg outline-bcolor px-6 py-4"
                 name="password"
-                value={login.password || ''}
+                value={login.password || ""}
                 onChange={handleChange}
                 placeholder="Create password"
               />
@@ -138,12 +138,11 @@ const Login = () => {
                 onClick={handleLogin}
               >
                 <span className="animate-spin text-2xl" id="loader">
-                  <BiLoaderCircle />
+                  <BiLoaderCircle className="text-white" />
                 </span>{" "}
                 Log-in
               </button>
             </div>
-        
           </div>
         </form>
       </div>

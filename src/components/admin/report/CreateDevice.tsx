@@ -85,7 +85,7 @@ const CreateDevice = () => {
       .catch((error) => console.log(error));
   }
 
-  console.log(deviceData)
+
   return (
     <div className="px-5 py-4">
       <IoArrowBackOutline

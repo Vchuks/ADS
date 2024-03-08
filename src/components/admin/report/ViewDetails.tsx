@@ -3,6 +3,7 @@ import VehicleDetail from "./VehicleDetail";
 
 
 const ViewDetails = () => {
+
   return (
     <div>
       <VehicleDetail />

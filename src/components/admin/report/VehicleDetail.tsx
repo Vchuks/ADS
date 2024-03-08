@@ -7,11 +7,16 @@ import { useContext, useState } from "react";
 import { MyContext } from "../../context/MyContext";
 import Respondent from "./Respondent";
 import TextLink from "../../atom/TextLink";
+import { MapContext } from "../../context/MapContext";
+
 
 const VehicleDetail = () => {
   const { setModal } = useContext(MyContext);
+  const { report, id } = useContext(MapContext);
   const [side, setSide] = useState(true);
   const [respondent, setRespondent] = useState(false);
+
+
 
   return (
     <div className="flex flex-col lg:flex-row px-5 py-4 gap-4 lg:gap-0 items-center">
@@ -37,13 +42,13 @@ const VehicleDetail = () => {
           <Text className="border-b border-[#CBD6D8] py-2" body="Device ID" />
           <Text
             className="border-b text-right border-[#CBD6D8] font-bold py-2"
-            body="790162"
+            body={report?.devicedetails?.device_id}
           />
 
           <Text className="border-b border-[#CBD6D8] py-2" body="Device IMEI" />
           <Text
             className="border-b break-words text-right border-[#CBD6D8] font-bold py-2"
-            body="68%"
+            body={report?.devicedetails?.device_ime}
           />
           <Text
             className="border-b border-[#CBD6D8] py-2"
@@ -51,7 +56,7 @@ const VehicleDetail = () => {
           />
           <Text
             className="border-b break-words text-right border-[#CBD6D8] font-bold py-2"
-            body="Ayo Davis Miller"
+            body={report?.devicedetails?.owner_name}
           />
           <Text
             className="border-b border-[#CBD6D8] py-2"
@@ -59,7 +64,7 @@ const VehicleDetail = () => {
           />
           <Text
             className="border-b break-words text-right border-[#CBD6D8] font-bold py-2"
-            body="+234 012-345-6789"
+            body={report?.devicedetails?.owner_phone_number}
           />
           <Text
             className="border-b border-[#CBD6D8] py-2"
@@ -67,7 +72,7 @@ const VehicleDetail = () => {
           />
           <Text
             className="border-b break-words text-right border-[#CBD6D8] font-bold py-2"
-            body="Ikeja, Lagos"
+            body={report?.devicedetails?.owner_address}
           />
           <Text
             className="border-b border-[#CBD6D8] py-2"
@@ -75,7 +80,7 @@ const VehicleDetail = () => {
           />
           <Text
             className="border-b break-words text-right border-[#CBD6D8] font-bold py-2"
-            body="ayomillerdavis09@gmail.com"
+            body={report?.devicedetails?.owner_email}
           />
           <Text
             className="border-b border-[#CBD6D8] py-2"
@@ -83,7 +88,7 @@ const VehicleDetail = () => {
           />
           <Text
             className="border-b break-words text-right border-[#CBD6D8] font-bold py-2"
-            body="2014"
+            body={report?.devicedetails?.vehicle_model_year}
           />
           <Text
             className="border-b border-[#CBD6D8] py-2"
@@ -91,18 +96,18 @@ const VehicleDetail = () => {
           />
           <Text
             className="border-b break-words text-right border-[#CBD6D8] font-bold py-2"
-            body="RNV-239-ABJ"
+            body={report?.devicedetails?.vehicle_plate_number}
           />
           <Text
             className="border-b border-[#CBD6D8] py-2"
-            body="Vehicle’s Chassis Number"
+            body="Vehicle’s Chasses Number"
           />
           <Text
             className="border-b break-words text-right border-[#CBD6D8] font-bold py-2"
-            body="342q297232hw23e"
+            body={report?.devicedetails?.vehicle_chasses_number}
           />
         </div>
-        <TextLink to='/edit_profile' className="" body={<button className="w-full mt-6 lg:mt-0 lg:w-[95%] flex items-center justify-center m-auto rounded-lg font-bold bg-bcolor p-3 lg:p-4 text-white">
+        <TextLink to='/edit_profile' className="" body={<button  className="w-full mt-6 lg:mt-0 lg:w-[95%] flex items-center justify-center m-auto rounded-lg font-bold bg-bcolor p-3 lg:p-4 text-white">
           Edit
         </button>} />
       </div>
@@ -128,15 +133,13 @@ const VehicleDetail = () => {
               <Text className="font-bold" body="Nature Of Request" />
               <Text
                 className="font-bold bg-[#ffc0bfa6] text-[#CE5347] p-2 lg:p-4 rounded-lg"
-                body="Drowning Vehicle"
+                body={report?.accident_detected?.accident_type}
               />
             </div>
             <div className="flex items-center  justify-between">
-              <Text className="font-bold" body="Time & Date" />
-              <Text
-                className="font-bold p-2 lg:p-4 text-[#020062]"
-                body="23/11/2023 | 14:00"
-              />
+              <Text className="font-bold w-full" body="Time & Date" />
+              
+              <p className="font-bold w-full flex justify-end p-2 lg:p-4 text-[#020062]">{report?.accident_detected?.date} | <span>{report?.accident_detected?.time}</span></p>
             </div>
           </div>
           <div className="pb-3">
@@ -145,7 +148,7 @@ const VehicleDetail = () => {
               body="Vehicle Current Location"
             />
             <div className="lg:h-60 xxxl:h-full">
-              <Map />
+              <Map high='h-full' />
             </div>
           </div>
           <button className="w-full my-2 p-3 lg:p-4 m-auto text-bcolor bg-white rounded-lg border font-bold border-bcolor">

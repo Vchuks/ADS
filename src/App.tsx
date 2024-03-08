@@ -11,6 +11,7 @@ import Sidebar from "./components/Sidebar";
 import DeviceReport from "./components/pages/DeviceReport";
 import ViewDetailsPage from "./components/pages/ViewDetailsPage";
 import { MyDataProvider } from "./components/context/MyContext";
+import { MapProvider } from "./components/context/MapContext";
 import EditProfilePage from "./components/pages/EditProfilePage";
 import CreateDevice from "./components/admin/report/CreateDevice";
 import ResponderPage from "./components/pages/ResponderPage";
@@ -45,29 +46,42 @@ function App() {
         <div
           className={
             // lg:w-[78%] xl:w-[82%] 2xl:w-[86%] xxxl:w-full
-            location.pathname !== "/"
-              ? "w-full relative"
-              : "w-full"
+            location.pathname !== "/" ? "w-full relative" : "w-full"
           }
         >
           <MyDataProvider>
-          <Routes>
-            <Route path="/" element={<Login />} />
-            <Route path="forgot_password" element={<ForgotPassword />} />
-            <Route path="verify" element={<Verify />} />
-            <Route path="reset_password" element={<ResetPassword />} />
-            <Route path="success" element={<ResetSuccess />} />
-            <Route path="dashboard" element={<Dashboard />} />
-            <Route path="device_report" element={<DeviceReport />} />
-            <Route path="device_report/details_page" element={<ViewDetailsPage />} />
-            <Route path="edit_profile" element={<EditProfilePage />} />
-            <Route path="create_device" element={<CreateDevice />} />
-            <Route path="responder" element={<ResponderPage />} />
-            <Route path="agent" element={<AgentPage />} />
-            <Route path="emergency_responder" element={<EmergencyRes />} />
-            <Route path="responder/details_page" element={<ResponderView />} />
-            <Route path="*" element={<p className='h-[20vh] p-4 lg:px-14 w-full text-4xl flex items-center '>Page not found!!!</p>} />
-          </Routes>
+            <MapProvider>
+              <Routes>
+                <Route path="/" element={<Login />} />
+                <Route path="forgot_password" element={<ForgotPassword />} />
+                <Route path="verify" element={<Verify />} />
+                <Route path="reset_password" element={<ResetPassword />} />
+                <Route path="success" element={<ResetSuccess />} />
+                <Route path="dashboard" element={<Dashboard />} />
+                <Route path="device_report" element={<DeviceReport />} />
+                <Route
+                  path="device_report/details_page"
+                  element={<ViewDetailsPage />}
+                />
+                <Route path="edit_profile" element={<EditProfilePage />} />
+                <Route path="create_device" element={<CreateDevice />} />
+                <Route path="responder" element={<ResponderPage />} />
+                <Route path="agent" element={<AgentPage />} />
+                <Route path="emergency_responder" element={<EmergencyRes />} />
+                <Route
+                  path="responder/details_page"
+                  element={<ResponderView />}
+                />
+                <Route
+                  path="*"
+                  element={
+                    <p className="h-[20vh] p-4 lg:px-14 w-full text-4xl flex items-center ">
+                      Page not found!!!
+                    </p>
+                  }
+                />
+              </Routes>
+            </MapProvider>
           </MyDataProvider>
         </div>
       </div>
