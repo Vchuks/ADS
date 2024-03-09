@@ -106,7 +106,7 @@ const Devices = () => {
             onClick={() => {
               setGeo({
                 lat: each?.lat,
-                lng: each?.log,
+                log: each?.log,
               });
             }}
             className="flex justify-between items-center py-1 gap-1"

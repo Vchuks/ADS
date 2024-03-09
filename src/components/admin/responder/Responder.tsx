@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react";
-import { GoDotFill } from "react-icons/go";
-import TextLink from "../../atom/TextLink";
+// import { GoDotFill } from "react-icons/go";
+// import TextLink from "../../atom/TextLink";
 
 type Data = {
   id: number;
@@ -56,7 +56,7 @@ const Responder = () => {
     fetchResponder();
   }, []);
 
-  const toEach = (id) => {
+  const toEach = (id: number) => {
     console.log(id)
   }
   return (

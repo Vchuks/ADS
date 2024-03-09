@@ -1,11 +1,11 @@
 import Header from "../admin/Header";
 import ViewDetails from "../admin/report/ViewDetails";
-import {  useContext, useEffect, useState } from "react";
+import {  useContext, useEffect } from "react";
 import { MapContext } from "../context/MapContext";
 
 const ViewDetailsPage = () => {
-  const {id, setReport} = useContext(MapContext)
-  const [item, setItem] = useState('')
+  const {id, setDeviceReport} = useContext(MapContext)
+  // const [item, setItem] = useState('')
   
 
   
@@ -27,12 +27,12 @@ const ViewDetailsPage = () => {
         .then((res) => res.json())
         .then((result) => {
           console.log(result);
-          setReport(result)
+          setDeviceReport(result)
         });
     };
     eachDetail()
   }
-  , [id,setReport]);
+  , [id,setDeviceReport]);
 
   return (
     <div>

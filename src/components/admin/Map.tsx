@@ -2,13 +2,12 @@ import { MapContext } from "../../components/context/MapContext";
 import GoogleMapReact from "google-map-react";
 import { useContext } from "react";
 
-const AnyReactComponent = ({ text }) => (
-  <div className=" bg-red-600 block w-8 text-white h-8 rounded-full">
-    {text}
-  </div>
-);
+// const AnyReactComponent = ({ text }) => (
+  
+// );
 
-export default function Map({high}) {
+
+export default function Map(props: {high: string}) {
   const { geo } = useContext(MapContext);
 
   const defaultProps = {
@@ -21,7 +20,7 @@ export default function Map({high}) {
 
   return (
     // Important! Always set the container height explicitly
-    <div className={`w-full ${high}`}>
+    <div className={`w-full ${props.high}`}>
       <GoogleMapReact
         // bootstrapURLKeys={{ key: "AIzaSyDBEWGAPAENM1D_ENr34JlvZV4wfzwlkOs" }}
         defaultCenter={defaultProps.center}
@@ -30,7 +29,10 @@ export default function Map({high}) {
         // onGoogleApiLoaded={({ map, maps }) => handleApiLoaded(map, maps)}
       >
         {/* <Marker position={{ lat: -38.132245, lng: 144.2994245 }}/> */}
-        <AnyReactComponent lat={geo.lat} lng={geo.lng} text="My Marker" />
+        
+        <div className=" bg-red-600 block w-8 text-white h-8 rounded-full">
+        lat={geo.lat} lng={geo.log} text="My Marker" 
+  </div>
       </GoogleMapReact>
     </div>
   );

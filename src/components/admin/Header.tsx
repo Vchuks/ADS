@@ -10,31 +10,31 @@ type textProps = {
   headText: string;
   subhead: string;
 };
-type myType = {
-  accident_type: "";
-  agent_id: "";
-  assigned_at: "";
-  closed_status: null;
-  created_at: "";
-  date: "";
-  deviceid: "";
-  id: "";
-  lat: "";
-  log: "";
-  name: "";
-  nature_of_request: "";
-  priority: "";
-  request_accepted: "";
-  responder_id: "";
-  time: "";
-};
+// type myType = {
+//   accident_type: "";
+//   agent_id: "";
+//   assigned_at: "";
+//   closed_status: null;
+//   created_at: "";
+//   date: "";
+//   deviceid: "";
+//   id: "";
+//   lat: "";
+//   log: "";
+//   name: "";
+//   nature_of_request: "";
+//   priority: "";
+//   request_accepted: "";
+//   responder_id: "";
+//   time: "";
+// };
 
 const Header = (props: textProps) => {
   const { bell, setId } = useContext(MapContext);
   const { headText, subhead } = props;
   const [openSide, setOpenSide] = useState(false);
   const [notify, setNotify] = useState(false);
-  console.log(bell);
+ 
   const handleNav = () => {
     setOpenSide(!openSide);
   };
@@ -42,7 +42,7 @@ const Header = (props: textProps) => {
     setNotify(!notify);
   };
   const date = new Date();
-  
+  const d = date.toUTCString()
 
   return (
     <>
@@ -71,12 +71,12 @@ const Header = (props: textProps) => {
           </div>
           <Text
             className="text-bcolor text-xs lg:text-base"
-            body={date.toUTCString()}
+            body={d}
           />
         </div>
       </div>
       {notify && <div className="w-[30%] p-4 absolute right-0 bg-white rounded-b-xl">
-        {bell?.map((each: myType) => {
+        {bell?.map((each) => {
           return (
             <Link
             key={each.id}

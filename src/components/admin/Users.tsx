@@ -14,6 +14,7 @@ type Data = {
   };
   details: object;
   notifications: object;
+  records: object
 };
 
 const Users = () => {

@@ -6,6 +6,7 @@ import { MapContext } from "../../context/MapContext";
 
 
 type Data = {
+  id: string,
   device_id: string,
   vehicle_name: string,
   device_number: string,
@@ -21,22 +22,23 @@ type Data = {
 
 
 const EditProfile = () => {
-  const {report} = useContext(MapContext)
+  const {devicereport} = useContext(MapContext)
   const user = JSON.parse(localStorage.getItem("user") || "");
   const token = user?.message[0]?.token;
 
   const [deviceData, setDeviceData] = useState<Data>({
-    device_id: report?.devicedetails?.device_id,
-    device_ime: report?.devicedetails?.device_ime,
-    vehicle_name: report?.devicedetails?.vehicle_name,
-    device_number: report?.devicedetails?.device_number,
-    owner_name: report?.devicedetails?.owner_name,
-    owner_email: report?.devicedetails?.owner_email,
-    owner_phone_number: report?.devicedetails?.owner_phone_number,
-    owner_address: report?.devicedetails?.owner_address,
-    vehicle_model_year: report?.devicedetails?.vehicle_model_year,
-    vehicle_plate_number: report?.devicedetails?.vehicle_plate_number,
-    vehicle_chasses_number: report?.devicedetails?.vehicle_chasses_number,
+    id: devicereport?.devicedetails?.id,
+    device_id: devicereport?.devicedetails?.device_id,
+    device_ime: devicereport?.devicedetails?.device_ime,
+    vehicle_name: devicereport?.devicedetails?.vehicle_name,
+    device_number: devicereport?.devicedetails?.device_number,
+    owner_name: devicereport?.devicedetails?.owner_name,
+    owner_email: devicereport?.devicedetails?.owner_email,
+    owner_phone_number: devicereport?.devicedetails?.owner_phone_number,
+    owner_address: devicereport?.devicedetails?.owner_address,
+    vehicle_model_year: devicereport?.devicedetails?.vehicle_model_year,
+    vehicle_plate_number: devicereport?.devicedetails?.vehicle_plate_number,
+    vehicle_chasses_number: devicereport?.devicedetails?.vehicle_chasses_number,
 
   })
 
@@ -49,7 +51,7 @@ const EditProfile = () => {
   function handleUpdate(event: React.MouseEvent<HTMLButtonElement>) {
     event.preventDefault()
     const formdata = new FormData();
-    formdata.append("id", report?.devicedetails?.id);
+    formdata.append("id", deviceData?.id);
     formdata.append("device_id", deviceData?.device_id);
     formdata.append("device_number", deviceData?.device_number );
     formdata.append("device_ime", deviceData?.device_ime);

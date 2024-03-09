@@ -50,7 +50,7 @@ time:'',
 };
 
 const HistoryModal = () => {
-  const {report} = useContext( MapContext)
+  const {devicereport} = useContext( MapContext)
     const {modal, setModal} = useContext(MyContext)
     const closeModal = () =>{
         setModal(false);
@@ -68,8 +68,8 @@ const HistoryModal = () => {
         </div>
         <div className="flex flex-col gap-4 text-sm lg:gap-8 lg:p-4 mt-4">
             <Text className="text-tcolor lg:text-lg font-semibold" body='Last-week 15/11/2023'/>
-            {report?.accident_history.length == 0 ? <p className="text-tcolor lg:text-lg font-semibold">No History!</p> :
-report?.accident_history.map((each: Data)=>{
+            {devicereport?.accident_history.length == 0 ? <p className="text-tcolor lg:text-lg font-semibold">No History!</p> :
+devicereport?.accident_history.map((each: Data)=>{
   return <div className="flex items-center justify-between">
             <div className="flex gap-4 items-center">
               <Image className="" src={carlogo} alt="" />
