@@ -1,4 +1,6 @@
-import { useEffect, useState } from "react";
+import { useContext, useEffect, useState } from "react";
+import { MapContext } from "../../context/MapContext";
+
 // import { GoDotFill } from "react-icons/go";
 // import TextLink from "../../atom/TextLink";
 
@@ -17,7 +19,8 @@ const Responder = () => {
   const [active, setActive] = useState(false);
   const [inActive, setInActive] = useState(false);
   const [color, setColor] = useState(true);
-  const [getResponder, setGetResponder] = useState([]);
+  const {getResponder, setGetResponder} = useContext(MapContext);
+  const [access, setAccess] = useState(false)
 
   const handleView = () => {
     if (all) {
@@ -35,11 +38,14 @@ const Responder = () => {
     }
   };
 
+  useEffect(() => {
+
   const fetchResponder = () => {
     const getToken = JSON.parse(localStorage.getItem("user") || "");
 
     const tokHead = new Headers();
-    tokHead.append("Authorization", `Bearer ${getToken.message[0].token}`);
+    const t =`eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpc3MiOiJodHRwczovL3p1Yml0ZWNocy5jb20vYWRzX2FwaXMvYXBpL2xvZ2luIiwiaWF0IjoxNzA5OTk2Njg4LCJleHAiOjE3MTAyMTI2ODgsIm5iZiI6MTcwOTk5NjY4OCwianRpIjoiUXJiZDI5YUNRaXkzYU5vdSIsInN1YiI6IjEiLCJwcnYiOiJkZjg4M2RiOTdiZDA1ZWY4ZmY4NTA4MmQ2ODZjNDVlODMyZTU5M2E5IiwibmFtZSI6IkFEUyBBZG1pbiIsInJvbGUiOiJhZG1pbiIsImlkIjoxfQ.1wpOeM1rxjCgDJ46zWHVIEBz2CVebh7Y0b_n4umUFnw`
+    tokHead.append("Authorization", `Bearer ${t}`);
 
     fetch("https://zubitechs.com/ads_apis/api/get_responder", {
       method: "GET",
@@ -47,14 +53,16 @@ const Responder = () => {
     })
       .then((res) => res.json())
       .then((result) => {
+        if(result.success === false){
+          setAccess(result.message)
+        }
         console.log(result);
         setGetResponder(result.data);
       })
       .catch((err) => console.log(err));
   };
-  useEffect(() => {
     fetchResponder();
-  }, []);
+  }, [setGetResponder]);
 
   const toEach = (id: number) => {
     console.log(id)
@@ -113,6 +121,7 @@ const Responder = () => {
         </div>
          
       )}
+      {access && <p className="text-lg">{access}</p>}
       {getResponder?.map((each: Data)=>{
         return <div key={each.id} onClick={()=>toEach(each.id)} className="w-max lg:w-full flex bg-white text-[#6E7680]">
         <div className="w-full border-b py-4 border-[#DDE5E9]">

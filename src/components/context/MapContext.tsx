@@ -50,16 +50,6 @@ type ID = string | number;
 type Filter = string;
 
 type Report = {
-  // id: number;
-  // device_id: string;
-  // vehicle_name: string;
-  // device_number: string;
-  // status: string;
-  // last_accident_detected: string;
-  // last_sos_detected: string;
-  // owner_name: string;
-  // owner_phone_number: string;
-  // owner_address: string;
   counts: {
     accident_detected: string;
     attended_case: string;
@@ -86,7 +76,7 @@ type DeviceReport = {
     id: number;
     lat: string;
     log: string;
-    name:string;
+    name: string;
     nature_of_request: string;
     priority: string;
     request_accepted: number;
@@ -97,8 +87,8 @@ type DeviceReport = {
   devicedetails: {
     device_id: string;
     device_ime: string;
-    device_number:string;
-    id: string ;
+    device_number: string;
+    id: string;
     lat: null | string;
     log: null | string;
     owner_address: string;
@@ -112,6 +102,32 @@ type DeviceReport = {
     vehicle_plate_number: string;
   };
 };
+
+type Agent = {
+  agent_details: {
+    account_disabled: number;
+    email: string;
+    id: number;
+    name: string;
+    phone_number: string;
+    status: string;
+    type: string;
+  };
+  agent_unaccepted_logs: { data: []; count: number };
+  attendedcases: { data: []; count: number };
+  closedcases: { data: []; count: number };
+  pendingcases: { data: []; count: number };
+};
+
+type Responder = {
+    id: number;
+  email: string;
+  company_phone_number: string;
+  company_address: string;
+  company_name: string;
+  nature_of_emergency: string;
+  company_license: string;
+}
 
 type StateProps = {
   geo: Geo;
@@ -128,6 +144,10 @@ type StateProps = {
   setReport: Dispatch<SetStateAction<Report>>;
   devicereport: DeviceReport;
   setDeviceReport: Dispatch<SetStateAction<DeviceReport>>;
+  getAgent: Agent;
+  setGetAgent: Dispatch<SetStateAction<Agent>>;
+  getResponder: Responder[];
+  setGetResponder: Dispatch<SetStateAction<Responder[]>>;
 };
 type ContextProviderProps = {
   children?: ReactNode;
@@ -210,45 +230,73 @@ const defaultState = {
   },
   setReport: () => {},
 
-  devicereport:{
+  devicereport: {
     accident_detected: {
-        accident_type: "",
-        agent_id: 1,
-        assigned_at: "",
-        closed_status: 0,
-        created_at: "",
-        date: "",
-        deviceid: "",
-        id: 21,
-        lat: "",
-        log: "",
-        name: "",
-        nature_of_request: "",
-        priority: "",
-        request_accepted: 1,
-        responder_id: 1,
-        time: "",
-      },
-      accident_history: [],
-      devicedetails: {
-        device_id: "",
-        device_ime: "",
-        device_number: "",
-        id: '',
-        lat: null,
-        log: null,
-        owner_address: "",
-        owner_email: "",
-        owner_name: "",
-        owner_phone_number: "",
-        status: "",
-        vehicle_chasses_number: "",
-        vehicle_model_year: "",
-        vehicle_name: "",
-        vehicle_plate_number: "",
-      },
+      accident_type: "",
+      agent_id: 1,
+      assigned_at: "",
+      closed_status: 0,
+      created_at: "",
+      date: "",
+      deviceid: "",
+      id: 21,
+      lat: "",
+      log: "",
+      name: "",
+      nature_of_request: "",
+      priority: "",
+      request_accepted: 1,
+      responder_id: 1,
+      time: "",
+    },
+    accident_history: [],
+    devicedetails: {
+      device_id: "",
+      device_ime: "",
+      device_number: "",
+      id: "",
+      lat: null,
+      log: null,
+      owner_address: "",
+      owner_email: "",
+      owner_name: "",
+      owner_phone_number: "",
+      status: "",
+      vehicle_chasses_number: "",
+      vehicle_model_year: "",
+      vehicle_name: "",
+      vehicle_plate_number: "",
+    },
   },
-  setDeviceReport:()=>{},
+  setDeviceReport: () => {},
+  getAgent:{
+    agent_details: {
+        account_disabled: 0,
+        email: '',
+        id: 0,
+        name: '',
+        phone_number: '',
+        status: '',
+        type: '',
+      },
+      agent_unaccepted_logs: { data: [], count: 0 },
+      attendedcases: { data: [], count: 0 },
+      closedcases: { data: [], count: 0 },
+      pendingcases: { data: [], count: 0 },
+  },
+  setGetAgent: ()=>{},
+  getResponder: [
+    {
+        id: 0,
+        email: '',
+        company_phone_number: '',
+        company_address: '',
+        company_name: '',
+        nature_of_emergency: '',
+        company_license: '',
+    }
+  ],
+  setGetResponder:()=>{},
 } as StateProps;
 
 export const MapContext = createContext(defaultState);
@@ -277,45 +325,63 @@ export function MapProvider({ children }: ContextProviderProps) {
     notifications: [],
     records: [],
   });
-    const [devicereport, setDeviceReport] = useState<DeviceReport>({
-        accident_detected: {
-            accident_type: "",
-            agent_id: 1,
-            assigned_at: "",
-            closed_status: 0,
-            created_at: "",
-            date: "",
-            deviceid: "",
-            id: 21,
-            lat: "",
-            log: "",
-            name: "",
-            nature_of_request: "",
-            priority: "",
-            request_accepted: 1,
-            responder_id: 1,
-            time: "",
-          },
-          accident_history: [],
-          devicedetails: {
-            device_id: "",
-            device_ime: "",
-            device_number: "",
-            id: '',
-            lat: null,
-            log: null,
-            owner_address: "",
-            owner_email: "",
-            owner_name: "",
-            owner_phone_number: "",
-            status: "",
-            vehicle_chasses_number: "",
-            vehicle_model_year: "",
-            vehicle_name: "",
-            vehicle_plate_number: "",
-          },
-    });
+  const [devicereport, setDeviceReport] = useState<DeviceReport>({
+    accident_detected: {
+      accident_type: "",
+      agent_id: 1,
+      assigned_at: "",
+      closed_status: 0,
+      created_at: "",
+      date: "",
+      deviceid: "",
+      id: 21,
+      lat: "",
+      log: "",
+      name: "",
+      nature_of_request: "",
+      priority: "",
+      request_accepted: 1,
+      responder_id: 1,
+      time: "",
+    },
+    accident_history: [],
+    devicedetails: {
+      device_id: "",
+      device_ime: "",
+      device_number: "",
+      id: "",
+      lat: null,
+      log: null,
+      owner_address: "",
+      owner_email: "",
+      owner_name: "",
+      owner_phone_number: "",
+      status: "",
+      vehicle_chasses_number: "",
+      vehicle_model_year: "",
+      vehicle_name: "",
+      vehicle_plate_number: "",
+    },
+  });
   const [bell, setBell] = useState<Bell[]>([]);
+  const [getResponder, setGetResponder] = useState<Responder[]>([]);
+
+  const [getAgent, setGetAgent] = useState<Agent>({
+    agent_details: {
+        account_disabled: 0,
+        email: '',
+        id: 0,
+        name: '',
+        phone_number: '',
+        status: '',
+        type: '',
+      },
+      agent_unaccepted_logs: { data: [], count: 0 },
+      attendedcases: { data: [], count: 0 },
+      closedcases: { data: [], count: 0 },
+      pendingcases: { data: [], count: 0 },
+      
+  });
 
   return (
     <MapContext.Provider
@@ -333,7 +399,11 @@ export function MapProvider({ children }: ContextProviderProps) {
         report,
         setReport,
         devicereport,
-        setDeviceReport
+        setDeviceReport,
+        getAgent,
+        setGetAgent,
+        getResponder,
+        setGetResponder
       }}
     >
       {children}

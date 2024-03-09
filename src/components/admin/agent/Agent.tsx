@@ -1,23 +1,27 @@
-import { useState, useEffect } from "react";
+import { useState, useEffect, useContext } from "react";
+import AgentProfile from "./AgentProfile";
+import { MapContext } from "../../context/MapContext";
 // import { GoDotFill } from "react-icons/go";
 // import TextLink from "../../atom/TextLink";
 
-type Data = {
-  id: number;
-  email: string;
-  company_phone_number: string;
-  company_address: string;
-  company_name: string;
-  nature_of_emergency: string;
-  company_license: string;
-};
+// type Data = {
+//   id: number;
+//   email: string;
+//   company_phone_number: string;
+//   company_address: string;
+//   company_name: string;
+//   nature_of_emergency: string;
+//   company_license: string;
+// };
 
 const Agent = () => {
   const [all, setAll] = useState(true);
   const [active, setActive] = useState(false);
   const [inActive, setInActive] = useState(false);
   const [color, setColor] = useState(true);
-  const [getAgent, setGetAgent] = useState([]);
+const [access, setAccess] = useState(false)
+
+const {setGetAgent} = useContext(MapContext);
 
   const handleView = () => {
     if (all) {
@@ -34,6 +38,7 @@ const Agent = () => {
       setActive(false);
     }
   };
+  useEffect(() => {
 
   const fetchAgent = () => {
     const getToken = JSON.parse(localStorage.getItem("user") || "");
@@ -47,21 +52,23 @@ const Agent = () => {
     })
       .then((res) => res.json())
       .then((result) => {
+        if(result.message === 'An error occured'){
+          setAccess(true)
+        }
         console.log(result);
-        setGetAgent(result.data);
+        setGetAgent(result);
       })
       .catch((err) => console.log(err));
   };
-  useEffect(() => {
     fetchAgent();
-  }, []);
+  }, [setGetAgent]);
 
-  const toEach = (id: number) => {
-    console.log(id)
-  }
+  // const toEach = (id: number) => {
+  //   console.log(id)
+  // }
   return (
     <div className="px-5 py-4">
-      <div className="w-full md:w-auto flex">
+      {access &&<div className="w-full md:w-auto flex">
         <button
           className={`w-full md:w-auto md:py-2 md:px-6 font-semibold ${
             color && `text-[#1410B4] border-b-2 border-[#1410B4]`
@@ -82,9 +89,9 @@ const Agent = () => {
         >
           Inactive Agent
         </button>
-      </div>
+      </div>}
 
-      {all && (
+      {all && access && (
         <div className="overflow-x-scroll md:overflow-auto w-full">
           <div className="w-max lg:w-full flex text-sm  bg-white text-[#6E7680] ">
             <div className="w-full border-b font-bold py-4 border-[#DDE5E9]">
@@ -110,7 +117,9 @@ const Agent = () => {
           </div>
         </div>
       )}
-       {getAgent?.map((each: Data)=>{
+      {access && <p className="text-lg">Not Allowed to view!</p>}
+      {!access && <AgentProfile/>}
+      {/* {getAgent?.map((each: Data)=>{
         return <div key={each.id} onClick={()=>toEach(each.id)} className="w-max lg:w-full flex bg-white text-[#6E7680]">
         <div className="w-full border-b py-4 border-[#DDE5E9]">
           {each?.company_name}
@@ -129,16 +138,17 @@ const Agent = () => {
           <div className="flex gap-1 items-center bg-[#FFF0F0] text-[#C12126] rounded-2xl w-max px-2">
             <GoDotFill className="text-[#FF3B3B]" />
             Not on a mission
-          </div> */}
+          </div> 
         </div>
         <div className="w-full border-b py-4 border-[#DDE5E9]">
-          {/* 20 Jobs */}
+          {/* 20 Jobs *
           </div>
         <div className="w-full border-b py-4 border-[#DDE5E9]">
-          {/* May 19, 2020 */}
+          {/* May 19, 2020 *
         </div>
       </div>
-      })}
+      })} 
+    */}
       {active && <div></div>}
       {inActive && <div></div>}
     </div>

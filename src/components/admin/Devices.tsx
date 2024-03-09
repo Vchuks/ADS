@@ -54,7 +54,6 @@ const Devices = () => {
 
   
 
-  useEffect(() => {
     const getUsers = () => {
       const getToken = JSON.parse(localStorage.getItem("user") || "");
   
@@ -73,12 +72,20 @@ const Devices = () => {
         })
         .catch((err) => console.log(err));
     };
+    
+
+  
+  useEffect(() => {
     if (device === "") {
       getUsers();
     }
+    getUsers()
+  }, [device]);
 
-    getUsers();
-  }, [device, setBell]);
+
+  setInterval(()=>{
+    getUsers()
+  },60000)
 
   return (
     <div className="device-box lg:w-[35%] p-4 maph maph-device xxxl:h-auto ">

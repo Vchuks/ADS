@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import {  useEffect, useState } from "react";
 import Box from "../atom/Box";
 
 type Data = {
@@ -20,6 +20,7 @@ type Data = {
 const Users = () => {
   const [user, setUser] = useState<Data>({} as Data);
 
+  
   const getUsers = () => {
     const getToken = JSON.parse(localStorage.getItem("user") || "");
 
@@ -36,10 +37,15 @@ const Users = () => {
       })
       .catch((err) => console.log(err));
   };
-
-  useEffect(() => {
+  useEffect(()=>{
+    getUsers()
+  },[])
+  setInterval(()=>{
     getUsers();
-  }, []);
+
+}, 60000)
+
+
 
   return (
     <>
