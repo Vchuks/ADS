@@ -5,20 +5,20 @@ import Swal from "sweetalert2";
 import { MapContext } from "../../context/MapContext";
 
 
-type Data = {
-  id: string,
-  device_id: string,
-  vehicle_name: string,
-  device_number: string,
-  device_ime: string,
-  owner_name: string,
-  owner_email: string,
-  owner_phone_number: string,
-  owner_address: string
-  vehicle_model_year: string,
-  vehicle_plate_number: string,
-  vehicle_chasses_number: string,
-}
+// type Data = {
+//   id: number,
+//   device_id: string,
+//   vehicle_name: string,
+//   device_number: string,
+//   device_ime: string,
+//   owner_name: string,
+//   owner_email: string,
+//   owner_phone_number: string,
+//   owner_address: string
+//   vehicle_model_year: string,
+//   vehicle_plate_number: string,
+//   vehicle_chasses_number: string,
+// }
 
 
 const EditProfile = () => {
@@ -26,7 +26,7 @@ const EditProfile = () => {
   const user = JSON.parse(localStorage.getItem("user") || "");
   const token = user?.message[0]?.token;
 
-  const [deviceData, setDeviceData] = useState<Data>({
+  const [deviceData, setDeviceData] = useState({
     id: devicereport?.devicedetails?.id,
     device_id: devicereport?.devicedetails?.device_id,
     device_ime: devicereport?.devicedetails?.device_ime,

@@ -49,6 +49,16 @@ type Table = {
 type ID = string | number;
 type Filter = string;
 
+type Detail = {
+  account_disabled: number;
+  email: string;
+  id: number;
+  name: string;
+  phone_number: string;
+  status: string;
+  type: string;
+};
+
 type Report = {
   counts: {
     accident_detected: string;
@@ -73,7 +83,7 @@ type DeviceReport = {
     created_at: string;
     date: string;
     deviceid: string;
-    id: number;
+    id: string;
     lat: string;
     log: string;
     name: string;
@@ -120,14 +130,85 @@ type Agent = {
 };
 
 type Responder = {
-    id: number;
+  id: string;
   email: string;
   company_phone_number: string;
   company_address: string;
   company_name: string;
   nature_of_emergency: string;
   company_license: string;
-}
+};
+type EachResponder = {
+  id: number | string;
+  email: string;
+  company_phone_number: string;
+  company_address: string;
+  company_name: string;
+  nature_of_emergency: string;
+  company_license: string;
+};
+type EachAgent = {
+    agent_details: {
+        id: number;
+        name: string;
+        email: string;
+        type: string;
+        phone_number: string;
+        status: string;
+        account_disabled: number;
+    },
+    agent_unaccepted_logs: {
+        data: [],
+        count: number
+    },
+    closedcases: {
+        data: [],
+        count: number
+    },
+    attendedcases: {
+        data: [
+            {
+                id: number;
+                deviceid: string;
+                name: string;
+                lat: string;
+                log: string;
+                accident_type: string;
+                nature_of_request: string;
+                priority: string;
+                date: string;
+                time: string;
+                created_at: string;
+                responder_id: number;
+                agent_id: number;
+                request_accepted: number;
+                closed_status: number;
+                assigned_at: string;
+            }
+        ],
+        count: number;
+    },
+    pendingcases: {
+        data: [],
+        count: number
+    }
+};
+
+type AllAgents = {
+  current_page: number;
+  data: [];
+  first_page_url: string;
+  from: number;
+  last_page: number;
+  last_page_url: string;
+  links: [];
+  next_page_url: null | string;
+  path: string;
+  per_page: number;
+  prev_page_url: null | string;
+  to: number;
+  total: number;
+};
 
 type StateProps = {
   geo: Geo;
@@ -148,10 +229,20 @@ type StateProps = {
   setGetAgent: Dispatch<SetStateAction<Agent>>;
   getResponder: Responder[];
   setGetResponder: Dispatch<SetStateAction<Responder[]>>;
+  eachResponder: EachResponder;
+  setEachResponder: Dispatch<SetStateAction<EachResponder>>;
+  eachAgent: EachAgent;
+  setEachAgent: Dispatch<SetStateAction<EachAgent>>;
+  result: Detail;
+  setResult: Dispatch<SetStateAction<Detail>>;
+  getAllAgents: AllAgents;
+  setGetAllAgents: Dispatch<SetStateAction<AllAgents>>;
 };
+
 type ContextProviderProps = {
   children?: ReactNode;
 };
+
 const defaultState = {
   geo: {
     lat: 0,
@@ -204,16 +295,6 @@ const defaultState = {
   filter: "",
   setFilter: () => {},
   report: {
-    // id: 0,
-    // device_id: "",
-    // vehicle_name: "",
-    // device_number: "",
-    // status: "",
-    // last_accident_detected: "",
-    // last_sos_detected: "",
-    // owner_name: "",
-    // owner_phone_number: "",
-    // owner_address: "",
     counts: {
       accident_detected: "",
       attended_case: "",
@@ -239,7 +320,7 @@ const defaultState = {
       created_at: "",
       date: "",
       deviceid: "",
-      id: 21,
+      id: "",
       lat: "",
       log: "",
       name: "",
@@ -269,42 +350,128 @@ const defaultState = {
     },
   },
   setDeviceReport: () => {},
-  getAgent:{
+  getAgent: {
     agent_details: {
-        account_disabled: 0,
-        email: '',
-        id: 0,
-        name: '',
-        phone_number: '',
-        status: '',
-        type: '',
-      },
-      agent_unaccepted_logs: { data: [], count: 0 },
-      attendedcases: { data: [], count: 0 },
-      closedcases: { data: [], count: 0 },
-      pendingcases: { data: [], count: 0 },
+      account_disabled: 0,
+      email: "",
+      id: 0,
+      name: "",
+      phone_number: "",
+      status: "",
+      type: "",
+    },
+    agent_unaccepted_logs: { data: [], count: 0 },
+    attendedcases: { data: [], count: 0 },
+    closedcases: { data: [], count: 0 },
+    pendingcases: { data: [], count: 0 },
   },
-  setGetAgent: ()=>{},
+  setGetAgent: () => {},
+
+  getAllAgents: {
+    current_page: 0,
+    data: [],
+    first_page_url: "",
+    from: 0,
+    last_page: 0,
+    last_page_url: "",
+    links: [],
+    next_page_url: "",
+    path: "",
+    per_page: 0,
+    prev_page_url: "",
+    to: 0,
+    total: 0,
+  },
+  setGetAllAgents: () => {},
+
   getResponder: [
     {
-        id: 0,
-        email: '',
-        company_phone_number: '',
-        company_address: '',
-        company_name: '',
-        nature_of_emergency: '',
-        company_license: '',
-    }
+      id: "",
+      email: "",
+      company_phone_number: "",
+      company_address: "",
+      company_name: "",
+      nature_of_emergency: "",
+      company_license: "",
+    },
   ],
-  setGetResponder:()=>{},
+  setGetResponder: () => {},
+  eachResponder: {
+    id: 0,
+    email: "",
+    company_phone_number: "",
+    company_address: "",
+    company_name: "",
+    nature_of_emergency: "",
+    company_license: "",
+  },
+  setEachResponder: () => {},
+  result: {
+    account_disabled: 0,
+    email: "",
+    id: 0,
+    name: "",
+    phone_number: "",
+    status: "",
+    type: "",
+  },
+  setResult: () => {},
+
+  eachAgent:{
+    agent_details: {
+        id: 1,
+        name: '',
+        email: '',
+        type: '',
+        phone_number:'',
+        status: '',
+        account_disabled: 1
+    },
+    agent_unaccepted_logs: {
+        data: [],
+        count: 0
+    },
+    closedcases: {
+        data: [],
+        count: 0
+    },
+    attendedcases: {
+        data: [
+            {
+                id: 21,
+                deviceid: '',
+                name: '',
+                lat: '',
+                log: '',
+                accident_type: '' ,
+                nature_of_request: '',
+                priority: '',
+                date: '',
+                time: '',
+                created_at: '',
+                responder_id: 1,
+                agent_id: 1,
+                request_accepted: 1,
+                closed_status: 0,
+                assigned_at: "",
+            }
+        ],
+        count: 1,
+    },
+    pendingcases: {
+        data: [],
+        count: 0,
+    }
+  },
+  setEachAgent: ()=>{},
 } as StateProps;
 
 export const MapContext = createContext(defaultState);
 
 export function MapProvider({ children }: ContextProviderProps) {
   const [geo, setGeo] = useState<Geo>({
-    lat: 0,
-    log: 0,
+    lat: 6.578249,
+    log: 3.364786,
   });
 
   const [filter, setFilter] = useState<Filter>("");
@@ -334,7 +501,7 @@ export function MapProvider({ children }: ContextProviderProps) {
       created_at: "",
       date: "",
       deviceid: "",
-      id: 21,
+      id: "",
       lat: "",
       log: "",
       name: "",
@@ -365,22 +532,103 @@ export function MapProvider({ children }: ContextProviderProps) {
   });
   const [bell, setBell] = useState<Bell[]>([]);
   const [getResponder, setGetResponder] = useState<Responder[]>([]);
+  const [eachResponder, setEachResponder] = useState<EachResponder>({
+    id: 0,
+    email: "",
+    company_phone_number: "",
+    company_address: "",
+    company_name: "",
+    nature_of_emergency: "",
+    company_license: "",
+  });
+
+  const [result, setResult] = useState<Detail>({
+    account_disabled: 0,
+    email: "",
+    id: 0,
+    name: "",
+    phone_number: "",
+    status: "",
+    type: "",
+  });
+
+  const [eachAgent, setEachAgent] = useState<EachAgent>({
+    agent_details: {
+        id: 1,
+        name: '',
+        email: '',
+        type: '',
+        phone_number:'',
+        status: '',
+        account_disabled: 1
+    },
+    agent_unaccepted_logs: {
+        data: [],
+        count: 0
+    },
+    closedcases: {
+        data: [],
+        count: 0
+    },
+    attendedcases: {
+        data: [
+            {
+                id: 21,
+                deviceid: '',
+                name: '',
+                lat: '',
+                log: '',
+                accident_type: '' ,
+                nature_of_request: '',
+                priority: '',
+                date: '',
+                time: '',
+                created_at: '',
+                responder_id: 1,
+                agent_id: 1,
+                request_accepted: 1,
+                closed_status: 0,
+                assigned_at: "",
+            }
+        ],
+        count: 1,
+    },
+    pendingcases: {
+        data: [],
+        count: 0,
+    }
+  })
+
+  const [getAllAgents, setGetAllAgents] = useState<AllAgents>({
+    current_page: 0,
+    data: [],
+    first_page_url: "",
+    from: 0,
+    last_page: 0,
+    last_page_url: "",
+    links: [],
+    next_page_url: "",
+    path: "",
+    per_page: 0,
+    prev_page_url: "",
+    to: 0,
+    total: 0,
+  })
 
   const [getAgent, setGetAgent] = useState<Agent>({
     agent_details: {
-        account_disabled: 0,
-        email: '',
-        id: 0,
-        name: '',
-        phone_number: '',
-        status: '',
-        type: '',
-      },
-      agent_unaccepted_logs: { data: [], count: 0 },
-      attendedcases: { data: [], count: 0 },
-      closedcases: { data: [], count: 0 },
-      pendingcases: { data: [], count: 0 },
-      
+      account_disabled: 0,
+      email: "",
+      id: 0,
+      name: "",
+      phone_number: "",
+      status: "",
+      type: "",
+    },
+    agent_unaccepted_logs: { data: [], count: 0 },
+    attendedcases: { data: [], count: 0 },
+    closedcases: { data: [], count: 0 },
+    pendingcases: { data: [], count: 0 },
   });
 
   return (
@@ -403,7 +651,15 @@ export function MapProvider({ children }: ContextProviderProps) {
         getAgent,
         setGetAgent,
         getResponder,
-        setGetResponder
+        setGetResponder,
+        eachResponder,
+        setEachResponder,
+        result,
+        setResult,
+        getAllAgents,
+        setGetAllAgents,
+        eachAgent,
+        setEachAgent
       }}
     >
       {children}

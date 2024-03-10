@@ -19,7 +19,7 @@ const AgentHeader = () => {
       setButtonDisabled(true);
     } else {
       setButtonDisabled(false);
-      location.href = "/agent_form";
+      location.href = "/create_agent";
     }
   };
   return (

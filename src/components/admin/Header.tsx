@@ -79,7 +79,7 @@ const Header = (props: textProps) => {
               
                 <div key={each.id}
                   className="flex justify-between items-center py-2 gap-1"
-                  onClick={() => setId(each.deviceid)}
+                  
                 >
                   <p className="font-medium font-quicksand text-[#464F60]">
                     Device:{" "}
@@ -95,13 +95,21 @@ const Header = (props: textProps) => {
                       search: `?device_id=${each.deviceid}`,
                     }}
                   >
-                    <p className=" cursor-pointer font-semibold">
+                    <p onClick={() => setId(each.deviceid)} className=" cursor-pointer font-semibold">
                       View Details
                     </p>
               </Link>
 
                   ) : (
-                    <p className="cursor-pointer text-bcolor">Assign</p>
+                    <Link
+                    
+                    to={{
+                      pathname: "/device_report/details_page",
+                      search: `?device_id=${each.deviceid}`,
+                    }}
+                  >
+                    <p onClick={() => setId(each.deviceid)} className="cursor-pointer text-bcolor">Accept</p>
+                    </Link>
                   )}
                 </div>
             );

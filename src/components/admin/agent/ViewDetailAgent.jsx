@@ -2,16 +2,17 @@ import { IoArrowBackOutline } from "react-icons/io5";
 import Text from "../../atom/Text";
 import Image from "../../atom/Image";
 import profile from "../../../assets/image/Group 20454.png";
-import carlogo from "../../../assets/image/Frame 20511.png";
+// import carlogo from "../../../assets/image/Frame 20511.png";
 import { useContext, useState } from "react";
 import { MapContext } from "../../context/MapContext";
+import Box from '../../../components/atom/Box'
 
 
-const ViewDetails = () => {
+const ViewDetailAgent = () => {
   const loginDetails = JSON.parse(localStorage.getItem("user") || "");
   const [userData] = useState(loginDetails);
   const [isButtonDisabled, setButtonDisabled] = useState(false);
-  const {eachResponder} = useContext(MapContext)
+  const {eachAgent} = useContext(MapContext)
   
 
   const disableButton = () => {
@@ -25,7 +26,7 @@ const ViewDetails = () => {
       location.href = "#";
     }
   };
-
+console.log(eachAgent)
   return (
     <div className="flex flex-col lg:flex-row px-5 py-4 gap-4 lg:gap-0 items-center">
       <div className="w-full p-4 rounded-xl border border-[#CBD6D8] bg-white">
@@ -36,37 +37,41 @@ const ViewDetails = () => {
           />
           <Text
             className="text-lg text-tcolor font-semibold"
-            body="Respondent Details"
+            body="Agent Details"
           />
         </div>
         <div className="w-full flex flex-col gap-2 pt-4  items-center justify-center">
           <div className="w-20 lg:w-24">
             <Image src={profile} alt="" className="w-full" />{" "}
           </div>
-          <Text className="text-lg lg:text-2xl font-bold" body={eachResponder?.company_name} />
-          <Text
+          <Text className="text-lg lg:text-2xl font-bold" body={eachAgent?.agent_details?.name} />
+          {eachAgent?.agent_details?.status === 'online' ?<Text
             className="font-bold w-fit bg-[#DAFCEB] text-[#04854D] px-3 py-2 rounded-full"
-            body="Active"
-          />
+            body={eachAgent?.agent_details?.status}
+          />:
+          <Text
+            className="font-bold w-fit bg-[#FFF0F0] text-[#C12126] px-3 py-2 rounded-full"
+            body={eachAgent?.agent_details?.status}
+          />}
         </div>
         <div className="grid grid-cols-2 mt-3 lg:p-6 justify-between text-tcolor font-sm">
           <Text
             className="border-b border-[#CBD6D8] py-2"
-            body="Respondent Team Name"
+            body="Agent Name"
           />
           <Text
             className="border-b text-right border-[#CBD6D8] font-bold py-2"
-            body={eachResponder?.company_name}
+            body={eachAgent?.agent_details?.name}
           />
         </div>
         <div className="grid grid-cols-2 lg:p-6 justify-between text-tcolor font-sm">
           <Text
             className="border-b border-[#CBD6D8] py-2"
-            body="Respondent Phone Number"
+            body="Agent Phone Number"
           />
           <Text
             className="border-b text-right border-[#CBD6D8] font-bold py-2"
-            body={eachResponder?.company_phone_number}
+            body={eachAgent?.agent_details?.phone_number}
           />
         </div>
         <div className="grid grid-cols-2 lg:p-6 justify-between text-tcolor font-sm">
@@ -81,11 +86,11 @@ const ViewDetails = () => {
         </p>
         <Text
           className="border-b border-[#CBD6D8] font-bold py-2"
-          body={eachResponder?.email}
+          body={eachAgent?.agent_details?.email}
         />
         <Text
           className="border-b py-2"
-          body={eachResponder?.company_address}
+          body={eachAgent?.agent_details?.company_address}
         />
       </div>
 
@@ -116,46 +121,51 @@ const ViewDetails = () => {
           </>
 
           {/* second screen */}
-          {/* <>
+          <>
             <div className=" grid grid-cols-2 lg:grid-cols-3 gap-4  py-4 ">
               <Box
                 mainClass="w-full border hover:border-bcolor cursor-pointer text-center px-2 py-4  rounded-lg bg-[#62C554]"
                 firstText="Resolved"
-                secondText="2058"
+                secondText={eachAgent?.closedcases?.count}
                 firstClass="text-white"
                 secondClass="text-white"
               />
               <Box
                 mainClass="w-full border hover:border-bcolor cursor-pointer text-center px-2 py-4  rounded-lg bg-[#FFD1D1]"
                 firstText="Rejected"
-                secondText="2058"
+                secondText={eachAgent?.agent_unaccepted_logs?.count}
+                
                 firstClass=""
                 secondClass=""
               />
               <Box
                 mainClass="w-full border hover:border-bcolor cursor-pointer text-center px-2  py-4  rounded-lg bg-[#FFE5B0]"
                 firstText="Pending"
-                secondText="2058"
+                secondText={eachAgent?.pendingcases?.count}
+               
                 firstClass=""
                 secondClass=""
               />
               <Box
                 mainClass="w-full border hover:border-bcolor cursor-pointer text-center px-2  py-4  rounded-lg bg-[#B3CBFB]"
                 firstText="Accepted"
-                secondText="2058"
+               
+                secondText={eachAgent?.attendedcases?.count}
+                    
+                
                 firstClass=""
                 secondClass=""
               />
               <Box
                 mainClass="w-full border hover:border-bcolor cursor-pointer text-center px-2  py-4 rounded-lg bg-[#CCFFE7]"
                 firstText="In-progress"
-                secondText="2058"
+                secondText=""
                 firstClass=""
                 secondClass=""
               />
             </div>
-          </> */}
-          <div className="lg:h-[370px] xl:h-[400px] 2xl:h-[450px] xxxl:h-auto lg:overflow-y-scroll">
+          </>
+          {/* <div className="lg:h-[370px] xl:h-[400px] 2xl:h-[450px] xxxl:h-auto lg:overflow-y-scroll">
             <div className="border-b py-3 font-sm font-bold border-[#CBD6D8] flex justify-between items-center">
               <Text className="" body="Recent Tasks" />
               <Text className="text-[#1410B4]" body="View All" />
@@ -240,11 +250,11 @@ const ViewDetails = () => {
               </div>
               <Text className="font-medium text-[#06C270]" body="Rescued" />
             </div>
-          </div>
+          </div> */}
         </div>
       </div>
     </div>
   );
 };
 
-export default ViewDetails;
+export default ViewDetailAgent;

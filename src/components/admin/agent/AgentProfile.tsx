@@ -3,14 +3,37 @@ import Text from "../../atom/Text";
 import Image from "../../atom/Image";
 import profile from "../../../assets/image/Group 20454.png";
 
-import { useContext } from "react";
+import { useContext, useEffect } from "react";
 
 import { MapContext } from "../../context/MapContext";
 
 const AgentProfile = () => {
-  const { getAgent } = useContext(MapContext);
- 
+  const { getAgent, result, setGetAgent } = useContext(MapContext);
+ console.log(getAgent)
+ console.log(result)
+useEffect(() => {
 
+    const fetchAnAgent = () => {
+    //   const getToken = JSON.parse(localStorage.getItem("user") || "");
+  
+    //   const tokHead = new Headers();
+    //   tokHead.append("Authorization", `Bearer ${getToken.message[0].token}`);
+  
+      fetch(`https://zubitechs.com/ads_apis/api/get_agent_details?id=${result?.id}`, {
+        method: "GET",
+        // headers: tokHead,
+      })
+        .then((res) => res.json())
+        .then((result) => {
+          
+            console.log(result);
+            setGetAgent(result)
+            
+        })
+        .catch((err) => console.log(err));
+    };
+      fetchAnAgent();
+    }, [result]);
 
   return (
     <div className="flex flex-col lg:flex-row px-5 py-4 gap-4 lg:gap-0 items-center">

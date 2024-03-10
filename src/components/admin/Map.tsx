@@ -2,9 +2,10 @@ import { MapContext } from "../../components/context/MapContext";
 import GoogleMapReact from "google-map-react";
 import { useContext } from "react";
 
-// const AnyReactComponent = ({ text }) => (
-  
-// );
+const AnyReactComponent = (props: {lat:number | string, lng:number | string,text:string} ) => (
+  <div className=" bg-red-600 block w-8 text-white h-8 rounded-full">{props.text}
+  </div>
+);
 
 
 export default function Map(props: {high: string}) {
@@ -29,10 +30,9 @@ export default function Map(props: {high: string}) {
         // onGoogleApiLoaded={({ map, maps }) => handleApiLoaded(map, maps)}
       >
         {/* <Marker position={{ lat: -38.132245, lng: 144.2994245 }}/> */}
+        <AnyReactComponent lat={geo.lat} lng={geo.log} text="My Marker"  />
         
-        <div className=" bg-red-600 block w-8 text-white h-8 rounded-full">
-        lat={geo.lat} lng={geo.log} text="My Marker" 
-  </div>
+        
       </GoogleMapReact>
     </div>
   );
