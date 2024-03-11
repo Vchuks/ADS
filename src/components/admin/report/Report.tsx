@@ -23,7 +23,7 @@ type Data = {
 const Report = () => {
 const {setId} = useContext(MapContext)
   const [devices, setDevices] = useState([]);
-
+// console.log(report)
   useEffect(() => {
     const getDevices = () => {
       fetch("https://zubitechs.com/ads_apis/api/get_devices")
@@ -34,6 +34,7 @@ const {setId} = useContext(MapContext)
     getDevices();
   }, []);
 
+  
   return (
     <div>
       <Search />
@@ -61,12 +62,12 @@ const {setId} = useContext(MapContext)
             <div className="w-[150px] text-sm px-2 break-words border-b font-bold py-4 border-[#DDE5E9]">
               Activity Status
             </div>
-            <div className="w-[150px] text-sm px-2 break-words border-b font-bold py-4 border-[#DDE5E9]">
+            {/* <div className="w-[150px] text-sm px-2 break-words border-b font-bold py-4 border-[#DDE5E9]">
               Last Accident Detected
             </div>
             <div className="w-[150px] text-sm px-2 break-words border-b font-bold py-4 border-[#DDE5E9]">
               Last SOS Detected
-            </div>
+            </div> */}
             <div className="w-[150px] text-sm px-2 break-words border-b font-bold py-4 border-[#DDE5E9]">
               Owner Name
             </div>
@@ -113,12 +114,12 @@ const {setId} = useContext(MapContext)
                         </div>
                       </div>
                     )}
-                    <div className="w-[150px]  break-words border-b px-2 py-4 border-[#DDE5E9]">
+                    {/* <div className="w-[150px]  break-words border-b px-2 py-4 border-[#DDE5E9]">
                       {each?.last_accident_detected}
                     </div>
                     <div className="w-[150px] break-words  px-2 border-b py-4 border-[#DDE5E9]">
                       {each?.last_sos_detected}
-                    </div>
+                    </div> */}
                     <div className="w-[150px] break-words  px-2 border-b py-4 border-[#DDE5E9]">
                       {each?.owner_name}
                     </div>

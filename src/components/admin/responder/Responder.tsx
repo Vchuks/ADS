@@ -94,25 +94,25 @@ const Responder = () => {
             // <TextLink to='details_page' className="" body={
             <div className=" w-full">
               <div className="w-max lg:w-full flex text-sm  bg-white text-[#6E7680] ">
-                <div className="w-[150px] lg:w-full border-b font-bold py-4 border-[#DDE5E9]">
+                <div className="w-[150px]  border-b font-bold py-4 border-[#DDE5E9]">
                   Respondent Team Name
                 </div>
-                <div className="w-[150px] lg:w-full border-b font-bold py-4 border-[#DDE5E9]">
+                <div className="w-[150px]  border-b font-bold py-4 border-[#DDE5E9]">
                   Respondent Address
                 </div>
 
-                <div className="w-[150px] lg:w-full border-b pe-2 lg:pe-0 font-bold py-4 border-[#DDE5E9]">
+                <div className="w-[150px]  border-b pe-2 lg:pe-0 font-bold py-4 border-[#DDE5E9]">
                   Phone Number
                 </div>
-                <div className="w-[150px] lg:w-full border-b font-bold py-4 border-[#DDE5E9]">
-                  Status
+                <div className="w-[150px] break-words border-b font-bold py-4 border-[#DDE5E9]">
+                  Email
                 </div>
 
-                <div className="w-[150px] lg:w-full border-b font-bold py-4 border-[#DDE5E9]">
-                  Accepted Tasks
+                <div className="w-[150px]  border-b font-bold py-4 border-[#DDE5E9]">
+                  License
                 </div>
-                <div className="w-[150px] lg:w-full border-b font-bold py-4 border-[#DDE5E9]">
-                  Started Date
+                <div className="w-[150px]  border-b font-bold py-4 border-[#DDE5E9]">
+                  Nature of Emergency
                 </div>
               </div>
             </div>
@@ -133,30 +133,33 @@ const Responder = () => {
                   onClick={() => setEachResponder(each)}
                   className="w-max lg:w-full flex text-[#6E7680]"
                 >
-                  <div className="w-[150px] lg:w-full border-b py-4 border-[#DDE5E9]">
+                  <div className="w-[150px]  border-b py-4 border-[#DDE5E9]">
                     {each?.company_name}
                   </div>
-                  <div className="w-[150px] lg:w-full border-b py-4 border-[#DDE5E9]">
+                  <div className="w-[150px]  border-b py-4 border-[#DDE5E9]">
                     {each?.company_address}
                   </div>
-                  <div className="w-[150px] lg:w-full break-words border-b py-4 pe-2 lg:pe-0 border-[#DDE5E9]">
+                  <div className="w-[150px]  break-words border-b py-4 pe-2 lg:pe-0 border-[#DDE5E9]">
                     {each?.company_phone_number}
                   </div>
-                  <div className="w-[150px] lg:w-full border-b py-4 border-[#DDE5E9]">
-                    {/* <div className="flex gap-1 items-center bg-[#DAFCEB] text-[#04854D] rounded-2xl w-max px-2">
+                  {/* <div className="w-[150px] lg:w-full border-b py-4 border-[#DDE5E9]">
+                     <div className="flex gap-1 items-center bg-[#DAFCEB] text-[#04854D] rounded-2xl w-max px-2">
             <GoDotFill className="text-[#06C270]" />
             In a mission
           </div>
           <div className="flex gap-1 items-center bg-[#FFF0F0] text-[#C12126] rounded-2xl w-max px-2">
             <GoDotFill className="text-[#FF3B3B]" />
             Not on a mission
-          </div> */}
+          </div> 
+                  </div> */}
+                  <div className="w-[150px] break-words border-b py-4 border-[#DDE5E9]">
+                    {each?.email}
                   </div>
-                  <div className="w-[150px] lg:w-full border-b py-4 border-[#DDE5E9]">
-                    {/* 20 Jobs */}
+                  <div className="w-[150px]  border-b py-4 border-[#DDE5E9]">
+                    {each?.company_license}
                   </div>
-                  <div className="w-[150px] lg:w-full border-b py-4 border-[#DDE5E9]">
-                    {/* May 19, 2020 */}
+                  <div className="w-[150px]  border-b py-4 border-[#DDE5E9]">
+                    {each?.nature_of_emergency}
                   </div>
                 </div>
               </Link>

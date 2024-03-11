@@ -24,7 +24,7 @@ type myType = {
 };
 
 const Devices = () => {
-  const { setGeo, filter, setTable, setBell, setResult } = useContext(MapContext);
+  const { setGeo, filter, setTable, setBell, setResult, setReport } = useContext(MapContext);
   const [device, setDevice] = useState<string>("");
 
   const [user, setUser] = useState<Array<myType>>([]);
@@ -67,6 +67,7 @@ const Devices = () => {
         .then((response) => response.json())
         .then((result) => {
           console.log(result)
+          setReport(result)
           setResult(result.details)
   setBell(result.notifications)
           setUser(result.records);
