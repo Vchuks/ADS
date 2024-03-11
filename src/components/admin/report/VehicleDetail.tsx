@@ -33,10 +33,10 @@ const VehicleDetail = () => {
             <Image src={profile} alt="" className="w-full" />{" "}
           </div>
           <Text className="text-lg lg:text-2xl font-bold" body="Lexus" />
-          <Text
+          {devicereport?.accident_detected !== null &&<Text
             className="font-bold w-fit bg-[#ffc0bfa6] text-[#CE5347] px-3 py-2 rounded-full"
             body="Accident Detected"
-          />
+          />}
         </div>
         <div className="grid grid-cols-2 mt-3 lg:p-6 justify-between text-tcolor font-sm">
           <Text className="border-b border-[#CBD6D8] py-2" body="Device ID" />
@@ -128,10 +128,13 @@ const VehicleDetail = () => {
           </button>
           <div className="lg:px-5 m-auto text-tcolor rounded-3xl bg-white">
             <div className="text-center w-full xl:w-[70%] m-auto">
-              <Text
+            {devicereport?.accident_detected !== null ? <Text
                 className="font-bold lg:text-2xl"
                 body="Accident Detected"
-              />
+              /> : <Text
+              className="font-bold lg:text-2xl"
+              body="No Accident Detected"
+            /> }
               <Text
                 className="text-xs lg:text-sm pt-2"
                 body="Lorem ipsum dolor sit amet, consectetur adipiscing elit ut aliquam, purus sit amet luctus venenatis, lectus magna fringilla urna, porttitor"
