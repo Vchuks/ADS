@@ -2,7 +2,7 @@ import { IoArrowBackOutline } from "react-icons/io5";
 import Text from "../../atom/Text";
 import Image from "../../atom/Image";
 import profile from "../../../assets/image/Group 20454.png";
-import Map from "../Map";
+import Map from "../Mapp";
 import { useContext, useState } from "react";
 import { MyContext } from "../../context/MyContext";
 import Respondent from "./Respondent";
@@ -117,7 +117,6 @@ const VehicleDetail = () => {
           }
         />
       </div>
-
       {/* accident detected */}
       {side && (
         <div className="bg-white w-full">

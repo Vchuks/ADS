@@ -1,7 +1,7 @@
 import { useContext } from "react";
 import Devices from "./admin/Devices";
 import Header from "./admin/Header";
-import Map from "./admin/Map";
+import Map from "./admin/Mapp";
 import Users from "./admin/Users";
 import { MapContext } from "./context/MapContext";
 import TextLink from "./atom/TextLink";
@@ -28,7 +28,7 @@ type Data = {
 
 const Dashboard = () => {
   const { table } = useContext(MapContext);
-// console.log)
+  // console.log)
   return (
     <div className="bg-[#E2E1FE]  max-h-full">
       <Header
@@ -43,10 +43,15 @@ const Dashboard = () => {
             <Map high="h-[50vh] lg:h-auto" />
           </div>
         )}
-       {table.length > 0 && <div className="flex gap-2 pt-4 px-4" onClick={() => location.reload()}>
-          <IoArrowBackOutline className="text-2xl text-tcolor" />
-          <p>Back</p>
-        </div>}
+        {table.length > 0 && (
+          <div
+            className="flex gap-2 pt-4 px-4"
+            onClick={() => location.reload()}
+          >
+            <IoArrowBackOutline className="text-2xl text-tcolor" />
+            <p>Back</p>
+          </div>
+        )}
         {table.length > 0 && (
           <div className="px-5 py-4 overflow-x-scroll lg:h-screen relative w-full">
             <TextLink

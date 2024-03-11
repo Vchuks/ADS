@@ -8,8 +8,8 @@ import {
 } from "react";
 
 type Geo = {
-  lat: number | string;
-  log: number | string;
+  lat:  string;
+  log:  string;
 };
 type Bell = {
   accident_type: string;
@@ -245,8 +245,8 @@ type ContextProviderProps = {
 
 const defaultState = {
   geo: {
-    lat: 0,
-    log: 0,
+    lat: '',
+    log: '',
   },
   setGeo: () => {},
   bell: [
@@ -470,8 +470,8 @@ export const MapContext = createContext(defaultState);
 
 export function MapProvider({ children }: ContextProviderProps) {
   const [geo, setGeo] = useState<Geo>({
-    lat: 6.578249,
-    log: 3.364786,
+    lat: '6.578249',
+    log: '3.364786',
   });
 
   const [filter, setFilter] = useState<Filter>("");

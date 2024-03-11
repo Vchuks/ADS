@@ -13,8 +13,8 @@ type myType = {
   date: "";
   deviceid: "";
   id: "";
-  lat: "";
-  log: "";
+  lat: '';
+  log: '';
   name: "";
   nature_of_request: "";
   priority: "";
