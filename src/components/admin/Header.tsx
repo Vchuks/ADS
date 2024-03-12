@@ -46,7 +46,7 @@ const Header = (props: textProps) => {
 
   return (
     <>
-      <div className="bg-white px-5 z-10 py-4 w-full sticky top-0 flex items-center gap-x-3 lg:gap-x-0 justify-between">
+      <div className="bg-white px-5 z-20 py-4 w-full sticky top-0 flex items-center gap-x-3 lg:gap-x-0 justify-between">
         <div className="flex items-center gap-2 lg:gap-5">
           <GiHamburgerMenu className="text-2xl lg:hidden" onClick={handleNav} />
           <div>
@@ -73,45 +73,49 @@ const Header = (props: textProps) => {
         </div>
       </div>
       {notify && (
-        <div className="w-[30%] p-4 absolute overflow-y-scroll right-0 h-60 bg-white rounded-b-xl z-10">
+        <div className="lg:w-[30%] p-4 absolute overflow-y-scroll right-0 h-60 bg-white rounded-b-xl  z-10">
           {bell?.map((each) => {
             return (
-              
-                <div key={each.id}
-                  className="flex justify-between items-center py-2 gap-1"
-                  
-                >
-                  <p className="font-medium font-quicksand text-[#464F60]">
-                    Device:{" "}
-                    <span className="font-semibold font-quicksand text-[#464F60]">
-                      {each?.deviceid}
-                    </span>
-                  </p>
-                  {each?.closed_status === 0 ? (
-                    <Link
-                    
+              <div
+                key={each.id}
+                className="flex justify-between items-center py-2 gap-1"
+              >
+                <p className="font-medium font-quicksand text-[#464F60]">
+                  Device:{" "}
+                  <span className="font-semibold font-quicksand text-[#464F60]">
+                    {each?.deviceid}
+                  </span>
+                </p>
+                {each?.closed_status === 0 ? (
+                  <Link
                     to={{
                       pathname: "/device_report/details_page",
                       search: `?device_id=${each.deviceid}`,
                     }}
                   >
-                    <p onClick={() => setId(each.deviceid)} className=" cursor-pointer font-semibold">
+                    <p
+                      onClick={() => setId(each.deviceid)}
+                      className=" cursor-pointer font-semibold"
+                    >
                       View Details
                     </p>
-              </Link>
-
-                  ) : (
-                    <Link
-                    
+                  </Link>
+                ) : (
+                  <Link
                     to={{
                       pathname: "/device_report/details_page",
                       search: `?device_id=${each.deviceid}`,
                     }}
                   >
-                    <p onClick={() => setId(each.deviceid)} className="cursor-pointer text-bcolor">Accept</p>
-                    </Link>
-                  )}
-                </div>
+                    <p
+                      onClick={() => setId(each.deviceid)}
+                      className="cursor-pointer text-bcolor"
+                    >
+                      Accept
+                    </p>
+                  </Link>
+                )}
+              </div>
             );
           })}
         </div>

@@ -13,8 +13,8 @@ type myType = {
   date: "";
   deviceid: "";
   id: "";
-  lat: '';
-  log: '';
+  lat: "";
+  log: "";
   name: "";
   nature_of_request: "";
   priority: "";
@@ -24,10 +24,74 @@ type myType = {
 };
 
 const Devices = () => {
-  const { setGeo, filter, setTable, setBell, setResult, setReport } = useContext(MapContext);
+  const { setGeo, filter, setTable } = useContext(MapContext);
   const [device, setDevice] = useState<string>("");
-
+  // const [loading, setLoading] = useState<string | null>(null);
+  const [dloading, setDLoading] = useState<string | null>(null);
+  const [loading, setLoading] = useState<string | null>(null);
+  const [error, setError] = useState(null);
   const [user, setUser] = useState<Array<myType>>([]);
+
+  useEffect(() => {
+    const getToken = JSON.parse(localStorage.getItem("user") || "");
+
+    const tokHead = new Headers();
+    tokHead.append("Authorization", `Bearer ${getToken.message[0].token}`);
+    if (filter !=='') {
+      setLoading("loading...");
+    setDLoading(null);
+    setError(null);
+      fetch(
+        `https://zubitechs.com/ads_apis/api/dashboard_api?filter_type=${filter}`,
+        {
+          method: "GET",
+          headers: tokHead,
+        }
+      )
+        .then((response) => response.json())
+        .then((result) => {
+          console.log(result);
+          if (result.records.data) {
+            setLoading(null);
+            setDLoading(null);
+            setError(null);
+            setTable(result.records.data);
+          } else {
+            setLoading(null);
+            setDLoading(null);
+            setError(null);
+            setUser(result.records)}
+        })
+        .catch((err) => {
+          setLoading(null);
+          setDLoading(null);
+          
+          setError(err);
+        });
+    
+    }else{
+      setDLoading("loading...");
+      setLoading(null);
+    setError(null);
+    fetch("https://zubitechs.com/ads_apis/api/dashboard_api", {
+      method: "GET",
+      headers: tokHead,
+    })
+      .then((response) => response.json())
+      .then((result) => {
+        setDLoading(null);
+        setLoading(null);
+        setError(null);
+        setUser(result.records);
+      })
+      .catch((err) => {
+        console.log(err);
+        setDLoading(null);
+        setLoading(null);
+        setError(err);
+      });
+    }
+  }, [filter, setTable, device]);
 
   const handleSearch = (event: React.MouseEvent<HTMLDivElement>) => {
     event.preventDefault();
@@ -46,48 +110,39 @@ const Devices = () => {
       .then((response) => response.json())
       .then((result) => {
         if (result.records.data) {
+          setError(null);
           setTable(result.records.data);
         } else setUser(result.records);
       })
-      .catch((err) => console.log(err));
+      .catch((err) => {
+        setError(err);
+      });
   };
 
-  
+  // const getUsers = () => {
+  //   const getToken = JSON.parse(localStorage.getItem("user") || "");
 
-    const getUsers = () => {
-      const getToken = JSON.parse(localStorage.getItem("user") || "");
-  
-      const tokHead = new Headers();
-      tokHead.append("Authorization", `Bearer ${getToken.message[0].token}`);
-  
-      fetch("https://zubitechs.com/ads_apis/api/dashboard_api", {
-        method: "GET",
-        headers: tokHead,
-      })
-        .then((response) => response.json())
-        .then((result) => {
-          console.log(result)
-          setReport(result)
-          setResult(result.details)
-  setBell(result.notifications)
-          setUser(result.records);
-        })
-        .catch((err) => console.log(err));
-    };
-    
+  //   const tokHead = new Headers();
+  //   tokHead.append("Authorization", `Bearer ${getToken.message[0].token}`);
+  //   setDLoading("loading...");
+  //   setError(null);
+  //   fetch("https://zubitechs.com/ads_apis/api/dashboard_api", {
+  //     method: "GET",
+  //     headers: tokHead,
+  //   })
+  //     .then((response) => response.json())
+  //     .then((result) => {
+  //       setDLoading(null);
+  //       setError(null);
+  //       setUser(result.records);
+  //     })
+  //     .catch((err) => {
+  //       console.log(err);
+  //       setDLoading(null);
+  //       setError(err);
+  //     });
+  // };
 
-  
-  useEffect(() => {
-    if (device === "") {
-      getUsers();
-    }
-    getUsers()
-  }, [device]);
-
-
-  setInterval(()=>{
-    getUsers()
-  },60000)
 
   return (
     <div className="device-box lg:w-[35%] p-4 maph maph-device xxxl:h-auto ">
@@ -107,8 +162,11 @@ const Devices = () => {
           onChange={(e) => setDevice(e.target.value)}
         />
       </div>
-      {user?.map((each) => {
-       
+      {dloading && <p className="text-xl font-bold">{dloading}</p>}
+      {loading && <p className="text-xl font-bold">{loading}</p>}
+      {error && <p>{error}</p>}
+      {user.length <=0 ? <p className="font-medium font-quicksand text-[#464F60]">No Device!</p> : user?.map((each) => {
+        console.log(each)
         return (
           <div
             key={each.id}
@@ -118,7 +176,7 @@ const Devices = () => {
                 log: each?.log,
               });
             }}
-            className="flex justify-between items-center py-1 gap-1"
+            className="flex justify-between cursor-pointer items-center py-1 gap-1"
           >
             <p className="font-medium font-quicksand text-[#464F60]">
               Device:{" "}

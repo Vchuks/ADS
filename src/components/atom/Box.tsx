@@ -22,8 +22,9 @@ const Box = ({
     <div
       className={mainClass}
       onClick={() => {
+        
         // SOS, ACCIDENT DETECTED, Manual Scan, pending_case, attended_case, online, offline
-        firstText === "Accident Detected" && setFilter("ACCIDENT DETECTED");
+        firstText === "Accident Detected" && setFilter("ACCIDENT DETECTED") ;
         firstText === "Manual Report" && setFilter("Manual Scan");
         firstText === "Pending Cases" && setFilter("pending_case");
         firstText === "Attended Cases" && setFilter("attended_case");

@@ -67,6 +67,9 @@ input[type="date"]::-webkit-calendar-picker-indicator {
 .hh{
   min-width: 100%;
 }
+.boder{
+  border: 2px solid #0055FD;
+}
 
 @media (min-width: 1000px) and (max-width: 1200px) {
   .maph{

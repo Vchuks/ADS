@@ -4,7 +4,7 @@ import { MapContext } from '../../context/MapContext';
 
 const ActivitySum = () => {
   const {report} = useContext(MapContext);
-
+console.log(report)
   return (
     <div className='activity-box p-4 w-full text-tcolor py-2 font-roboto'>
       <Text className='text-xl xl:text-3xl py-2 font-extrabold border-b-4 border-opacity-5 border-[#4D5657]' body='Activities Summary' />

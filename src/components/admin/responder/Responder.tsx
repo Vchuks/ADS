@@ -1,6 +1,8 @@
 import { useContext, useEffect, useState } from "react";
 import { MapContext } from "../../context/MapContext";
 import { Link } from "react-router-dom";
+import { BiLoaderCircle } from "react-icons/bi";
+
 // import { GoDotFill } from "react-icons/go";
 // import TextLink from "../../atom/TextLink";
 
@@ -64,7 +66,12 @@ const Responder = () => {
     fetchResponder();
   }, [setGetResponder]);
 
-  return (
+  return (<>
+      {getResponder.length <= 0 && <div className="h-full lg:h-screen bg-[#232323ab] z-20 border w-full top-0 absolute">
+            <p className=" w-2/4 flex h-3/4 lg:h-full  justify-center items-center  m-auto">
+              <BiLoaderCircle className=" animate-spin  text-bg text-5xl" />
+            </p>
+          </div>}
     <div className="px-5 py-4">
       <div className="w-full md:w-auto flex">
         <button
@@ -75,7 +82,7 @@ const Responder = () => {
         >
           All Responder
         </button>
-        <button
+        {/* <button
           className={`w-full md:w-auto md:py-2 md:px-6 font-semibold`}
           onClick={handleView}
         >
@@ -86,7 +93,7 @@ const Responder = () => {
           onClick={handleView}
         >
           Inactive Responder
-        </button>
+        </button> */}
       </div>
       <div className="flex flex-col lg:flex-row md:px-5 py-4 gap-4 relative">
         <div className="overflow-x-scroll lg:overflow-auto   w-full">
@@ -94,24 +101,24 @@ const Responder = () => {
             // <TextLink to='details_page' className="" body={
             <div className=" w-full">
               <div className="w-max lg:w-full flex text-sm  bg-white text-[#6E7680] ">
-                <div className="w-[150px]  border-b font-bold py-4 border-[#DDE5E9]">
+                <div className="w-[150px] px-2 border-b font-bold py-4 border-[#DDE5E9]">
                   Respondent Team Name
                 </div>
-                <div className="w-[150px]  border-b font-bold py-4 border-[#DDE5E9]">
+                <div className="w-[150px] px-2 border-b font-bold py-4 border-[#DDE5E9]">
                   Respondent Address
                 </div>
 
-                <div className="w-[150px]  border-b pe-2 lg:pe-0 font-bold py-4 border-[#DDE5E9]">
+                <div className="w-[150px] px-2 border-b pe-2 lg:pe-0 font-bold py-4 border-[#DDE5E9]">
                   Phone Number
                 </div>
-                <div className="w-[150px] break-words border-b font-bold py-4 border-[#DDE5E9]">
+                <div className="w-[150px] px-2 break-words border-b font-bold py-4 border-[#DDE5E9]">
                   Email
                 </div>
 
-                <div className="w-[150px]  border-b font-bold py-4 border-[#DDE5E9]">
+                <div className="w-[150px] px-2 break-words border-b font-bold py-4 border-[#DDE5E9]">
                   License
                 </div>
-                <div className="w-[150px]  border-b font-bold py-4 border-[#DDE5E9]">
+                <div className="w-[150px] px-2 break-words  border-b font-bold py-4 border-[#DDE5E9]">
                   Nature of Emergency
                 </div>
               </div>
@@ -133,13 +140,13 @@ const Responder = () => {
                   onClick={() => setEachResponder(each)}
                   className="w-max lg:w-full flex text-[#6E7680]"
                 >
-                  <div className="w-[150px]  border-b py-4 border-[#DDE5E9]">
+                  <div className="w-[150px] px-2 break-words  border-b py-4 border-[#DDE5E9]">
                     {each?.company_name}
                   </div>
-                  <div className="w-[150px]  border-b py-4 border-[#DDE5E9]">
+                  <div className="w-[150px] px-2 break-words  border-b py-4 border-[#DDE5E9]">
                     {each?.company_address}
                   </div>
-                  <div className="w-[150px]  break-words border-b py-4 pe-2 lg:pe-0 border-[#DDE5E9]">
+                  <div className="w-[150px] px-2 break-words border-b py-4 pe-2 lg:pe-0 border-[#DDE5E9]">
                     {each?.company_phone_number}
                   </div>
                   {/* <div className="w-[150px] lg:w-full border-b py-4 border-[#DDE5E9]">
@@ -152,13 +159,13 @@ const Responder = () => {
             Not on a mission
           </div> 
                   </div> */}
-                  <div className="w-[150px] break-words border-b py-4 border-[#DDE5E9]">
+                  <div className="w-[150px] px-2 break-words border-b py-4 border-[#DDE5E9]">
                     {each?.email}
                   </div>
-                  <div className="w-[150px]  border-b py-4 border-[#DDE5E9]">
+                  <div className="w-[150px] px-2 break-words  border-b py-4 border-[#DDE5E9]">
                     {each?.company_license}
                   </div>
-                  <div className="w-[150px]  border-b py-4 border-[#DDE5E9]">
+                  <div className="w-[150px] px-2 break-words  border-b py-4 border-[#DDE5E9]">
                     {each?.nature_of_emergency}
                   </div>
                 </div>
@@ -208,6 +215,7 @@ const Responder = () => {
       {active && <div></div>}
       {inActive && <div></div>}
     </div>
+    </>
   );
 };
 

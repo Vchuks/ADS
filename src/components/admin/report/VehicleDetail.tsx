@@ -14,7 +14,14 @@ const VehicleDetail = () => {
   const { devicereport } = useContext(MapContext);
   const [side, setSide] = useState(true);
   const [respondent, setRespondent] = useState(false);
+ 
 
+  // useEffect(()=>{
+  //   setGeo({
+  //     lat: devicereport?.accident_detected?.lat,
+  //     log:devicereport?.accident_detected?.log
+  //   })
+  // },[setGeo, devicereport?.accident_detected?.lat,devicereport?.accident_detected?.log]) 
   return (
     <div className="flex flex-col lg:flex-row px-5 py-4 gap-4 lg:gap-0 items-center">
       <div className="w-full p-4 rounded-xl border border-[#CBD6D8] bg-white">
@@ -33,10 +40,12 @@ const VehicleDetail = () => {
             <Image src={profile} alt="" className="w-full" />{" "}
           </div>
           <Text className="text-lg lg:text-2xl font-bold" body="Lexus" />
-          {devicereport?.accident_detected !== null &&<Text
-            className="font-bold w-fit bg-[#ffc0bfa6] text-[#CE5347] px-3 py-2 rounded-full"
-            body="Accident Detected"
-          />}
+          {devicereport?.accident_detected !== null && (
+            <Text
+              className="font-bold w-fit bg-[#ffc0bfa6] text-[#CE5347] px-3 py-2 rounded-full"
+              body="Accident Detected"
+            />
+          )}
         </div>
         <div className="grid grid-cols-2 mt-3 lg:p-6 justify-between text-tcolor font-sm">
           <Text className="border-b border-[#CBD6D8] py-2" body="Device ID" />
@@ -128,41 +137,49 @@ const VehicleDetail = () => {
           </button>
           <div className="lg:px-5 m-auto text-tcolor rounded-3xl bg-white">
             <div className="text-center w-full xl:w-[70%] m-auto">
-            {devicereport?.accident_detected !== null ? <Text
-                className="font-bold lg:text-2xl"
-                body="Accident Detected"
-              /> : <Text
-              className="font-bold lg:text-2xl"
-              body="No Accident Detected"
-            /> }
-              <Text
-                className="text-xs lg:text-sm pt-2"
-                body="Lorem ipsum dolor sit amet, consectetur adipiscing elit ut aliquam, purus sit amet luctus venenatis, lectus magna fringilla urna, porttitor"
-              />
-            </div>
-            <div className="flex flex-col text-base lg:text-2xl gap-4 py-4 mt-4">
-              <div className="flex items-center justify-between">
-                <Text className="font-bold" body="Nature Of Request" />
+              {devicereport?.accident_detected !== null ? (
+                <>
+                  <Text
+                    className="font-bold lg:text-2xl"
+                    body="Accident Detected"
+                  />
+                  <Text
+                    className="text-xs lg:text-sm pt-2"
+                    body="Lorem ipsum dolor sit amet, consectetur adipiscing elit ut aliquam, purus sit amet luctus venenatis, lectus magna fringilla urna, porttitor"
+                  />
+                </>
+              ) : (
                 <Text
-                  className="font-bold bg-[#ffc0bfa6] text-[#CE5347] p-2 lg:p-4 rounded-lg"
-                  body={devicereport?.accident_detected?.accident_type}
+                  className="font-bold lg:text-2xl h-32 pt-8"
+                  body="No Accident Detected"
                 />
-              </div>
-              <div className="flex items-center  justify-between">
-                <Text className="font-bold w-full" body="Time & Date" />
-
-                <p className="font-bold w-full flex justify-end p-2 lg:p-4 text-[#020062]">
-                  {devicereport?.accident_detected?.date} |{" "}
-                  <span>{devicereport?.accident_detected?.time}</span>
-                </p>
-              </div>
+              )}
             </div>
+            {devicereport?.accident_detected !== null && (
+              <div className="flex flex-col text-base lg:text-2xl gap-4 py-4 mt-4">
+                <div className="flex items-center justify-between">
+                  <Text className="font-bold" body="Nature Of Request" />
+                  <Text
+                    className="font-bold bg-[#ffc0bfa6] text-[#CE5347] p-2 lg:p-4 rounded-lg"
+                    body={devicereport?.accident_detected?.nature_of_request}
+                  />
+                </div>
+                <div className="flex items-center  justify-between">
+                  <Text className="font-bold w-full" body="Time & Date" />
+
+                  <p className="font-bold w-full flex justify-end p-2 lg:p-4 text-[#020062]">
+                    {devicereport?.accident_detected?.created_at}{" "}
+                    {/* <span>{devicereport?.accident_detected?.time}</span> */}
+                  </p>
+                </div>
+              </div>
+            )}
             <div className="pb-3">
               <Text
                 className="font-semibold text-lg pb-2"
                 body="Vehicle Current Location"
               />
-              <div className="lg:h-60 xxxl:h-full">
+              <div className="h-60 xxxl:h-full">
                 <Map high="h-full" />
               </div>
             </div>

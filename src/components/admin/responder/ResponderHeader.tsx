@@ -6,10 +6,10 @@ const ResponderHeader = () => {
   const [userData] = useState(loginDetails);
   const [isButtonDisabled, setButtonDisabled] = useState(false);
   // const btnRef = useRef<HTMLInputElement>(null)
-  const [filter, setFilter] = useState("");
-  const handleFilter = (event: React.ChangeEvent<HTMLSelectElement>) => {
-    setFilter(event.target.value);
-  };
+  // const [filter, setFilter] = useState("");
+  // const handleFilter = (event: React.ChangeEvent<HTMLSelectElement>) => {
+  //   setFilter(event.target.value);
+  // };
 
   const disableButton = () => {
     if (
@@ -25,13 +25,13 @@ const ResponderHeader = () => {
   return (
     <div className="grid grid-cols-2  px-5 py-2 gap-2 items-center md:grid-cols-2 lg:grid-cols-4 xl:grid-cols-5 box-border">
       <div className="w-full box-border col-span-1 ">
-        <select
+        {/* <select
           className="border border-[#4D5657] w-full rounded px-4 py-2 outline-none"
           value={filter}
           onChange={handleFilter}
         >
           <option>Filter by date</option>
-        </select>
+        </select> */}
       </div>
      
           <div className="w-full box-border relative lg:col-start-4 xl:col-start-5 cursor-pointer">

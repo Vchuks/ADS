@@ -8,7 +8,8 @@ import { MdOutlinePeopleAlt } from "react-icons/md";
 import { FiSettings } from "react-icons/fi";
 import { FiLogOut } from "react-icons/fi";
 import { RxAvatar } from "react-icons/rx";
-import { useEffect, useState } from "react";
+import {  useEffect, useState } from "react";
+// import { MapContext } from "./context/MapContext";
 
 const Sidebar = () => {
   const loginDetails = JSON.parse(localStorage.getItem("user") || "");
@@ -17,6 +18,7 @@ const Sidebar = () => {
   const [reportLink, setReportLink] = useState(true);
   const [agentLink, setAgentLink] = useState(true);
   const [responderLink, setResponderLink] = useState('');
+  // const {result} = useContext(MapContext)
  
   useEffect(()=>{
 // const btnRef = useRef<HTMLInputElement>(null)
@@ -94,10 +96,13 @@ const Sidebar = () => {
       <div className="flex pt-2 xl:pt-4 gap-2 items-center text-white border-t border-[#4742FF]">
         <RxAvatar className="text-5xl" />
         <div className="w-full">
-          <Text className="text-lg text-white" body="name" />
+          <Text className="text-lg text-white" body='name' />
           <Text className=" text-lg text-white" body="email" />
         </div>
-        <FiLogOut className="text-2xl" />
+        <FiLogOut className="text-2xl cursor-pointer" onClick={()=>{
+          localStorage.removeItem('user');
+          location.href = '/'
+        }} />
       </div>
     </div>
   );

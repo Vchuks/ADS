@@ -67,7 +67,7 @@ const HistoryModal = () => {
           />
         </div>
         <div className="flex flex-col gap-4 text-sm lg:gap-8 lg:p-4 mt-4">
-            <Text className="text-tcolor lg:text-lg font-semibold" body='Last-week 15/11/2023'/>
+            {/* <Text className="text-tcolor lg:text-lg font-semibold" body='Last-week 15/11/2023'/> */}
             {devicereport?.accident_history.length == 0 ? <p className="text-tcolor lg:text-lg font-semibold">No History!</p> :
 devicereport?.accident_history.map((each: Data)=>{
   return <div className="flex items-center justify-between">
@@ -79,7 +79,7 @@ devicereport?.accident_history.map((each: Data)=>{
                   body={each?.name}
                 />
                 <p className="font-semibold">
-                  {each?.nature_of_request}<span className="font-medium"> | <span>{each.date},</span> <span>{each?.time}</span></span>
+                  {each?.nature_of_request}<span className="font-medium"> | <span>{each?.created_at}</span></span>
                 </p>
               </div>
             </div>

@@ -6,6 +6,8 @@ import ActivitySum from "../report/ActivitySum";
 import { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
 import { MapContext } from "../../context/MapContext";
+import { BiLoaderCircle } from "react-icons/bi";
+
 
 type Data = {
   id: number;
@@ -38,6 +40,11 @@ const {setId} = useContext(MapContext)
   return (
     <div>
       <Search />
+      {devices.length <= 0 && <div className="h-full lg:h-screen bg-[#232323ab] z-20 border w-full top-0 absolute">
+            <p className=" w-2/4 flex h-3/4 lg:h-full  justify-center items-center  m-auto">
+              <BiLoaderCircle className=" animate-spin  text-bg text-5xl" />
+            </p>
+          </div>}
       <div className="flex flex-col lg:flex-row px-5 py-4 gap-4 relative">
         <div className="overflow-x-scroll lg:absolute  w-full lg:w-[58%] lg:h-[80vh] lg:text-sm">
           {/* <TextLink
