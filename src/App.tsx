@@ -20,6 +20,8 @@ import ResponderView from "./components/pages/ResponderView";
 import AgentPage from "./components/pages/AgentPage";
 import CreateAgent from "./components/admin/agent/CreateAgent";
 import AgentView from "./components/pages/AgentView";
+import EditAgent from "./components/admin/agent/EditAgent";
+import EditResponder from "./components/admin/responder/EditResponder";
 
 function App() {
   const location = useLocation();
@@ -68,6 +70,7 @@ function App() {
                 <Route path="edit_profile" element={<EditProfilePage />} />
                 <Route path="create_device" element={<CreateDevice />} />
                 <Route path="responder" element={<ResponderPage />} />
+                <Route path="responder/edit_responder" element={<EditResponder />} />
                 <Route path="emergency_responder" element={<EmergencyRes />} />
                 <Route
                   path="responder/details_page"
@@ -75,6 +78,7 @@ function App() {
                 />
                 <Route path="agent" element={<AgentPage />} />
                 <Route path="create_agent" element={<CreateAgent />} />
+                <Route path="agent/edit_profile" element={<EditAgent />} />
                 <Route
                   path="agent/details_page"
                   element={<AgentView />}

@@ -3,9 +3,9 @@ import Text from "./Text";
 import { MapContext } from "../context/MapContext";
 
 type BoxProp = {
-  firstText: string;
+  firstText: string | number;
   firstClass: string;
-  secondText: string;
+  secondText: string | number;
   secondClass: string;
   mainClass: string;
 };
@@ -31,6 +31,10 @@ const Box = ({
         firstText === "Offline" && setFilter("offline");
         firstText === "Online" && setFilter("online");
         firstText === "SOS" && setFilter("SOS");
+        firstText === "Away" && setFilter("away");
+        if(firstText === 'Responders'){
+          window.location.href = '/responder'
+        }
       }}
     >
       <Text

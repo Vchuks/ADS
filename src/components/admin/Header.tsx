@@ -1,6 +1,6 @@
 import { GiHamburgerMenu } from "react-icons/gi";
 import Text from "../atom/Text";
-import { useContext, useState } from "react";
+import { useContext, useState, useEffect } from "react";
 import Sidebar from "../Sidebar";
 import { IoIosNotifications } from "react-icons/io";
 import { MapContext } from "../context/MapContext";
@@ -30,10 +30,12 @@ type textProps = {
 // };
 
 const Header = (props: textProps) => {
-  const { bell, setId } = useContext(MapContext);
+  const { bell, setId, setBell, setReport, setResult } = useContext(MapContext);
   const { headText, subhead } = props;
   const [openSide, setOpenSide] = useState(false);
   const [notify, setNotify] = useState(false);
+  const [type, setType] = useState('');
+  const [, setAccept] = useState<string>();
 
   const handleNav = () => {
     setOpenSide(!openSide);
@@ -43,6 +45,48 @@ const Header = (props: textProps) => {
   };
   const date = new Date();
   const d = date.toDateString();
+
+  const getUsers = () => {
+    const getToken = JSON.parse(localStorage.getItem("user") || "");
+setType(getToken.message[0].type)
+    const tokHead = new Headers();
+    tokHead.append("Authorization", `Bearer ${getToken.message[0].token}`);
+
+    fetch("https://zubitechs.com/ads_apis/api/dashboard_api", {
+      method: "GET",
+      headers: tokHead,
+    })
+      .then((response) => response.json())
+      .then((result) => {
+        setReport(result)
+        setResult(result.details)
+        setBell(result.notifications)
+  
+      })
+      .catch((err) => console.log(err));
+  };
+  useEffect(()=>{
+    getUsers()
+  },[])
+
+  const handleAccept = (id:number)=>{
+    const getToken = JSON.parse(localStorage.getItem("user") || "");
+    
+        const tokHead = new Headers();
+        tokHead.append("Authorization", `Bearer ${getToken.message[0].token}`);
+    
+        fetch(`https://zubitechs.com/ads_apis/api/accept?id=${id}`, {
+          method: "GET",
+          headers: tokHead,
+        })
+          .then((response) => response.json())
+          .then((result) => {
+          console.log(result)
+           setAccept(result.message)
+      
+          })
+          .catch((err) => console.log(err));
+  }
 
   return (
     <>
@@ -75,6 +119,7 @@ const Header = (props: textProps) => {
       {notify && (
         <div className="lg:w-[30%] p-4 absolute overflow-y-scroll right-0 h-60 bg-white rounded-b-xl  z-10">
           {bell?.map((each) => {
+            console.log(each)
             return (
               <div
                 key={each.id}
@@ -86,20 +131,27 @@ const Header = (props: textProps) => {
                     {each?.deviceid}
                   </span>
                 </p>
-                {each?.closed_status === 0 ? (
+                {type === 'agent' ? (
                   <Link
                     to={{
                       pathname: "/device_report/details_page",
                       search: `?device_id=${each.deviceid}`,
                     }}
                   >
+                  <>
                     <p
-                      onClick={() => setId(each.deviceid)}
-                      className=" cursor-pointer font-semibold"
-                    >
-                      View Details
+                      onClick={() =>{ 
+                        setId(each.deviceid)
+                        handleAccept(each.id)
+                        // location.href = `/device_report/details_page?device_id=${each.deviceid}`
+                      }
+                      }
+                      className=" cursor-pointer text-bcolor "
+                    >Accept
                     </p>
-                  </Link>
+                      
+                      </>
+                   </Link>
                 ) : (
                   <Link
                     to={{
@@ -109,9 +161,9 @@ const Header = (props: textProps) => {
                   >
                     <p
                       onClick={() => setId(each.deviceid)}
-                      className="cursor-pointer text-bcolor"
+                      className="cursor-pointer font-semibold"
                     >
-                      Accept
+                      View Details
                     </p>
                   </Link>
                 )}

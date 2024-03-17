@@ -3,32 +3,80 @@ import Text from "../../atom/Text";
 import Image from "../../atom/Image";
 import profile from "../../../assets/image/Group 20454.png";
 import Map from "../Mapp";
-import { useContext, useState } from "react";
+import { useContext, useEffect, useState } from "react";
 import { MyContext } from "../../context/MyContext";
 import Respondent from "./Respondent";
 import TextLink from "../../atom/TextLink";
 import { MapContext } from "../../context/MapContext";
+import Swal from "sweetalert2";
+import { BiLoaderCircle } from "react-icons/bi";
+import { Link } from "react-router-dom";
+
 
 const VehicleDetail = () => {
   const { setModal } = useContext(MyContext);
   const { devicereport } = useContext(MapContext);
   const [side, setSide] = useState(true);
   const [respondent, setRespondent] = useState(false);
- 
+  const [error, setError] = useState('Error!');
+  const [accidentId, setAccidentId] = useState("");
+  const [type, setType] = useState('')
 
-  // useEffect(()=>{
-  //   setGeo({
-  //     lat: devicereport?.accident_detected?.lat,
-  //     log:devicereport?.accident_detected?.log
-  //   })
-  // },[setGeo, devicereport?.accident_detected?.lat,devicereport?.accident_detected?.log]) 
+  useEffect(() => {
+    devicereport;
+    const user = JSON.parse(localStorage.getItem("user") || "");
+    setType(user?.message[0]?.type)
+    setAccidentId(devicereport?.accident_detected?.id);
+  }, [devicereport]);
+
+  const closeCase = () => {
+    const spin = document.getElementById("loader") as HTMLElement;
+    spin.style.display = "block";
+    const user = JSON.parse(localStorage.getItem("user") || "");
+    setType(user?.message[0]?.type)
+    const token = user?.message[0]?.token;
+    const tokenGet = new Headers();
+    tokenGet.append("Authorization", `Bearer ${token}`);
+
+    const formData = new FormData();
+    formData.append('accident_id', accidentId)
+
+    fetch("https://zubitechs.com/ads_apis/api/close_case", {
+      method: "POST",
+      headers: tokenGet,
+      body: formData,
+    })
+      .then((response) => response.json())
+      .then((result) => {
+        console.log(result)
+        Swal.fire({
+          icon: 'success',
+          text: result.message,
+          confirmButtonText: 'Ok'
+        })
+  spin.style.display = "none";
+      })
+      .catch((err) => {
+        console.log(err)
+        setError(err)
+        Swal.fire({
+          icon: 'error',
+          text: error,
+          confirmButtonText: 'Ok',
+          confirmButtonColor: "#9f2727",
+        })
+    spin.style.display = "none";
+      });
+  };
   return (
     <div className="flex flex-col lg:flex-row px-5 py-4 gap-4 lg:gap-0 items-center">
       <div className="w-full p-4 rounded-xl border border-[#CBD6D8] bg-white">
         <div className="flex items-center gap-2">
           <IoArrowBackOutline
-            className="text-xl text-tcolor"
-            onClick={() => window.history.back()}
+            className="text-xl text-tcolor cursor-pointer"
+            onClick={() => {
+              window.history.back();
+            }}
           />
           <Text
             className="text-lg text-tcolor font-semibold"
@@ -129,12 +177,34 @@ const VehicleDetail = () => {
       {/* accident detected */}
       {side && (
         <div className="bg-white w-full">
-          <button
-            className="text-tcolor flex mb-2 ml-auto border border-tcolor py-1 md:py-2 px-6 rounded font-bold cursor-pointer"
-            onClick={() => setModal(true)}
-          >
-            View History
-          </button>
+          {devicereport?.accident_detected !== null && (
+            <div className="flex items-center justify-between">
+            <div className="flex">
+            {type === 'agent' && <p className="font-bold text-tcolor">Responder:{devicereport?.responder_name}</p>}
+            {type === 'admin' && <>
+            <Link
+                
+                to={{
+                  pathname: "/agent/details_page",
+                  search: `?id=${devicereport?.agent_id}`,
+                }}
+              ><button className="text-tcolor flex mb-2  border border-tcolor py-1 md:py-2 px-2 rounded font-bold me-2">View Agent</button></Link>
+            <Link
+                
+                to={{
+                  pathname: "/responder/details_page",
+                  search: `?id=${devicereport?.agent_id}`,
+                }}
+              ><button className="text-tcolor flex mb-2  border border-tcolor py-1 md:py-2 px-2 rounded font-bold">View Responder</button></Link></>}
+            </div>
+            <button
+              className="text-tcolor flex mb-2  border border-tcolor py-1 md:py-2 px-6 rounded font-bold cursor-pointer"
+              onClick={() => setModal(true)}
+            >
+              View History
+            </button>
+            </div>
+          )}
           <div className="lg:px-5 m-auto text-tcolor rounded-3xl bg-white">
             <div className="text-center w-full xl:w-[70%] m-auto">
               {devicereport?.accident_detected !== null ? (
@@ -156,50 +226,70 @@ const VehicleDetail = () => {
               )}
             </div>
             {devicereport?.accident_detected !== null && (
-              <div className="flex flex-col text-base lg:text-2xl gap-4 py-4 mt-4">
+              <div className="flex flex-col text-base lg:text-xl gap-4 py-4 mt-4">
                 <div className="flex items-center justify-between">
                   <Text className="font-bold" body="Nature Of Request" />
                   <Text
                     className="font-bold bg-[#ffc0bfa6] text-[#CE5347] p-2 lg:p-4 rounded-lg"
-                    body={devicereport?.accident_detected?.nature_of_request}
+                    body={devicereport?.accident_detected?.accident_type}
                   />
                 </div>
                 <div className="flex items-center  justify-between">
                   <Text className="font-bold w-full" body="Time & Date" />
 
                   <p className="font-bold w-full flex justify-end p-2 lg:p-4 text-[#020062]">
-                    {devicereport?.accident_detected?.created_at}{" "}
-                    {/* <span>{devicereport?.accident_detected?.time}</span> */}
+                    {devicereport?.accident_detected?.date}
+                    <span className="">
+                      {" "}
+                      <span className="px-1">|</span>
+                      {devicereport?.accident_detected?.time}
+                    </span>
                   </p>
                 </div>
               </div>
             )}
-            <div className="pb-3">
-              <Text
-                className="font-semibold text-lg pb-2"
-                body="Vehicle Current Location"
-              />
-              <div className="h-60 xxxl:h-full">
-                <Map high="h-full" />
-              </div>
-            </div>
-            <button className="w-full my-2 p-3 lg:p-4 m-auto text-bcolor bg-white rounded-lg border font-bold border-bcolor">
-              Call Device
-            </button>
-            <button
-              className="w-full p-3 my-3 lg:p-4 m-auto text-white rounded-lg font-bold bg-bcolor"
-              onClick={() => {
-                setRespondent(true);
-                setSide(false);
-              }}
-            >
-              Assign To A Respondent
-            </button>
+            {devicereport?.accident_detected !== null ? (
+              <>
+                <div className="pb-3">
+                  <Text
+                    className="font-semibold text-lg pb-2"
+                    body="Vehicle Current Location"
+                  />
+                  <div className="h-60 xxxl:h-full">
+                    <Map high="h-full" />
+                  </div>
+                </div>
+                <button className="w-full my-2 p-3 lg:p-4 m-auto text-bcolor bg-white rounded-lg border font-bold border-bcolor">
+                  Call Device
+                </button>
+                <button
+                  className="w-full p-3 my-3 lg:p-4 m-auto text-white rounded-lg font-bold bg-bcolor"
+                  onClick={() => {
+                    setRespondent(true);
+                    setSide(false);
+                  }}
+                >
+                  Assign To A Respondent
+                </button>
+                <button
+                  className="w-full p-3 my-3 lg:p-4 m-auto text-white rounded-lg font-bold bg-bcolor flex  justify-center"
+                  onClick={closeCase}
+                ><span className="animate-spin text-2xl" id="loader">
+                <BiLoaderCircle className="text-white" />
+              </span>{" "}
+                  Close Case
+                </button>
+              </>
+            ) : (
+              <div className="lg:h-32"></div>
+            )}
           </div>
         </div>
       )}
       {/* respondent */}
-      {respondent && <Respondent />}
+      {respondent && <Respondent onClick={()=>{
+        setRespondent(false)
+        setSide(true) }}/>}
     </div>
   );
 };

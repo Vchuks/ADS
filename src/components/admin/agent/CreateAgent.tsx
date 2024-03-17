@@ -2,6 +2,8 @@ import { useState } from "react";
 import Text from "../../atom/Text";
 import { IoArrowBackOutline } from "react-icons/io5";
 import Swal from "sweetalert2";
+import { BiLoaderCircle } from "react-icons/bi";
+
 
 type Data = {
   name: string;
@@ -9,6 +11,12 @@ type Data = {
   phone_number: string;
 };
 const CreateAgent = () => {
+  const [errors, setErrors] = useState({
+    name:'',
+    email: "",
+    phone_number: "",
+  })
+
   const [agent, setAgent] = useState<Data>({
     name:'',
     email: "",
@@ -23,7 +31,8 @@ const CreateAgent = () => {
 
   const handleSubmit = (event: React.MouseEvent<HTMLButtonElement>) => {
     event.preventDefault();
-    console.log(agent);
+    const spin = document.getElementById("loader") as HTMLElement;
+    spin.style.display = "block";
     const formData = new FormData();
     formData.append("name", agent.name);
     formData.append("email", agent.email);
@@ -36,7 +45,20 @@ const CreateAgent = () => {
     tokHead.append("Authorization", `Bearer ${getToken.message[0].token}`);
 
     const url = "https://zubitechs.com/ads_apis/api/create_agents";
-    fetch(url, {
+    if (agent?.name === '' ||
+    agent?.email ===  '' ||
+    agent?.phone_number === '' 
+    ){
+      setErrors({
+        name :"Enter the field",
+        email : "Enter the field", 
+        phone_number : "Enter the field",
+     
+      })
+    spin.style.display = "none";
+
+    }else
+    {fetch(url, {
       method: "POST",
       headers: tokHead,
       body: formData,
@@ -48,6 +70,8 @@ const CreateAgent = () => {
           title: result.message,
           confirmButtonColor: "#0055FD",
         });
+    spin.style.display = "none";
+
       })
       .catch((err) => {
         console.log(err)
@@ -56,13 +80,15 @@ const CreateAgent = () => {
           title: "Error occured!",
           confirmButtonColor: "#ff0000",
         });
-      });
+    spin.style.display = "none";
+
+      })}
   };
 
   return (
     <div className="px-5 py-4">
       <IoArrowBackOutline
-        className="lg:hidden text-xl text-tcolor"
+        className="text-xl text-tcolor"
         onClick={() => window.history.back()}
       />
       <div className="md:w-[80%] xl:w-2/4 m-auto py-4">
@@ -88,6 +114,7 @@ const CreateAgent = () => {
                 value={agent?.name}
                 onChange={handleChange}
               />
+              {agent?.name === '' && <p className="text-red-500 py-2">{errors?.name}</p>}
             </div>
           </div>
           
@@ -101,6 +128,7 @@ const CreateAgent = () => {
                 value={agent.phone_number}
                 onChange={handleChange}
               />
+              {agent?.phone_number === '' && <p className="text-red-500 py-2">{errors?.phone_number}</p>}
             </div>
           </div>
           <div className="w-full">
@@ -113,6 +141,7 @@ const CreateAgent = () => {
                 value={agent.email}
                 onChange={handleChange}
               />
+              {agent?.email === '' && <p className="text-red-500 py-2">{errors?.email}</p>}
             </div>
           </div>
           
@@ -123,6 +152,9 @@ const CreateAgent = () => {
         className="font-bold bg-bcolor rounded-lg w-[100%] md:w-[70%] lg:w-[50%] xxxl:w-[40%] flex m-auto justify-center my-6 text-white p-3 lg:p-4"
         onClick={handleSubmit}
       >
+        <span className="animate-spin text-2xl" id="loader">
+                  <BiLoaderCircle className="text-white" />
+                </span>{" "}
         Create Agent
       </button>
     </div>

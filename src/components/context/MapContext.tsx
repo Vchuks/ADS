@@ -64,6 +64,7 @@ type Report = {
     accident_detected: string;
     attended_case: string;
     manualscan: string;
+    awaycase:string;
     offlinedevice: string;
     onlinedevice: string;
     pending_case: string;
@@ -93,6 +94,9 @@ type DeviceReport = {
     responder_id: number;
     time: string;
   };
+  agent_id: number | string;
+  responder_id: number | string;
+  responder_name: string;
   accident_history: [];
   devicedetails: {
     device_id: string;
@@ -117,7 +121,7 @@ type Agent = {
   agent_details: {
     account_disabled: number;
     email: string;
-    id: number;
+    id: string ;
     name: string;
     phone_number: string;
     status: string;
@@ -139,7 +143,7 @@ type Responder = {
   company_license: string;
 };
 type EachResponder = {
-  id: number | string;
+  id: string;
   email: string;
   company_phone_number: string;
   company_address: string;
@@ -149,7 +153,7 @@ type EachResponder = {
 };
 type EachAgent = {
     agent_details: {
-        id: number;
+        id:  string;
         name: string;
         email: string;
         type: string;
@@ -299,6 +303,7 @@ const defaultState = {
       accident_detected: "",
       attended_case: "",
       manualscan: "",
+      awaycase:'',
       offlinedevice: "",
       onlinedevice: "",
       pending_case: "",
@@ -331,6 +336,9 @@ const defaultState = {
       time: "",
     },
     accident_history: [],
+    agent_id: 0,
+  responder_id: 0,
+  responder_name: '',
     devicedetails: {
       device_id: "",
       device_ime: "",
@@ -354,7 +362,7 @@ const defaultState = {
     agent_details: {
       account_disabled: 0,
       email: "",
-      id: 0,
+      id: '',
       name: "",
       phone_number: "",
       status: "",
@@ -397,7 +405,7 @@ const defaultState = {
   ],
   setGetResponder: () => {},
   eachResponder: {
-    id: 0,
+    id: '',
     email: "",
     company_phone_number: "",
     company_address: "",
@@ -419,7 +427,7 @@ const defaultState = {
 
   eachAgent:{
     agent_details: {
-        id: 1,
+        id: '',
         name: '',
         email: '',
         type: '',
@@ -483,6 +491,7 @@ export function MapProvider({ children }: ContextProviderProps) {
       attended_case: "",
       manualscan: "",
       offlinedevice: "",
+      awaycase:'',
       onlinedevice: "",
       pending_case: "",
       responders: "",
@@ -511,6 +520,9 @@ export function MapProvider({ children }: ContextProviderProps) {
       responder_id: 1,
       time: "",
     },
+    agent_id: 0,
+    responder_id: 0,
+    responder_name: '',
     accident_history: [],
     devicedetails: {
       device_id: "",
@@ -533,7 +545,7 @@ export function MapProvider({ children }: ContextProviderProps) {
   const [bell, setBell] = useState<Bell[]>([]);
   const [getResponder, setGetResponder] = useState<Responder[]>([]);
   const [eachResponder, setEachResponder] = useState<EachResponder>({
-    id: 0,
+    id: '',
     email: "",
     company_phone_number: "",
     company_address: "",
@@ -554,7 +566,7 @@ export function MapProvider({ children }: ContextProviderProps) {
 
   const [eachAgent, setEachAgent] = useState<EachAgent>({
     agent_details: {
-        id: 1,
+        id: '',
         name: '',
         email: '',
         type: '',
@@ -619,7 +631,7 @@ export function MapProvider({ children }: ContextProviderProps) {
     agent_details: {
       account_disabled: 0,
       email: "",
-      id: 0,
+      id: '',
       name: "",
       phone_number: "",
       status: "",

@@ -35,6 +35,7 @@ const Users = () => {
     })
       .then((response) => response.json())
       .then((result) => {
+        console.log(result)
         setReport(result)
         setResult(result.details)
         setBell(result.notifications)
@@ -65,7 +66,7 @@ const Users = () => {
         <Box
           mainClass="w-full text-center px-2 xl:px-5 py-4 xl:py-6 rounded-lg bg-[#FFE8D3] border-2 hover:border-bcolor cursor-pointer"
           firstText="Away"
-          secondText=""
+          secondText={report?.counts?.awaycase}
           firstClass=""
           secondClass=""
         />

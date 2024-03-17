@@ -119,29 +119,7 @@ const Devices = () => {
       });
   };
 
-  // const getUsers = () => {
-  //   const getToken = JSON.parse(localStorage.getItem("user") || "");
-
-  //   const tokHead = new Headers();
-  //   tokHead.append("Authorization", `Bearer ${getToken.message[0].token}`);
-  //   setDLoading("loading...");
-  //   setError(null);
-  //   fetch("https://zubitechs.com/ads_apis/api/dashboard_api", {
-  //     method: "GET",
-  //     headers: tokHead,
-  //   })
-  //     .then((response) => response.json())
-  //     .then((result) => {
-  //       setDLoading(null);
-  //       setError(null);
-  //       setUser(result.records);
-  //     })
-  //     .catch((err) => {
-  //       console.log(err);
-  //       setDLoading(null);
-  //       setError(err);
-  //     });
-  // };
+ 
 
 
   return (
@@ -151,7 +129,7 @@ const Devices = () => {
         body="All Devices"
       />
       <div className="flex py-4">
-        <div className="bg-bcolor rounded-s-lg p-3" onClick={handleSearch}>
+        <div className="bg-bcolor rounded-s-lg p-3 cursor-pointer" onClick={handleSearch}>
           <IoSearchSharp className="text-white" />
         </div>
         <input
@@ -166,7 +144,6 @@ const Devices = () => {
       {loading && <p className="text-xl font-bold">{loading}</p>}
       {error && <p>{error}</p>}
       {user.length <=0 ? <p className="font-medium font-quicksand text-[#464F60]">No Device!</p> : user?.map((each) => {
-        console.log(each)
         return (
           <div
             key={each.id}

@@ -3,6 +3,7 @@ import Text from "../../atom/Text";
 import { IoArrowBackOutline } from "react-icons/io5";
 import Swal from "sweetalert2";
 import { MapContext } from "../../context/MapContext";
+import { BiLoaderCircle } from "react-icons/bi";
 
 
 // type Data = {
@@ -50,6 +51,8 @@ const EditProfile = () => {
 
   function handleUpdate(event: React.MouseEvent<HTMLButtonElement>) {
     event.preventDefault()
+    const spin = document.getElementById("loader") as HTMLElement;
+    spin.style.display = "block";
     const formdata = new FormData();
     formdata.append("id", deviceData?.id);
     formdata.append("device_id", deviceData?.device_id);
@@ -85,6 +88,7 @@ const EditProfile = () => {
             text: result.message,
             confirmButtonText: 'Ok'
           })
+    spin.style.display = "none";
         
       })
       .catch((error) => {
@@ -95,12 +99,14 @@ const EditProfile = () => {
           confirmButtonText: 'Ok',
           confirmButtonColor: "#9f2727",
         })
+    spin.style.display = "none";
+
       });
   }
 
   return (
     <div className="px-5 py-4">
-        <IoArrowBackOutline className="lg:hidden text-xl text-tcolor" onClick={()=>window.history.back()} />
+        <IoArrowBackOutline className="text-xl text-tcolor" onClick={()=>window.history.back()} />
       <div className="md:w-[80%] xl:w-2/4 m-auto py-4">
         <Text
           className="lg:text-2xl pb-1 font-bold text-tcolor text-center"
@@ -263,7 +269,11 @@ const EditProfile = () => {
           </div>
         </div>
       </div>
-      <button onClick={handleUpdate} className="font-bold bg-bcolor rounded-lg w-[70%] lg:w-[50%] xxxl:w-[40%] flex m-auto justify-center my-6 text-white p-3 lg:p-4">Save Update</button>
+      <button onClick={handleUpdate} className="font-bold bg-bcolor rounded-lg w-[70%] lg:w-[50%] xxxl:w-[40%] flex m-auto justify-center my-6 text-white p-3 lg:p-4">
+      <span className="animate-spin text-2xl" id="loader">
+                  <BiLoaderCircle className="text-white" />
+                </span>{" "}
+        Save Update</button>
     </div>
   );
 };

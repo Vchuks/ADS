@@ -25,6 +25,8 @@ const Agent = () => {
   const [profile, setProfile] = useState(false);
 
   const { setGetAllAgents, getAllAgents, setEachAgent } = useContext(MapContext);
+  const [type, setType] = useState('')
+  const [loading, setLoading] = useState<string>()
 
   const handleView = () => {
     if (all) {
@@ -43,8 +45,10 @@ const Agent = () => {
   };
   useEffect(() => {
     const fetchAgent = () => {
-      const getToken = JSON.parse(localStorage.getItem("user") || "");
+      setLoading('Loading...')
 
+      const getToken = JSON.parse(localStorage.getItem("user") || "");
+setType(getToken.message[0].type)
       const tokHead = new Headers();
       tokHead.append("Authorization", `Bearer ${getToken.message[0].token}`);
 
@@ -55,6 +59,7 @@ const Agent = () => {
         .then((res) => res.json())
         .then((result) => {
           if (result.success === false) {
+            setLoading('')
             setProfile(true);
             setAccess(false);
           } else {
@@ -69,8 +74,9 @@ const Agent = () => {
     fetchAgent();
   }, [setGetAllAgents]);
   
-  const handleEach =(id)=>{
+  const handleEach =(id:number | string)=>{
     const getToken = JSON.parse(localStorage.getItem("user") || "");
+    setLoading('Loading...')
 
       const tokHead = new Headers();
       tokHead.append("Authorization", `Bearer ${getToken.message[0].token}`);
@@ -81,17 +87,21 @@ const Agent = () => {
     })
     .then((res)=> res.json())
     .then((result) => {console.log(result)
+      setLoading('')
+
     setEachAgent(result)})
     .catch(err => console.log(err))
   }
 
   return (<>
-  {getAllAgents?.data.length <= 0 && <div className="h-full lg:h-screen bg-[#232323ab] z-20 border w-full top-0 absolute">
+  {(type === 'admin' && getAllAgents?.data.length <= 0) && <div className="h-full lg:h-screen bg-[#232323ab] z-20 border w-full top-0 absolute">
             <p className=" w-2/4 flex h-3/4 lg:h-full  justify-center items-center  m-auto">
               <BiLoaderCircle className=" animate-spin  text-bg text-5xl" />
             </p>
           </div>}
     <div className="px-5 py-4">
+    {loading && <p>{loading}</p>}
+
       {access && (
         <>
           <div className="w-full md:w-auto flex">
@@ -116,32 +126,33 @@ const Agent = () => {
               Inactive Agent
             </button> */}
           </div>
-          <div className="flex flex-col lg:flex-row md:px-5 py-4 gap-4 relative">
-            <div className="overflow-x-scroll lg:overflow-auto absolute  w-full">
+          <div className="flex flex-col lg:flex-row py-4 gap-4 relative">
+            <div className="overflow-x-scroll lg:px-4 lg:overflow-auto absolute  w-full">
+              
               {all && (
                 <>
-                  <div className="w-full">
-                    <div className="w-max flex text-sm  bg-white text-[#6E7680] ">
-                      <div className="w-[150px]  border-b font-bold py-4 px-2 border-[#DDE5E9]">
+                  
+                    <div className="w-max lg:w-full flex lg:justify-between  text-sm border-b border-[#DDE5E9] bg-white text-[#6E7680] ">
+                      <div className="w-[150px]  font-bold py-4 lg:px-2 ">
                         Agent Name
                       </div>
-                      <div className="w-[150px]  border-b font-bold py-4 px-2 border-[#DDE5E9]">
+                      <div className="w-[150px]   font-bold py-4 lg:px-2 ">
                         Agent Email
                       </div>
 
-                      <div className="w-[150px] border-b pe-2 lg:pe-0 font-bold px-2 py-4 border-[#DDE5E9]">
+                      <div className="w-[150px]  font-bold lg:px-2 py-4 ">
                         Phone Number
                       </div>
-                      <div className="w-[150px] border-b font-bold py-4 px-2 border-[#DDE5E9]">
+                      <div className="w-[150px]  font-bold py-4 lg:px-2 ">
                         Status
                       </div>
 
-                      <div className="w-[150px]  border-b font-bold py-4 px-2 border-[#DDE5E9]">
+                      <div className="w-[150px]   font-bold py-4 lg:px-2 ">
                         Disabled Status
                       </div>
                       
                     </div>
-                  </div>
+                  
                   {getAllAgents?.data?.map((each: Data) => {
                     return (
                       <Link
@@ -154,31 +165,31 @@ const Agent = () => {
                       <div
                         key={each.id}
                         onClick={()=>handleEach(each.id)}
-                        className=" w-max  flex bg-white text-[#6E7680]"
+                        className=" w-max lg:w-full flex lg:justify-between bg-white border-b border-[#DDE5E9]  text-[#6E7680]"
                       >
-                        <div className="w-[150px]  break-words border-b py-4 px-2 border-[#DDE5E9]">
+                        <div className="w-[150px]  break-words  py-4 lg:px-2 ">
                           {each?.name}
                         </div>
-                        <div className="w-[150px]  break-words border-b py-4 px-2 border-[#DDE5E9]">
+                        <div className="w-[150px]  break-words  py-4 lg:px-2 ">
                           {each?.email}
                         </div>
-                        <div className="w-[150px]  break-words border-b py-4 px-2 lg:pe-0 border-[#DDE5E9]">
+                        <div className="w-[150px]  break-words  py-4 lg:px-2 lg:pe- ">
                           {each?.phone_number}
                         </div>
-                        <div className="w-[150px]  break-words border-b py-4 px-2 border-[#DDE5E9]">
+                        <div className="w-[150px]  break-words  py-4 lg:px-2 ">
                           {each?.status === "online" ? (
-                            <div className="flex gap-1 items-center bg-[#DAFCEB] text-[#04854D] rounded-2xl w-max px-2">
+                            <div className="flex gap-1 items-center bg-[#DAFCEB] text-[#04854D] rounded-2xl w-max lg:px-2">
                               <GoDotFill className="text-[#06C270]" />
                               Online
                             </div>
                           ) : (
-                            <div className="flex gap-1 items-center bg-[#FFF0F0] text-[#C12126] rounded-2xl w-max px-2">
+                            <div className="flex gap-1 items-center bg-[#FFF0F0] text-[#C12126] rounded-2xl w-max lg:px-2">
                               <GoDotFill className="text-[#FF3B3B]" />
                               Offline
                             </div>
                           )}
                         </div>
-                        <div className="w-[150px]  break-words border-b py-4 px-2 border-[#DDE5E9]">
+                        <div className="w-[150px]  break-words  py-4 lg:px-2 ">
                           {each?.account_disabled === 0 ? 'Disabled' : 'Enabled' }
                         </div>
                         

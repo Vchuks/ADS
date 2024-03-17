@@ -3,16 +3,83 @@ import Text from "../../atom/Text";
 import Image from "../../atom/Image";
 import profile from "../../../assets/image/Group 20454.png";
 import carlogo from "../../../assets/image/Frame 20511.png";
-import { useContext, useState } from "react";
+import { useContext, useEffect, useState } from "react";
 import { MapContext } from "../../context/MapContext";
+import TextLink from "../../atom/TextLink";
 
-
+type ResData = {
+  closed_cases: [];
+  count: { total_closed_task: number; task_assigned_count: number };
+  details: {
+    company_address: string;
+    company_license: string;
+    company_name: string;
+    company_phone_number: string;
+    email: string;
+    id: number;
+    nature_of_emergency: string;
+    type: string;
+  };
+  records: [
+    {
+      accident_type: string;
+      agent_id: number;
+      assigned_at: string;
+      closed_status: number;
+      created_at: string;
+      date: string;
+      deviceid: string;
+      id: number;
+      lat: string;
+      log: string;
+      name: string;
+      nature_of_request: string;
+      priority: string;
+      request_accepted: number;
+      responder_id: number;
+      time: string;
+    }
+  ];
+};
 const ViewDetails = () => {
   const loginDetails = JSON.parse(localStorage.getItem("user") || "");
   const [userData] = useState(loginDetails);
   const [isButtonDisabled, setButtonDisabled] = useState(false);
-  const {eachResponder} = useContext(MapContext)
-  
+  const { eachResponder, getResponder } = useContext(MapContext);
+  const [data, setData] = useState<ResData>({
+    closed_cases: [],
+  count: { total_closed_task: 0, task_assigned_count: 0 },
+  details: {
+    company_address: '',
+    company_license: '',
+    company_name: '',
+    company_phone_number: '',
+    email: '',
+    id: 0,
+    nature_of_emergency: '',
+    type: '',
+  },
+  records: [
+    {
+      accident_type: '',
+agent_id: 0,
+assigned_at: "",
+closed_status: 1,
+created_at: "",
+date: "",
+deviceid: "",
+id: 21,
+lat: "",
+log: "",
+name: "",
+nature_of_request: "",
+priority: "",
+request_accepted: 1,
+responder_id: 2,
+time: ""
+    }
+  ],
+  });
 
   const disableButton = () => {
     if (
@@ -25,9 +92,32 @@ const ViewDetails = () => {
       location.href = "#";
     }
   };
+  console.log(eachResponder);
+  console.log(getResponder);
+  const getOne = () => {
+    const getToken = JSON.parse(localStorage.getItem("user") || "");
+    const tokHead = new Headers();
+
+    tokHead.append("Authorization", `Bearer ${getToken.message[0].token}`);
+
+    fetch(
+      `https://zubitechs.com/ads_apis/api/responder_details?id=${eachResponder.id}`,
+      {
+        method: "GET",
+        headers: tokHead,
+      }
+    )
+      .then((response) => response.json())
+      .then((result) => {
+        console.log(result);
+        setData(result)
+      })
+      .catch((err) => console.log(err));
+  };
+  useEffect(() => getOne());
 
   return (
-    <div className="flex flex-col lg:flex-row px-5 py-4 gap-4 lg:gap-0 items-center">
+    <div className="flex flex-col lg:flex-row px-5 py-4 gap-4 lg:gap-0">
       <div className="w-full p-4 rounded-xl border border-[#CBD6D8] bg-white">
         <div className="flex items-center gap-2">
           <IoArrowBackOutline
@@ -43,7 +133,10 @@ const ViewDetails = () => {
           <div className="w-20 lg:w-24">
             <Image src={profile} alt="" className="w-full" />{" "}
           </div>
-          <Text className="text-lg lg:text-2xl font-bold" body={eachResponder?.company_name} />
+          <Text
+            className="text-lg lg:text-2xl font-bold"
+            body={eachResponder?.company_name}
+          />
           <Text
             className="font-bold w-fit bg-[#DAFCEB] text-[#04854D] px-3 py-2 rounded-full"
             body="Active"
@@ -73,7 +166,7 @@ const ViewDetails = () => {
           <Text className="border-b border-[#CBD6D8] py-2" body="Joined Date" />
           <Text
             className="border-b text-right border-[#CBD6D8] font-bold py-2"
-            body=''
+            body=""
           />
         </div>
         <p className="w-full mt-6 lg:mt-0 lg:w-[95%] flex items-center justify-center m-auto rounded-lg font-bold p-3 lg:p-4 text-[#04854D]">
@@ -83,9 +176,15 @@ const ViewDetails = () => {
           className="border-b border-[#CBD6D8] font-bold py-2"
           body={eachResponder?.email}
         />
-        <Text
-          className="border-b py-2"
-          body={eachResponder?.company_address}
+        <Text className="border-b py-2" body={eachResponder?.company_address} />
+        <TextLink
+          to="/responder/edit_responder"
+          className=""
+          body={
+            <button className="w-full mt-6 lg:mt-0 lg:w-[95%] flex items-center justify-center m-auto rounded-lg font-bold bg-bcolor p-3 lg:p-4 text-white">
+              Edit
+            </button>
+          }
         />
       </div>
 
@@ -95,9 +194,11 @@ const ViewDetails = () => {
           <button className="text-tcolor flex mb-2  border border-tcolor py-1 md:py-2 px-6 rounded font-bold cursor-pointer">
             View All Assigned Task
           </button>
-          <button className="text-[#A5640C] flex mb-2  border border-[#A5640C] py-1 md:py-2 px-6 rounded font-bold cursor-pointer"
-          disabled={isButtonDisabled}
-          onClick={disableButton}>
+          <button
+            className="text-[#A5640C] flex mb-2  border border-[#A5640C] py-1 md:py-2 px-6 rounded font-bold cursor-pointer"
+            disabled={isButtonDisabled}
+            onClick={disableButton}
+          >
             Suspend Respondent
           </button>
         </div>
@@ -107,11 +208,11 @@ const ViewDetails = () => {
           <>
             <div className="bg-[#4742FF] rounded-xl p-3 flex flex-col my-4 gap-8">
               <Text className="text-white " body="Total Task Completed" />
-              <Text className="text-white font-semibold text-lg" body="100" />
+              <Text className="text-white font-semibold text-lg" body={data?.count?.total_closed_task} />
             </div>
             <div className="bg-[#AAA8FF] rounded-xl p-3 flex flex-col my-4 gap-8">
               <Text className=" " body="Total Task In-progress" />
-              <Text className=" font-semibold text-lg" body="100" />
+              <Text className=" font-semibold text-lg" body={data?.count?.task_assigned_count} />
             </div>
           </>
 
@@ -160,86 +261,33 @@ const ViewDetails = () => {
               <Text className="" body="Recent Tasks" />
               <Text className="text-[#1410B4]" body="View All" />
             </div>
-            <div className="flex items-center justify-between py-4 px-2 res-all-box">
+            
+            {data?.records.length <=0 ? <p>No Record!</p> : data?.records?.map(each=>{
+              return <div className="flex items-center justify-between py-4 px-2 res-all-box">
               <div className="flex gap-4 items-center">
                 <Image className="" src={carlogo} alt="" />
                 <div>
                   <Text
                     className="font-bold text-[#75898C]"
-                    body="Yusuf Adebayo"
+                    body={each?.deviceid}
                   />
                   <p className="font-semibold">
                     SOS Emergency
-                    <span className="font-medium"> | 21 Nov, 10:00</span>
+                    <span className="font-medium"> | {each?.date}, {each?.time}</span>
                   </p>
                 </div>
               </div>
-              <Text className="font-medium text-[#FC0]" body="Pending" />
+              {each.closed_status === 0 ? (
+                    <Text className="font-medium text-[#FC0]" body="Pending" />
+                  ) : (
+                    <Text
+                      className="font-medium text-[#06c270]"
+                      body="Rescued"
+                    />
+                  )}
             </div>
-            <div className="flex items-center justify-between py-4 px-2 res-all-box">
-              <div className="flex gap-4 items-center">
-                <Image className="" src={carlogo} alt="" />
-                <div>
-                  <Text
-                    className="font-bold text-[#75898C]"
-                    body="Yusuf Adebayo"
-                  />
-                  <p className="font-semibold">
-                    SOS Emergency
-                    <span className="font-medium"> | 21 Nov, 10:00</span>
-                  </p>
-                </div>
-              </div>
-              <Text className="font-medium text-[#FC0]" body="Pending" />
-            </div>
-            <div className="flex items-center justify-between py-4 px-2 res-all-box">
-              <div className="flex gap-4 items-center">
-                <Image className="" src={carlogo} alt="" />
-                <div>
-                  <Text
-                    className="font-bold text-[#75898C]"
-                    body="Yusuf Adebayo"
-                  />
-                  <p className="font-semibold">
-                    SOS Emergency
-                    <span className="font-medium"> | 21 Nov, 10:00</span>
-                  </p>
-                </div>
-              </div>
-              <Text className="font-medium text-[#06C270]" body="Rescued" />
-            </div>
-            <div className="flex items-center justify-between py-4 px-2 res-all-box">
-              <div className="flex gap-4 items-center">
-                <Image className="" src={carlogo} alt="" />
-                <div>
-                  <Text
-                    className="font-bold text-[#75898C]"
-                    body="Yusuf Adebayo"
-                  />
-                  <p className="font-semibold">
-                    SOS Emergency
-                    <span className="font-medium"> | 21 Nov, 10:00</span>
-                  </p>
-                </div>
-              </div>
-              <Text className="font-medium text-[#FC0]" body="Pending" />
-            </div>
-            <div className="flex items-center justify-between py-4 px-2 res-all-box">
-              <div className="flex gap-4 items-center">
-                <Image className="" src={carlogo} alt="" />
-                <div>
-                  <Text
-                    className="font-bold text-[#75898C]"
-                    body="Yusuf Adebayo"
-                  />
-                  <p className="font-semibold">
-                    SOS Emergency
-                    <span className="font-medium"> | 21 Nov, 10:00</span>
-                  </p>
-                </div>
-              </div>
-              <Text className="font-medium text-[#06C270]" body="Rescued" />
-            </div>
+            })}
+            
           </div>
         </div>
       </div>

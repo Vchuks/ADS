@@ -3,6 +3,8 @@ import Swal from "sweetalert2";
 import Text from "../../atom/Text";
 import { IoArrowBackOutline } from "react-icons/io5";
 import { useState } from "react";
+import { BiLoaderCircle } from "react-icons/bi";
+
 
 type Data = {
   device_id: string,
@@ -21,6 +23,19 @@ const CreateDevice = () => {
   const user = JSON.parse(localStorage.getItem("user") || "");
   const token = user?.message[0]?.token;
 
+  const [errors, setErrors] = useState({
+    device_id: '',
+    device_ime: '',
+    vehicle_name: '',
+    device_number: '',
+    owner_name: '',
+    owner_email: '',
+    owner_phone_number: '',
+    owner_address: '',
+    vehicle_model_year: '',
+    vehicle_plate_number: '',
+    vehicle_chasses_number: '',
+  })
   const [deviceData, setDeviceData] = useState<Data>({
     device_id: '',
     device_ime: '',
@@ -36,6 +51,7 @@ const CreateDevice = () => {
 
   })
 
+
   const handleChange =(event: React.ChangeEvent<HTMLInputElement>): void=>{
     event.preventDefault();
     const {name, value}  = event.currentTarget
@@ -43,6 +59,8 @@ const CreateDevice = () => {
   }
 
   function createDevice() {
+    const spin = document.getElementById("loader") as HTMLElement;
+    spin.style.display = "block";
     const formdata = new FormData();
     formdata.append("device_id", deviceData?.device_id);
     formdata.append("device_number", deviceData?.device_number );
@@ -66,7 +84,35 @@ const CreateDevice = () => {
       body: formdata,
     };
 
-    fetch(url, reqDt)
+    if (deviceData?.device_id === '' ||
+    deviceData?.device_ime ===  '' ||
+    deviceData?.vehicle_name === '' ||
+    deviceData?.device_number  === '' ||
+    deviceData?.owner_name === '' ||
+    deviceData?.owner_email === '' ||
+    deviceData?.owner_phone_number ===  '' ||
+    deviceData?.owner_address === '' ||
+    deviceData?.vehicle_model_year === '' ||
+    deviceData?.vehicle_plate_number === '' ||
+    deviceData?.vehicle_chasses_number === '' ){
+      setErrors({
+        device_id: "Enter the field",
+        device_ime: "Enter the field",
+        vehicle_name: "Enter the field",
+        device_number: "Enter the field",
+        owner_name: "Enter the field",
+        owner_email: "Enter the field",
+        owner_phone_number: "Enter the field",
+        owner_address: "Enter the field",
+        vehicle_model_year: "Enter the field",
+        vehicle_plate_number: "Enter the field",
+        vehicle_chasses_number: "Enter the field",
+      })
+    spin.style.display = "none";
+
+    }else
+
+   { fetch(url, reqDt)
       .then((response) => response.json())
       .then((result) => {
         if (result.message === 'created'){
@@ -75,14 +121,21 @@ const CreateDevice = () => {
             text: result.message,
             confirmButtonText: 'Ok'
           })
+    spin.style.display = "none";
+
         }else  Swal.fire({
           icon: 'error',
           text: result.message,
           confirmButtonText: 'Ok',
           confirmButtonColor: "#9f2727",
         })
+        setErrors(result.message)
+    spin.style.display = "none";
+
       })
-      .catch((error) => console.log(error));
+      .catch((error) => setErrors(error))
+    spin.style.display = "none";
+    }
   }
 
 
@@ -116,6 +169,7 @@ const CreateDevice = () => {
                 value={deviceData?.device_id}
                 onChange={handleChange}
               />
+              {deviceData?.device_id === '' && <p className="text-red-500 py-2">{errors?.device_id}</p>}
             </div>
           </div>
           <div className="w-full">
@@ -128,6 +182,8 @@ const CreateDevice = () => {
                 value={deviceData?.device_number}
                 onChange={handleChange}
               />
+              {deviceData?.device_number === '' && <p className="text-red-500 py-2">{errors?.device_number}</p>}
+
             </div>
           </div>
           <div className="w-full">
@@ -140,6 +196,8 @@ const CreateDevice = () => {
                 value={deviceData?.device_ime}
                 onChange={handleChange}
               />
+              {deviceData?.device_ime === '' && <p className="text-red-500 py-2">{errors?.device_ime}</p>}
+
             </div>
           </div>
         </div>
@@ -159,6 +217,8 @@ const CreateDevice = () => {
                 value={deviceData?.owner_name}
                 onChange={handleChange}
               />
+              {deviceData?.owner_name === '' && <p className="text-red-500 py-2">{errors?.owner_name}</p>}
+
             </div>
           </div>
           <div className="w-full">
@@ -171,6 +231,8 @@ const CreateDevice = () => {
                 value={deviceData?.owner_phone_number}
                 onChange={handleChange}
               />
+              {deviceData?.owner_phone_number === '' && <p className="text-red-500 py-2">{errors?.owner_phone_number}</p>}
+
             </div>
           </div>
           <div className="w-full">
@@ -183,6 +245,8 @@ const CreateDevice = () => {
                 value={deviceData?.owner_email}
                 onChange={handleChange}
               />
+              {deviceData?.owner_email === '' && <p className="text-red-500 py-2">{errors?.owner_email}</p>}
+
             </div>
           </div>
           <div className="w-full">
@@ -195,6 +259,8 @@ const CreateDevice = () => {
                 value={deviceData?.owner_address}
                 onChange={handleChange}
               />
+              {deviceData?.owner_address === '' && <p className="text-red-500 py-2">{errors?.owner_address}</p>}
+
             </div>
           </div>
         </div>
@@ -214,6 +280,8 @@ const CreateDevice = () => {
                 value={deviceData?.vehicle_name}
                 onChange={handleChange}
               />
+              {deviceData?.vehicle_name === '' && <p className="text-red-500 py-2">{errors?.vehicle_name}</p>}
+
             </div>
           </div>
           <div className="w-full">
@@ -226,6 +294,8 @@ const CreateDevice = () => {
                 value={deviceData?.vehicle_model_year}
                 onChange={handleChange}
               />
+              {deviceData?.vehicle_model_year === '' && <p className="text-red-500 py-2">{errors?.vehicle_model_year}</p>}
+
             </div>
           </div>
           <div className="w-full">
@@ -238,6 +308,8 @@ const CreateDevice = () => {
                 value={deviceData?.vehicle_plate_number}
                 onChange={handleChange}
               />
+              {deviceData?.vehicle_plate_number === '' && <p className="text-red-500 py-2">{errors?.vehicle_plate_number}</p>}
+
             </div>
           </div>
           <div className="w-full">
@@ -250,6 +322,8 @@ const CreateDevice = () => {
                 value={deviceData?.vehicle_chasses_number}
                 onChange={handleChange}
               />
+              {deviceData?.vehicle_chasses_number === '' && <p className="text-red-500 py-2">{errors?.vehicle_chasses_number}</p>}
+
             </div>
           </div>
         </div>
@@ -258,6 +332,9 @@ const CreateDevice = () => {
         className="font-bold bg-bcolor rounded-lg w-[70%] lg:w-[50%] xxxl:w-[40%] flex m-auto justify-center my-6 text-white p-3 lg:p-4"
         onClick={createDevice}
       >
+        <span className="animate-spin text-2xl" id="loader">
+                  <BiLoaderCircle className="text-white" />
+                </span>{" "}
         Create
       </button>
     </div>

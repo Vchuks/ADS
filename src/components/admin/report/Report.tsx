@@ -25,12 +25,13 @@ type Data = {
 const Report = () => {
 const {setId} = useContext(MapContext)
   const [devices, setDevices] = useState([]);
-// console.log(report)
+
   useEffect(() => {
     const getDevices = () => {
       fetch("https://zubitechs.com/ads_apis/api/get_devices")
         .then((response) => response.json())
-        .then((result) => setDevices(result.devices.data))
+        .then((result) => {
+          setDevices(result.devices.data)})
         .catch((err) => console.log(err));
     };
     getDevices();

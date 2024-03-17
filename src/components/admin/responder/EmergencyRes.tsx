@@ -2,6 +2,8 @@ import { useState } from "react";
 import Text from "../../atom/Text";
 import { IoArrowBackOutline } from "react-icons/io5";
 import Swal from "sweetalert2";
+import { BiLoaderCircle } from "react-icons/bi";
+
 
 type Data = {
   email: string;
@@ -12,6 +14,14 @@ type Data = {
   company_license: string;
 };
 const EmergencyRes = () => {
+  const [errors, setErrors] = useState({
+    email: "",
+    company_phone_number: "",
+    company_address: "",
+    nature_of_emergency: "",
+    company_name: "",
+    company_license: "",
+  })
   const [responder, setResponder] = useState<Data>({
     email: "",
     company_phone_number: "",
@@ -28,7 +38,8 @@ const EmergencyRes = () => {
 
   const handleSubmit = (event: React.MouseEvent<HTMLButtonElement>) => {
     event.preventDefault();
-    console.log(responder);
+    const spin = document.getElementById("loader") as HTMLElement;
+    spin.style.display = "block";
     const formData = new FormData();
     formData.append("email", responder.email);
     formData.append("company_phone_number", responder.company_phone_number);
@@ -42,7 +53,25 @@ const EmergencyRes = () => {
     const tokHead = new Headers();
     tokHead.append("Authorization", `Bearer ${getToken.message[0].token}`);
 
-    const url = "https://zubitechs.com/ads_apis/api/create_responder";
+    if (responder?.email === '' ||
+    responder?.company_phone_number ===  '' ||
+    responder?.company_name === '' ||
+    responder?.company_address  === '' ||
+    responder?.company_license === '' ||
+    responder?.nature_of_emergency === '' ){
+      setErrors({
+        email: "Enter the field",
+    company_phone_number: "Enter the field",
+    company_address: "Enter the field",
+    nature_of_emergency: "Enter the field",
+    company_name: "Enter the field",
+    company_license: "Enter the field"
+        
+      })
+    spin.style.display = "none";
+
+    }else
+    {const url = "https://zubitechs.com/ads_apis/api/create_responder";
     fetch(url, {
       method: "POST",
       headers: tokHead,
@@ -55,6 +84,8 @@ const EmergencyRes = () => {
           title: result.message,
           confirmButtonColor: "#0055FD",
         });
+    spin.style.display = "none";
+
       })
       .catch((err) => {
         console.log(err)
@@ -63,13 +94,15 @@ const EmergencyRes = () => {
           title: "Error occured!",
           confirmButtonColor: "#ff0000",
         });
-      });
+    spin.style.display = "none";
+
+      })}
   };
 
   return (
     <div className="px-5 py-4">
       <IoArrowBackOutline
-        className="lg:hidden text-xl text-tcolor"
+        className="text-xl text-tcolor"
         onClick={() => window.history.back()}
       />
       <div className="md:w-[80%] xl:w-2/4 m-auto py-4">
@@ -95,6 +128,7 @@ const EmergencyRes = () => {
                 value={responder?.company_name}
                 onChange={handleChange}
               />
+              {responder?.company_name === '' && <p className="text-red-500 py-2">{errors?.company_name}</p>}
             </div>
           </div>
           <div className="w-full">
@@ -107,6 +141,7 @@ const EmergencyRes = () => {
                 value={responder?.company_license}
                 onChange={handleChange}
               />
+              {responder?.company_license === '' && <p className="text-red-500 py-2">{errors?.company_license}</p>}
             </div>
           </div>
           <div className="w-full">
@@ -119,6 +154,7 @@ const EmergencyRes = () => {
                 value={responder.company_address}
                 onChange={handleChange}
               />
+              {responder?.company_address === '' && <p className="text-red-500 py-2">{errors?.company_address}</p>}
             </div>
           </div>
           <div className="w-full">
@@ -131,6 +167,7 @@ const EmergencyRes = () => {
                 value={responder.company_phone_number}
                 onChange={handleChange}
               />
+              {responder?.company_phone_number === '' && <p className="text-red-500 py-2">{errors?.company_phone_number}</p>}
             </div>
           </div>
           <div className="w-full">
@@ -143,6 +180,7 @@ const EmergencyRes = () => {
                 value={responder.email}
                 onChange={handleChange}
               />
+              {responder?.email === '' && <p className="text-red-500 py-2">{errors?.email}</p>}
             </div>
           </div>
           <div className="w-full">
@@ -158,6 +196,7 @@ const EmergencyRes = () => {
                 value={responder.nature_of_emergency}
                 onChange={handleChange}
               />
+              {responder?.nature_of_emergency === '' && <p className="text-red-500 py-2">{errors?.nature_of_emergency}</p>}
             </div>
           </div>
         </div>
@@ -166,7 +205,9 @@ const EmergencyRes = () => {
       <button
         className="font-bold bg-bcolor rounded-lg w-[100%] md:w-[70%] lg:w-[50%] xxxl:w-[40%] flex m-auto justify-center my-6 text-white p-3 lg:p-4"
         onClick={handleSubmit}
-      >
+      ><span className="animate-spin text-2xl" id="loader">
+      <BiLoaderCircle className="text-white" />
+    </span>{" "}
         Create Emergency Responder
       </button>
     </div>

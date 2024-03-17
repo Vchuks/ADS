@@ -2,7 +2,7 @@ import { IoArrowBackOutline } from "react-icons/io5";
 import Text from "../../atom/Text";
 import Image from "../../atom/Image";
 import carlogo from "../../../assets/image/Frame 20511.png";
-import { useContext } from "react";
+import { useContext, useEffect, useState } from "react";
 import { MapContext } from "../../context/MapContext";
 import Swal from "sweetalert2";
 
@@ -16,10 +16,38 @@ type D = {
   company_license: string;
 }
 
-const Respondent = () => {
-  const {getResponder, devicereport} = useContext(MapContext)
+const Respondent = ({onClick}) => {
+  const {getResponder, devicereport, setGetResponder} = useContext(MapContext)
+  const [loading, setLoading] = useState<string>()
+  const [error, setError] = useState<string>()
 
-console.log(getResponder)
+useEffect(()=>{getResponder},[getResponder])
+useEffect(() => {
+  const fetchResponder = () => {
+    setLoading('Loading...')
+    const getToken = JSON.parse(localStorage.getItem("user") || "");
+
+    const tokHead = new Headers();
+    tokHead.append("Authorization", `Bearer ${getToken.message[0].token}`);
+
+
+    fetch("https://zubitechs.com/ads_apis/api/get_responder", {
+      method: "GET",
+      headers: tokHead,
+    })
+      .then((res) => res.json())
+      .then((result) => {
+       setLoading('')
+       setError('')
+        setGetResponder(result.data);
+      })
+      .catch((err) =>{
+        setError(err)
+        setLoading('')
+      });
+  };
+  fetchResponder();
+}, [setGetResponder]);
   
   const assignAccident = (resid ) => {
     const getToken = JSON.parse(localStorage.getItem("user") || "");
@@ -58,8 +86,8 @@ console.log(getResponder)
   return (
     <div className="w-full lg:h-[830px] xl:h-[770px] 2xl:h-[750px] lg:overflow-y-scroll bg-white border rounded-xl border-[#CBD6D8] p-4 ml-4">
       <div className="grid grid-cols-2 lg:grid-cols-3 items-center">
-        <div className="flex items-center gap-2">
-          <IoArrowBackOutline className="text-xl text-tcolor" onClick={()=>window.history.back()} />
+        <div className="flex items-center gap-2 cursor-pointer">
+          <IoArrowBackOutline className="text-xl text-tcolor" onClick={onClick} />
           <Text
             className="xl:text-lg text-tcolor font-semibold"
             body="Respondent"
@@ -73,6 +101,8 @@ console.log(getResponder)
         </div>
       </div>
       <div className="py-4 mt-2">
+        {loading && <p>{loading}</p>}
+        {error && <p>{error}</p>}
         {getResponder?.map((each: D)=>{
           return <div key={each.id} className="flex items-center justify-between py-3">
           <div className="flex gap-4 items-center">
@@ -86,7 +116,7 @@ console.log(getResponder)
               <Text className="text-xs" body='25 years Exp. | 15min away' />
             </div>
           </div>
-          <p className="font-semibold text-bcolor text-lg" onClick={()=>assignAccident(each.id)}>Assign</p>
+          <p className="font-semibold text-bcolor cursor-pointer text-lg" onClick={()=>assignAccident(each.id)}>Assign</p>
         </div>
         })}
       
