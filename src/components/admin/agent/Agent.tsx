@@ -45,7 +45,7 @@ const Agent = () => {
   };
   useEffect(() => {
     const fetchAgent = () => {
-      setLoading('Loading...')
+            setLoading('')
 
       const getToken = JSON.parse(localStorage.getItem("user") || "");
 setType(getToken.message[0].type)
@@ -177,6 +177,7 @@ setType(getToken.message[0].type)
                           {each?.phone_number}
                         </div>
                         <div className="w-[150px]  break-words  py-4 lg:px-2 ">
+                          
                           {each?.status === "online" ? (
                             <div className="flex gap-1 items-center bg-[#DAFCEB] text-[#04854D] rounded-2xl w-max lg:px-2">
                               <GoDotFill className="text-[#06C270]" />

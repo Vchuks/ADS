@@ -57,6 +57,8 @@ console.log(eachAgent)
             className="font-bold w-fit bg-[#FFF0F0] text-[#C12126] px-3 py-2 rounded-full"
             body={eachAgent?.agent_details?.status}
           />}
+          {eachAgent?.agent_details?.name === '' && <p className="text-lg font-bold">Loading...</p>}
+
         </div>
         <div className="grid grid-cols-2 mt-3 lg:p-6 justify-between text-tcolor font-sm">
           <Text
@@ -144,14 +146,14 @@ console.log(eachAgent)
             <div className=" grid grid-cols-2 lg:grid-cols-3 gap-4  py-4 ">
               <Box
                 mainClass="w-full border hover:border-bcolor cursor-pointer text-center px-2 py-4  rounded-lg bg-[#62C554]"
-                firstText="Resolved"
+                firstText="Closed"
                 secondText={eachAgent?.closedcases?.count}
                 firstClass="text-white"
                 secondClass="text-white"
               />
               <Box
                 mainClass="w-full border hover:border-bcolor cursor-pointer text-center px-2 py-4  rounded-lg bg-[#FFD1D1]"
-                firstText="Rejected"
+                firstText="Unaccepted"
                 secondText={eachAgent?.agent_unaccepted_logs?.count}
                 firstClass=""
                 secondClass=""
@@ -165,7 +167,7 @@ console.log(eachAgent)
               />
               <Box
                 mainClass="w-full border hover:border-bcolor cursor-pointer text-center px-2  py-4  rounded-lg bg-[#B3CBFB]"
-                firstText="In Progress"
+                firstText="Attended"
                 secondText={eachAgent?.attendedcases?.count}
                 firstClass=""
                 secondClass=""

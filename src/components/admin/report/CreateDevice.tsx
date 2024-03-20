@@ -112,7 +112,10 @@ const CreateDevice = () => {
 
     }else
 
-   { fetch(url, reqDt)
+   {
+    spin.style.display = "block";
+
+     fetch(url, reqDt)
       .then((response) => response.json())
       .then((result) => {
         if (result.message === 'created'){
@@ -120,6 +123,22 @@ const CreateDevice = () => {
             icon: 'success',
             text: result.message,
             confirmButtonText: 'Ok'
+          }).then(result=>{
+            if(result.value){
+              setDeviceData({
+                device_id: '',
+    device_ime: '',
+    vehicle_name: '',
+    device_number: '',
+    owner_name: '',
+    owner_email: '',
+    owner_phone_number: '',
+    owner_address: '',
+    vehicle_model_year: '',
+    vehicle_plate_number: '',
+    vehicle_chasses_number: '',
+              })
+            }
           })
     spin.style.display = "none";
 

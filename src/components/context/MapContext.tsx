@@ -58,6 +58,40 @@ type Detail = {
   status: string;
   type: string;
 };
+type ResData = {
+  closed_cases: [];
+  count: { total_closed_task: number; task_assigned_count: number };
+  details: {
+    company_address: string;
+    company_license: string;
+    company_name: string;
+    company_phone_number: string;
+    email: string;
+    id: string;
+    nature_of_emergency: string;
+    type: string;
+  };
+  records: [
+    {
+      accident_type: string;
+      agent_id: number;
+      assigned_at: string;
+      closed_status: number;
+      created_at: string;
+      date: string;
+      deviceid: string;
+      id: number;
+      lat: string;
+      log: string;
+      name: string;
+      nature_of_request: string;
+      priority: string;
+      request_accepted: number;
+      responder_id: number;
+      time: string;
+    }
+  ];
+};
 
 type Report = {
   counts: {
@@ -241,6 +275,8 @@ type StateProps = {
   setResult: Dispatch<SetStateAction<Detail>>;
   getAllAgents: AllAgents;
   setGetAllAgents: Dispatch<SetStateAction<AllAgents>>;
+  resData: ResData;
+  setResData: Dispatch<SetStateAction<ResData>>;
 };
 
 type ContextProviderProps = {
@@ -472,6 +508,42 @@ const defaultState = {
     }
   },
   setEachAgent: ()=>{},
+  resData: {
+    closed_cases: [],
+  count: { total_closed_task: 0, task_assigned_count: 0 },
+  details: {
+    company_address: '',
+    company_license: '',
+    company_name: '',
+    company_phone_number: '',
+    email: '',
+    id: '',
+    nature_of_emergency: '',
+    type: '',
+  },
+  records: [
+    {
+      accident_type: '',
+agent_id: 0,
+assigned_at: "",
+closed_status: 1,
+created_at: "",
+date: "",
+deviceid: "",
+id: 21,
+lat: "",
+log: "",
+name: "",
+nature_of_request: "",
+priority: "",
+request_accepted: 1,
+responder_id: 2,
+time: ""
+    }
+  ],
+  },
+  setResData: ()=>{},
+
 } as StateProps;
 
 export const MapContext = createContext(defaultState);
@@ -552,6 +624,40 @@ export function MapProvider({ children }: ContextProviderProps) {
     company_name: "",
     nature_of_emergency: "",
     company_license: "",
+  });
+  const [resData, setResData] = useState<ResData>({
+    closed_cases: [],
+  count: { total_closed_task: 0, task_assigned_count: 0 },
+  details: {
+    company_address: '',
+    company_license: '',
+    company_name: '',
+    company_phone_number: '',
+    email: '',
+    id: '',
+    nature_of_emergency: '',
+    type: '',
+  },
+  records: [
+    {
+      accident_type: '',
+agent_id: 0,
+assigned_at: "",
+closed_status: 1,
+created_at: "",
+date: "",
+deviceid: "",
+id: 21,
+lat: "",
+log: "",
+name: "",
+nature_of_request: "",
+priority: "",
+request_accepted: 1,
+responder_id: 2,
+time: ""
+    }
+  ],
   });
 
   const [result, setResult] = useState<Detail>({
@@ -671,7 +777,9 @@ export function MapProvider({ children }: ContextProviderProps) {
         getAllAgents,
         setGetAllAgents,
         eachAgent,
-        setEachAgent
+        setEachAgent,
+        resData,
+        setResData
       }}
     >
       {children}

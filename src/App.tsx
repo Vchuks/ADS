@@ -36,6 +36,7 @@ function App() {
       window.scrollTo({ top: 0, left: 0, behavior: "smooth" });
     }
   }, [location]);
+
   return (
     <>
       <div className="flex box-border lg:h-screen justify-between">

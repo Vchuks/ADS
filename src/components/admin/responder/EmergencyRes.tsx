@@ -83,6 +83,17 @@ const EmergencyRes = () => {
           icon: "success",
           title: result.message,
           confirmButtonColor: "#0055FD",
+        }).then(result=>{
+          if(result.value){
+            setResponder({
+              email: "",
+              company_phone_number: "",
+              company_address: "",
+              nature_of_emergency: "",
+              company_name: "",
+              company_license: "",
+            })
+          }
         });
     spin.style.display = "none";
 

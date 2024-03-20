@@ -7,79 +7,13 @@ import { useContext, useEffect, useState } from "react";
 import { MapContext } from "../../context/MapContext";
 import TextLink from "../../atom/TextLink";
 
-type ResData = {
-  closed_cases: [];
-  count: { total_closed_task: number; task_assigned_count: number };
-  details: {
-    company_address: string;
-    company_license: string;
-    company_name: string;
-    company_phone_number: string;
-    email: string;
-    id: number;
-    nature_of_emergency: string;
-    type: string;
-  };
-  records: [
-    {
-      accident_type: string;
-      agent_id: number;
-      assigned_at: string;
-      closed_status: number;
-      created_at: string;
-      date: string;
-      deviceid: string;
-      id: number;
-      lat: string;
-      log: string;
-      name: string;
-      nature_of_request: string;
-      priority: string;
-      request_accepted: number;
-      responder_id: number;
-      time: string;
-    }
-  ];
-};
+
 const ViewDetails = () => {
   const loginDetails = JSON.parse(localStorage.getItem("user") || "");
   const [userData] = useState(loginDetails);
   const [isButtonDisabled, setButtonDisabled] = useState(false);
-  const { eachResponder, getResponder } = useContext(MapContext);
-  const [data, setData] = useState<ResData>({
-    closed_cases: [],
-  count: { total_closed_task: 0, task_assigned_count: 0 },
-  details: {
-    company_address: '',
-    company_license: '',
-    company_name: '',
-    company_phone_number: '',
-    email: '',
-    id: 0,
-    nature_of_emergency: '',
-    type: '',
-  },
-  records: [
-    {
-      accident_type: '',
-agent_id: 0,
-assigned_at: "",
-closed_status: 1,
-created_at: "",
-date: "",
-deviceid: "",
-id: 21,
-lat: "",
-log: "",
-name: "",
-nature_of_request: "",
-priority: "",
-request_accepted: 1,
-responder_id: 2,
-time: ""
-    }
-  ],
-  });
+  const { eachResponder, resData, setResData } = useContext(MapContext);
+  
 
   const disableButton = () => {
     if (
@@ -92,16 +26,19 @@ time: ""
       location.href = "#";
     }
   };
-  console.log(eachResponder);
-  console.log(getResponder);
+ 
+ 
+  useEffect(() => {
+
+   try{
+
   const getOne = () => {
     const getToken = JSON.parse(localStorage.getItem("user") || "");
     const tokHead = new Headers();
 
     tokHead.append("Authorization", `Bearer ${getToken.message[0].token}`);
-
     fetch(
-      `https://zubitechs.com/ads_apis/api/responder_details?id=${eachResponder.id}`,
+      `https://zubitechs.com/ads_apis/api/responder_details?id=${eachResponder?.id}`,
       {
         method: "GET",
         headers: tokHead,
@@ -109,12 +46,18 @@ time: ""
     )
       .then((response) => response.json())
       .then((result) => {
-        console.log(result);
-        setData(result)
+        
+        setResData(result)
       })
       .catch((err) => console.log(err));
-  };
-  useEffect(() => getOne());
+  }
+
+    getOne()
+}catch(err){
+  console.log(err)
+}
+  },[setResData, resData?.details.id, eachResponder.id]);
+
 
   return (
     <div className="flex flex-col lg:flex-row px-5 py-4 gap-4 lg:gap-0">
@@ -135,7 +78,7 @@ time: ""
           </div>
           <Text
             className="text-lg lg:text-2xl font-bold"
-            body={eachResponder?.company_name}
+            body={resData?.details?.company_name}
           />
           <Text
             className="font-bold w-fit bg-[#DAFCEB] text-[#04854D] px-3 py-2 rounded-full"
@@ -149,7 +92,7 @@ time: ""
           />
           <Text
             className="border-b text-right border-[#CBD6D8] font-bold py-2"
-            body={eachResponder?.company_name}
+            body={resData?.details?.company_name}
           />
         </div>
         <div className="grid grid-cols-2 lg:p-6 justify-between text-tcolor font-sm">
@@ -159,7 +102,7 @@ time: ""
           />
           <Text
             className="border-b text-right border-[#CBD6D8] font-bold py-2"
-            body={eachResponder?.company_phone_number}
+            body={resData?.details?.company_phone_number}
           />
         </div>
         <div className="grid grid-cols-2 lg:p-6 justify-between text-tcolor font-sm">
@@ -174,9 +117,9 @@ time: ""
         </p>
         <Text
           className="border-b border-[#CBD6D8] font-bold py-2"
-          body={eachResponder?.email}
+          body={resData?.details?.email}
         />
-        <Text className="border-b py-2" body={eachResponder?.company_address} />
+        <Text className="border-b py-2" body={resData?.details?.company_address} />
         <TextLink
           to="/responder/edit_responder"
           className=""
@@ -208,11 +151,11 @@ time: ""
           <>
             <div className="bg-[#4742FF] rounded-xl p-3 flex flex-col my-4 gap-8">
               <Text className="text-white " body="Total Task Completed" />
-              <Text className="text-white font-semibold text-lg" body={data?.count?.total_closed_task} />
+              <Text className="text-white font-semibold text-lg" body={resData?.count?.total_closed_task} />
             </div>
             <div className="bg-[#AAA8FF] rounded-xl p-3 flex flex-col my-4 gap-8">
               <Text className=" " body="Total Task In-progress" />
-              <Text className=" font-semibold text-lg" body={data?.count?.task_assigned_count} />
+              <Text className=" font-semibold text-lg" body={resData?.count?.task_assigned_count} />
             </div>
           </>
 
@@ -262,7 +205,7 @@ time: ""
               <Text className="text-[#1410B4]" body="View All" />
             </div>
             
-            {data?.records.length <=0 ? <p>No Record!</p> : data?.records?.map(each=>{
+            {resData?.records.length <=0 ? <p>No Record!</p> : resData?.records?.map(each=>{
               return <div className="flex items-center justify-between py-4 px-2 res-all-box">
               <div className="flex gap-4 items-center">
                 <Image className="" src={carlogo} alt="" />
@@ -277,7 +220,7 @@ time: ""
                   </p>
                 </div>
               </div>
-              {each.closed_status === 0 ? (
+              {each?.closed_status === 0 ? (
                     <Text className="font-medium text-[#FC0]" body="Pending" />
                   ) : (
                     <Text

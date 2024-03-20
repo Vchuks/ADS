@@ -55,7 +55,7 @@ useEffect(() => {
     const formData = new FormData()
     formData.append('responderid', resid)
     formData.append('accident_id', devicereport?.accident_detected?.id)
-
+setLoading('Assigning...')
     const header = new Headers()
     header.append('Authorization', `Bearer ${getToken.message[0].token}`)
 
@@ -67,6 +67,7 @@ useEffect(() => {
     fetch('https://zubitechs.com/ads_apis/api/assign_accident',reqMeth)
     .then(response => response.json())
     .then(result => {
+      setLoading('')
       if(result.message === 'success'){
         Swal.fire({
           icon: 'success',
@@ -74,12 +75,15 @@ useEffect(() => {
           confirmButtonColor:'bcolor'
         })
       }else{
+      setLoading('')
+
         Swal.fire({
           icon: 'warning',
           text: result.message,
           confirmButtonColor:'bcolor'
         })
       }
+      
     })
     .catch(err => console.log(err))
   }
@@ -101,7 +105,7 @@ useEffect(() => {
         </div>
       </div>
       <div className="py-4 mt-2">
-        {loading && <p>{loading}</p>}
+        {loading && <p className="font-bold text-xl">{loading}</p>}
         {error && <p>{error}</p>}
         {getResponder?.map((each: D)=>{
           return <div key={each.id} className="flex items-center justify-between py-3">

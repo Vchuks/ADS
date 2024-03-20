@@ -68,6 +68,9 @@ setType(getToken.message[0].type)
   useEffect(()=>{
     getUsers()
   },[])
+  setInterval(()=>{getUsers()},60000)
+  
+
 
   const handleAccept = (id:number)=>{
     const getToken = JSON.parse(localStorage.getItem("user") || "");
@@ -81,7 +84,6 @@ setType(getToken.message[0].type)
         })
           .then((response) => response.json())
           .then((result) => {
-          console.log(result)
            setAccept(result.message)
       
           })
@@ -117,9 +119,8 @@ setType(getToken.message[0].type)
         </div>
       </div>
       {notify && (
-        <div className="lg:w-[30%] p-4 absolute overflow-y-scroll right-0 h-60 bg-white rounded-b-xl  z-10">
+        <div className="lg:w-[30%] p-4 absolute overflow-y-scroll right-0 h-60 bg-white rounded-b-xl shadow-lg  z-10">
           {bell?.map((each) => {
-            console.log(each)
             return (
               <div
                 key={each.id}
@@ -127,7 +128,7 @@ setType(getToken.message[0].type)
               >
                 <p className="font-medium font-quicksand text-[#464F60]">
                   Device:{" "}
-                  <span className="font-semibold font-quicksand text-[#464F60]">
+                  <span className="font-semibold font-quicksand text-[#464f60]">
                     {each?.deviceid}
                   </span>
                 </p>
@@ -143,7 +144,7 @@ setType(getToken.message[0].type)
                       onClick={() =>{ 
                         setId(each.deviceid)
                         handleAccept(each.id)
-                        // location.href = `/device_report/details_page?device_id=${each.deviceid}`
+                        setNotify(false)
                       }
                       }
                       className=" cursor-pointer text-bcolor "
@@ -160,7 +161,12 @@ setType(getToken.message[0].type)
                     }}
                   >
                     <p
-                      onClick={() => setId(each.deviceid)}
+                      onClick={(e:React.MouseEvent<HTMLParagraphElement>) =>{ 
+                        setId(each.deviceid)
+                          e.currentTarget.style.color = '#464f60'
+                          setNotify(false)
+                        
+                      }}
                       className="cursor-pointer font-semibold"
                     >
                       View Details

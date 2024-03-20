@@ -15,18 +15,22 @@ import { Link } from "react-router-dom";
 
 const VehicleDetail = () => {
   const { setModal } = useContext(MyContext);
-  const { devicereport } = useContext(MapContext);
+  const { devicereport,setEachAgent,resData,setEachResponder,setResData } = useContext(MapContext);
   const [side, setSide] = useState(true);
   const [respondent, setRespondent] = useState(false);
   const [error, setError] = useState('Error!');
   const [accidentId, setAccidentId] = useState("");
   const [type, setType] = useState('')
+  const [resId, setResId] = useState<number | string>()
+  // const [loading, setLoading] = useState<string>()
+
 
   useEffect(() => {
     devicereport;
     const user = JSON.parse(localStorage.getItem("user") || "");
     setType(user?.message[0]?.type)
     setAccidentId(devicereport?.accident_detected?.id);
+    setResId(devicereport?.responder_id)
   }, [devicereport]);
 
   const closeCase = () => {
@@ -48,7 +52,7 @@ const VehicleDetail = () => {
     })
       .then((response) => response.json())
       .then((result) => {
-        console.log(result)
+        
         Swal.fire({
           icon: 'success',
           text: result.message,
@@ -57,7 +61,7 @@ const VehicleDetail = () => {
   spin.style.display = "none";
       })
       .catch((err) => {
-        console.log(err)
+       
         setError(err)
         Swal.fire({
           icon: 'error',
@@ -68,6 +72,54 @@ const VehicleDetail = () => {
     spin.style.display = "none";
       });
   };
+
+  const handleEach =(id:number | string)=>{
+    const getToken = JSON.parse(localStorage.getItem("user") || "");
+    // setLoading('Loading...')
+
+      const tokHead = new Headers();
+      tokHead.append("Authorization", `Bearer ${getToken.message[0].token}`);
+    fetch(`https://zubitechs.com/ads_apis/api/get_agent_details?id=${id}`,
+    {
+      method: 'GET',
+      headers: tokHead
+    })
+    .then((res)=> res.json())
+    .then((result) => {console.log(result)
+      // setLoading('')
+
+    setEachAgent(result)})
+    .catch(err => console.log(err))
+  }
+  
+
+
+  useEffect(() => {
+
+  const getOne = () => {
+    const getToken = JSON.parse(localStorage.getItem("user") || "");
+    const tokHead = new Headers();
+
+    tokHead.append("Authorization", `Bearer ${getToken.message[0].token}`);
+
+    fetch(
+      `https://zubitechs.com/ads_apis/api/responder_details?id=${resId}`,
+      {
+        method: "GET",
+        headers: tokHead,
+      }
+    )
+      .then((response) => response.json())
+      .then((result) => {
+       
+        setResData(result)
+      })
+      .catch((err) => console.log(err));}
+  
+    getOne()
+  },[resId,setResData]);
+  
+  
   return (
     <div className="flex flex-col lg:flex-row px-5 py-4 gap-4 lg:gap-0 items-center">
       <div className="w-full p-4 rounded-xl border border-[#CBD6D8] bg-white">
@@ -188,14 +240,17 @@ const VehicleDetail = () => {
                   pathname: "/agent/details_page",
                   search: `?id=${devicereport?.agent_id}`,
                 }}
-              ><button className="text-tcolor flex mb-2  border border-tcolor py-1 md:py-2 px-2 rounded font-bold me-2">View Agent</button></Link>
-            <Link
+              ><button className="text-tcolor flex mb-2  border border-tcolor py-1 md:py-2 px-2 rounded font-bold me-2" onClick={()=>handleEach(devicereport?.agent_id)}>View Agent</button></Link>
+            {resId !== null && <Link
                 
                 to={{
                   pathname: "/responder/details_page",
                   search: `?id=${devicereport?.agent_id}`,
                 }}
-              ><button className="text-tcolor flex mb-2  border border-tcolor py-1 md:py-2 px-2 rounded font-bold">View Responder</button></Link></>}
+              ><button className="text-tcolor flex mb-2  border border-tcolor py-1 md:py-2 px-2 rounded font-bold"
+              onClick={()=>setEachResponder(resData?.details)}>View Responder</button>
+              </Link>}
+              </>}
             </div>
             <button
               className="text-tcolor flex mb-2  border border-tcolor py-1 md:py-2 px-6 rounded font-bold cursor-pointer"

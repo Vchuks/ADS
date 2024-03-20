@@ -42,7 +42,6 @@ const Responder = () => {
     }
   };
 
-  useEffect(() => {
     const fetchResponder = () => {
       const getToken = JSON.parse(localStorage.getItem("user") || "");
 setType(getToken.message[0].type)
@@ -59,13 +58,15 @@ setType(getToken.message[0].type)
           if (result.success === false) {
             setAccess(result.message);
           }
-          console.log(result);
+          
           setGetResponder(result.data);
         })
         .catch((err) => console.log(err));
     };
+  useEffect(() => {
+
     fetchResponder();
-  }, [setGetResponder]);
+  },[]);
   
 
   return (<>

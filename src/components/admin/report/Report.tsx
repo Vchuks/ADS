@@ -106,15 +106,15 @@ const {setId} = useContext(MapContext)
                       {each?.device_number}
                     </div>
                     <div className="w-[150px] border-b px-2 break-words py-4 border-[#DDE5E9] "></div>
-                    {each?.status === "online" && (
+                    {each?.status === "online" ? (
                       <div className="w-[150px] border-b break-words py-4 border-[#DDE5E9] ">
                         <div className="flex gap-1 items-center bg-[#DAFCEB] text-[#04854D] rounded-2xl w-max px-2">
                           <GoDotFill className="text-[#06C270]" />
                           Online
                         </div>
                       </div>
-                    )}
-                    {each?.status === "offline" && (
+                    )
+                    :(
                       <div className="w-[150px] break-words border-b py-4  border-[#DDE5E9]">
                         <div className="flex gap-1 items-center bg-[#FFF0F0] text-[#C99020] rounded-2xl w-max px-2">
                           <GoDotFill className="text-[#FFE5B0]" />

@@ -125,7 +125,7 @@ const Dashboard = () => {
           <>
             <div
               className="flex gap-2 pt-4 px-4"
-              onClick={() => window.history.back()}
+              onClick={() => location.reload()}
             >
               <IoArrowBackOutline className="text-2xl cursor-pointer text-tcolor" />
               <p>Back</p>
