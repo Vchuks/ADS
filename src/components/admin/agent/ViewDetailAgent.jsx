@@ -5,18 +5,15 @@ import profile from "../../../assets/image/Group 20454.png";
 import carlogo from "../../../assets/image/Frame 20511.png";
 import { useContext, useState } from "react";
 import { MapContext } from "../../context/MapContext";
-import Box from '../../../components/atom/Box'
+import Box from "../../../components/atom/Box";
 import TextLink from "../../atom/TextLink";
-
-
 
 const ViewDetailAgent = () => {
   const loginDetails = JSON.parse(localStorage.getItem("user") || "");
   const [userData] = useState(loginDetails);
   const [isButtonDisabled, setButtonDisabled] = useState(false);
-  const {eachAgent} = useContext(MapContext)
+  const { eachAgent } = useContext(MapContext);
   // const { eachAgent, result, seteachAgent } = useContext(MapContext);
-  
 
   const disableButton = () => {
     if (
@@ -29,7 +26,7 @@ const ViewDetailAgent = () => {
       location.href = "#";
     }
   };
-console.log(eachAgent)
+  
   return (
     <div className="flex flex-col lg:flex-row px-5 py-4 gap-4 lg:gap-0">
       <div className="w-full p-4 rounded-xl border border-[#CBD6D8] bg-white">
@@ -37,7 +34,8 @@ console.log(eachAgent)
           <IoArrowBackOutline
             className="text-xl text-tcolor"
             onClick={() => {
-              window.history.back()}}
+              window.history.back();
+            }}
           />
           <Text
             className="text-lg text-tcolor font-semibold"
@@ -48,23 +46,27 @@ console.log(eachAgent)
           <div className="w-20 lg:w-24">
             <Image src={profile} alt="" className="w-full" />{" "}
           </div>
-          <Text className="text-lg lg:text-2xl font-bold" body={eachAgent?.agent_details?.name} />
-          {eachAgent?.agent_details?.status === 'online' ?<Text
-            className="font-bold w-fit bg-[#DAFCEB] text-[#04854D] px-3 py-2 rounded-full"
-            body={eachAgent?.agent_details?.status}
-          />:
           <Text
-            className="font-bold w-fit bg-[#FFF0F0] text-[#C12126] px-3 py-2 rounded-full"
-            body={eachAgent?.agent_details?.status}
-          />}
-          {eachAgent?.agent_details?.name === '' && <p className="text-lg font-bold">Loading...</p>}
-
+            className="text-lg lg:text-2xl font-bold"
+            body={eachAgent?.agent_details?.name}
+          />
+          {eachAgent?.agent_details?.status === "online" ? (
+            <Text
+              className="font-bold w-fit bg-[#DAFCEB] text-[#04854D] px-3 py-2 rounded-full"
+              body={eachAgent?.agent_details?.status}
+            />
+          ) : (
+            <Text
+              className="font-bold w-fit bg-[#FFF0F0] text-[#C12126] px-3 py-2 rounded-full"
+              body={eachAgent?.agent_details?.status}
+            />
+          )}
+          {eachAgent?.agent_details?.name === "" && (
+            <p className=" animate-pulse text-lg font-bold">Loading...</p>
+          )}
         </div>
         <div className="grid grid-cols-2 mt-3 lg:p-6 justify-between text-tcolor font-sm">
-          <Text
-            className="border-b border-[#CBD6D8] py-2"
-            body="Agent Name"
-          />
+          <Text className="border-b border-[#CBD6D8] py-2" body="Agent Name" />
           <Text
             className="border-b text-right border-[#CBD6D8] font-bold py-2"
             body={eachAgent?.agent_details?.name}
@@ -80,13 +82,13 @@ console.log(eachAgent)
             body={eachAgent?.agent_details?.phone_number}
           />
         </div>
-        <div className="grid grid-cols-2 lg:p-6 justify-between text-tcolor font-sm">
+        {/* <div className="grid grid-cols-2 lg:p-6 justify-between text-tcolor font-sm">
           <Text className="border-b border-[#CBD6D8] py-2" body="Joined Date" />
           <Text
             className="border-b text-right border-[#CBD6D8] font-bold py-2"
-            body=''
+            body=""
           />
-        </div>
+        </div> */}
         <p className="w-full mt-6 lg:mt-0 lg:w-[95%] flex items-center justify-center m-auto rounded-lg font-bold p-3 lg:p-4 text-[#04854D]">
           Email Verified
         </p>
@@ -115,9 +117,11 @@ console.log(eachAgent)
           <button className="text-tcolor flex mb-2  border border-tcolor py-1 md:py-2 px-6 rounded font-bold cursor-pointer">
             View All Assigned Task
           </button>
-          <button className="text-[#A5640C] flex mb-2  border border-[#A5640C] py-1 md:py-2 px-6 rounded font-bold cursor-pointer"
-          disabled={isButtonDisabled}
-          onClick={disableButton}>
+          <button
+            className="text-[#A5640C] flex mb-2  border border-[#A5640C] py-1 md:py-2 px-6 rounded font-bold cursor-pointer"
+            disabled={isButtonDisabled}
+            onClick={disableButton}
+          >
             Suspend Respondent
           </button>
         </div>
@@ -125,7 +129,7 @@ console.log(eachAgent)
           <Text className="font-semibold text-lg" body="Assigned Task" />
           {/* first screen */}
           <>
-          <div className="bg-[#4742FF] rounded-xl p-3 flex flex-col my-4 gap-8">
+            <div className="bg-[#4742FF] rounded-xl p-3 flex flex-col my-4 gap-8">
               <Text className="text-white " body="Total Task Completed" />
               <Text
                 className="text-white font-semibold text-lg"
@@ -186,7 +190,9 @@ console.log(eachAgent)
               <Text className="" body="Recent Tasks" />
               <Text className="text-[#1410B4]" body="View All" />
             </div>
-            {(eachAgent?.closedcases?.data.length === 0 || eachAgent?.pendingcases?.data.length === 0 || eachAgent?.attendedcases?.data.length === 0 ) && <p>No Record</p>}
+            {(eachAgent?.closedcases?.data.length === 0 ||
+              eachAgent?.pendingcases?.data.length === 0 ||
+              eachAgent?.attendedcases?.data.length === 0) && <p>No Record</p>}
             {eachAgent?.closedcases?.data?.map((each) => {
               return (
                 <div className="flex items-center justify-between py-4 px-2 res-all-box">
@@ -277,7 +283,7 @@ console.log(eachAgent)
                 </div>
               );
             })}
-            </div>
+          </div>
         </div>
       </div>
     </div>

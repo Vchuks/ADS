@@ -62,7 +62,7 @@ input[type="date"]::-webkit-calendar-picker-indicator {
 }
 #loader{
   display: none;
-  color: #9f2727;
+  /* color: #9f2727; */
 }
 .hh{
   min-width: 100%;

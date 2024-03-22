@@ -42,7 +42,7 @@ const AgentProfile = () => {
       )
         .then((res) => res.json())
         .then((result) => {
-          console.log(result);
+        
           setGetAgent(result);
         })
         .catch((err) => console.log(err));

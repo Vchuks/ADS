@@ -7,6 +7,7 @@ import { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
 import { MapContext } from "../../context/MapContext";
 import { BiLoaderCircle } from "react-icons/bi";
+import Paginate from "../../atom/Paginate";
 
 
 type Data = {
@@ -25,29 +26,37 @@ type Data = {
 const Report = () => {
 const {setId} = useContext(MapContext)
   const [devices, setDevices] = useState([]);
+  const [page,setPage] = useState(1)
+  const [dResult,setDresult] = useState()
+  const [loader, setLoader] = useState(false)
+
 
   useEffect(() => {
     const getDevices = () => {
-      fetch("https://zubitechs.com/ads_apis/api/get_devices")
+      setLoader(true)
+      fetch(`https://zubitechs.com/ads_apis/api/get_devices?page=${page}`)
         .then((response) => response.json())
         .then((result) => {
-          setDevices(result.devices.data)})
+          setDresult(result.devices)
+          setDevices(result.devices.data)
+          setLoader(false)
+        })
         .catch((err) => console.log(err));
     };
     getDevices();
-  }, []);
+  }, [page]);
 
-  
   return (
     <div>
       <Search />
-      {devices.length <= 0 && <div className="h-full lg:h-screen bg-[#232323ab] z-20 border w-full top-0 absolute">
-            <p className=" w-2/4 flex h-3/4 lg:h-full  justify-center items-center  m-auto">
+      
+          {loader &&<div className="h-full lg:h-screen bg-[#232323ab] z-20 border w-full top-0 fixed">
+            <p className="w-4/5 flex h-3/4 lg:h-full  justify-center items-center ">
               <BiLoaderCircle className=" animate-spin  text-bg text-5xl" />
             </p>
           </div>}
       <div className="flex flex-col lg:flex-row px-5 py-4 gap-4 relative">
-        <div className="overflow-x-scroll lg:absolute  w-full lg:w-[58%] lg:h-[80vh] lg:text-sm">
+        <div className="overflow-x-scroll lg:absolute  w-full lg:w-[58%] lg:h-[90vh] lg:text-sm">
           {/* <TextLink
             to="details_page"
             className=""
@@ -144,6 +153,8 @@ const {setId} = useContext(MapContext)
             })}
           {/* }
           /> */}
+          {/* <Paginate/> */}
+          <Paginate page={page} data={dResult} setPage={setPage} />
         </div>
         <div className="lg:w-[40%] lg:absolute right-0">
           <ActivitySum />

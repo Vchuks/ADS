@@ -108,7 +108,7 @@ const CreateDevice = () => {
         vehicle_plate_number: "Enter the field",
         vehicle_chasses_number: "Enter the field",
       })
-    spin.style.display = "none";
+    // spin.style.display = "none";
 
     }else
 
@@ -139,8 +139,8 @@ const CreateDevice = () => {
     vehicle_chasses_number: '',
               })
             }
+            spin.style.display = "none";
           })
-    spin.style.display = "none";
 
         }else  Swal.fire({
           icon: 'error',
@@ -148,12 +148,14 @@ const CreateDevice = () => {
           confirmButtonText: 'Ok',
           confirmButtonColor: "#9f2727",
         })
+        spin.style.display = "none";
+
         setErrors(result.message)
-    spin.style.display = "none";
+    // spin.style.display = "none";
 
       })
       .catch((error) => setErrors(error))
-    spin.style.display = "none";
+    // spin.style.display = "none";
     }
   }
 

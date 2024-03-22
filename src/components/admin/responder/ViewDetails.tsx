@@ -46,7 +46,7 @@ const ViewDetails = () => {
     )
       .then((response) => response.json())
       .then((result) => {
-        
+        console.log(result)
         setResData(result)
       })
       .catch((err) => console.log(err));
@@ -206,7 +206,7 @@ const ViewDetails = () => {
             </div>
             
             {resData?.records.length <=0 ? <p>No Record!</p> : resData?.records?.map(each=>{
-              return <div className="flex items-center justify-between py-4 px-2 res-all-box">
+              return <div key={each.deviceid} className="flex items-center justify-between py-4 px-2 res-all-box">
               <div className="flex gap-4 items-center">
                 <Image className="" src={carlogo} alt="" />
                 <div>

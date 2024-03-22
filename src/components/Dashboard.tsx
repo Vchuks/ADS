@@ -109,7 +109,7 @@ const Dashboard = () => {
       />
       <div className="w-full bg-[#E2E1FE] xl:h-[90%] h-full relative">
         {report.records.length === 0 && (
-          <div className="h-full lg:h-screen bg-[#232323ab] z-20 border w-full top-0 absolute">
+          <div className="h-full lg:h-screen bg-[#232323ab] z-20 border w-full top-0 fixed">
             <p className=" w-2/4 flex h-3/4 lg:h-full  justify-center items-center  m-auto">
               <BiLoaderCircle className=" animate-spin  text-bg text-5xl" />
             </p>

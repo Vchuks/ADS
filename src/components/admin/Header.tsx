@@ -68,9 +68,14 @@ setType(getToken.message[0].type)
   useEffect(()=>{
     getUsers()
   },[])
-  setInterval(()=>{getUsers()},60000)
+  // setInterval(()=>{getUsers()},60000)
   
-
+  useEffect(() => {
+    const interval = setInterval(() => {
+      getUsers();
+    }, 60000);
+    return () => clearInterval(interval);
+  }, []);
 
   const handleAccept = (id:number)=>{
     const getToken = JSON.parse(localStorage.getItem("user") || "");

@@ -111,7 +111,7 @@ const VehicleDetail = () => {
     )
       .then((response) => response.json())
       .then((result) => {
-       
+       console.log('vh:',result)
         setResData(result)
       })
       .catch((err) => console.log(err));}
@@ -241,11 +241,11 @@ const VehicleDetail = () => {
                   search: `?id=${devicereport?.agent_id}`,
                 }}
               ><button className="text-tcolor flex mb-2  border border-tcolor py-1 md:py-2 px-2 rounded font-bold me-2" onClick={()=>handleEach(devicereport?.agent_id)}>View Agent</button></Link>
-            {resId !== null && <Link
+            {( resId != 0 && resId !== null) && <Link
                 
                 to={{
                   pathname: "/responder/details_page",
-                  search: `?id=${devicereport?.agent_id}`,
+                  search: `?id=${devicereport?.responder_id}`,
                 }}
               ><button className="text-tcolor flex mb-2  border border-tcolor py-1 md:py-2 px-2 rounded font-bold"
               onClick={()=>setEachResponder(resData?.details)}>View Responder</button>
