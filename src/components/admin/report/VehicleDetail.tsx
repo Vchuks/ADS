@@ -118,7 +118,7 @@ const VehicleDetail = () => {
   
     getOne()
   },[resId,setResData]);
-  
+  console.log(devicereport)
   
   return (
     <div className="flex flex-col lg:flex-row px-5 py-4 gap-4 lg:gap-0 items-center">
@@ -135,11 +135,12 @@ const VehicleDetail = () => {
             body="Vehicle Details"
           />
         </div>
+        
         <div className="w-full flex flex-col gap-2 pt-4  items-center justify-center">
           <div className="w-20 lg:w-24">
             <Image src={profile} alt="" className="w-full" />{" "}
           </div>
-          <Text className="text-lg lg:text-2xl font-bold" body="Lexus" />
+          <Text className="text-lg lg:text-2xl font-bold" body={devicereport?.devicedetails?.vehicle_name} />
           {devicereport?.accident_detected !== null && (
             <Text
               className="font-bold w-fit bg-[#ffc0bfa6] text-[#CE5347] px-3 py-2 rounded-full"
@@ -260,6 +261,12 @@ const VehicleDetail = () => {
             </button>
             </div>
           )}
+          {devicereport?.accident_detected == null && <button
+              className="text-tcolor flex mb-2  border border-tcolor py-1 md:py-2 px-6 rounded font-bold cursor-pointer"
+              onClick={() => setModal(true)}
+            >
+              View History
+            </button>}
           <div className="lg:px-5 m-auto text-tcolor rounded-3xl bg-white">
             <div className="text-center w-full xl:w-[70%] m-auto">
               {devicereport?.accident_detected !== null ? (
