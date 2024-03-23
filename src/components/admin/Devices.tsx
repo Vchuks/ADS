@@ -3,6 +3,7 @@ import { IoSearchSharp } from "react-icons/io5";
 import { BsFillTelephoneFill } from "react-icons/bs";
 import { useState, useEffect, useContext } from "react";
 import { MapContext } from "../context/MapContext";
+import { BiLoaderCircle } from "react-icons/bi";
 
 type myType = {
   accident_type: "";
@@ -31,6 +32,7 @@ const Devices = () => {
   const [loading, setLoading] = useState<string | null>(null);
   const [error, setError] = useState(null);
   const [user, setUser] = useState<Array<myType>>([]);
+  const [loader, setLoader] = useState(false)
 
   useEffect(() => {
     const getToken = JSON.parse(localStorage.getItem("user") || "");
@@ -40,6 +42,7 @@ const Devices = () => {
     if (filter !=='') {
       setLoading("loading...");
     setDLoading(null);
+    setLoader(true)
     setError(null);
       fetch(
         `https://zubitechs.com/ads_apis/api/dashboard_api?filter_type=${filter}`,
@@ -53,25 +56,28 @@ const Devices = () => {
           console.log(result);
           if (result.records.data) {
             setLoading(null);
+            setLoader(false)
             setDLoading(null);
             setError(null);
             setTable(result.records.data);
           } else {
             setLoading(null);
             setDLoading(null);
+            setLoader(false)
             setError(null);
             setUser(result.records)}
         })
         .catch((err) => {
           setLoading(null);
           setDLoading(null);
-          
+          setLoader(false)
           setError(err);
         });
     
     }else{
       setDLoading("loading...");
       setLoading(null);
+      setLoader(true)
     setError(null);
     fetch("https://zubitechs.com/ads_apis/api/dashboard_api", {
       method: "GET",
@@ -82,12 +88,14 @@ const Devices = () => {
         setDLoading(null);
         setLoading(null);
         setError(null);
+        setLoader(false)
         setUser(result.records);
       })
       .catch((err) => {
         console.log(err);
         setDLoading(null);
         setLoading(null);
+        setLoader(false)
         setError(err);
       });
     }
@@ -123,6 +131,14 @@ const Devices = () => {
 
 
   return (
+    <>
+    {loader && (
+      <div className="h-full lg:h-screen bg-[#232323ab] z-20 border w-full left-0 top-0 fixed">
+        <p className=" w-2/4 flex h-3/4 lg:h-full  justify-center items-center  m-auto">
+          <BiLoaderCircle className=" animate-spin  text-bg text-5xl" />
+        </p>
+      </div>
+    )}
     <div className="device-box lg:w-[35%] p-4 maph maph-device xxxl:h-auto ">
       <Text
         className="text-tcolor text-2xl font-extrabold pb-2 border-b-2 border-opacity-5 border-black"
@@ -170,6 +186,7 @@ const Devices = () => {
         );
       })}
     </div>
+      </>
   );
 };
 

@@ -7,9 +7,9 @@ import { MapContext } from "./context/MapContext";
 // import TextLink from "./atom/TextLink";
 import { GoDotFill } from "react-icons/go";
 import { IoArrowBackOutline } from "react-icons/io5";
-import { BiLoaderCircle } from "react-icons/bi";
 import { IoSearchSharp } from "react-icons/io5";
 import { Link } from "react-router-dom";
+import Paginate from "./atom/Paginate";
 
 type Data = {
   id: number;
@@ -35,6 +35,8 @@ const Dashboard = () => {
   const [error, setError] = useState(null);
   const [device, setDevice] = useState<string>("");
   const [dloading, setDLoading] = useState<string | null>(null);
+  const [tableP, setTableP] =useState()
+  const [page, setPage] = useState(1)
 
   useEffect(() => {
     const getToken = JSON.parse(localStorage.getItem("user") || "");
@@ -54,8 +56,8 @@ const Dashboard = () => {
       )
         .then((response) => response.json())
         .then((result) => {
-          console.log(result);
           if (result.records.data) {
+            setTableP(result.notifications)
             setLoading(null);
             setDLoading(null);
             setError(null);
@@ -70,7 +72,7 @@ const Dashboard = () => {
         });
     }
   }, [filter, setTable, device]);
-
+console.log(tableP)
   const handleSearch = (event: React.MouseEvent<HTMLDivElement>) => {
     event.preventDefault();
     const getToken = JSON.parse(localStorage.getItem("user") || "");
@@ -88,7 +90,7 @@ const Dashboard = () => {
     )
       .then((response) => response.json())
       .then((result) => {
-        console.log(result);
+        
         if (result.records.data) {
           setLoading(null);
           setError(null);
@@ -101,6 +103,7 @@ const Dashboard = () => {
       });
   };
 
+  console.log(report)
   return (
     <div className="bg-[#E2E1FE]  max-h-full">
       <Header
@@ -108,13 +111,7 @@ const Dashboard = () => {
         headText="Dashboard"
       />
       <div className="w-full bg-[#E2E1FE] xl:h-[90%] h-full relative">
-        {report.records.length === 0 && (
-          <div className="h-full lg:h-screen bg-[#232323ab] z-20 border w-full top-0 fixed">
-            <p className=" w-2/4 flex h-3/4 lg:h-full  justify-center items-center  m-auto">
-              <BiLoaderCircle className=" animate-spin  text-bg text-5xl" />
-            </p>
-          </div>
-        )}
+        
         <Users />
         {/* {table.length <= 0 
         || (table.length >0 && filter === '' || filter === 'Manual Scan' || filter === 'ACCIDENT DETECTED' || filter === 'pending_case' || filter === 'attended_case' || filter === 'SOS') 
@@ -272,6 +269,7 @@ const Dashboard = () => {
                   </React.Fragment>
                 );
               })}
+            <Paginate page={page} data={tableP} setPage={setPage}/>
             </div>
           </div>
         )}

@@ -12,38 +12,37 @@ import Swal from "sweetalert2";
 import { BiLoaderCircle } from "react-icons/bi";
 import { Link } from "react-router-dom";
 
-
 const VehicleDetail = () => {
   const { setModal } = useContext(MyContext);
-  const { devicereport,setEachAgent,resData,setEachResponder,setResData } = useContext(MapContext);
+  const { devicereport, setEachAgent, resData, setEachResponder, setResData } =
+    useContext(MapContext);
   const [side, setSide] = useState(true);
   const [respondent, setRespondent] = useState(false);
-  const [error, setError] = useState('Error!');
+  const [error, setError] = useState("Error!");
   const [accidentId, setAccidentId] = useState("");
-  const [type, setType] = useState('')
-  const [resId, setResId] = useState<number | string>()
+  const [type, setType] = useState("");
+  const [resId, setResId] = useState<number | string>();
   // const [loading, setLoading] = useState<string>()
-
 
   useEffect(() => {
     devicereport;
     const user = JSON.parse(localStorage.getItem("user") || "");
-    setType(user?.message[0]?.type)
+    setType(user?.message[0]?.type);
     setAccidentId(devicereport?.accident_detected?.id);
-    setResId(devicereport?.responder_id)
+    setResId(devicereport?.responder_id);
   }, [devicereport]);
 
   const closeCase = () => {
     const spin = document.getElementById("loader") as HTMLElement;
     spin.style.display = "block";
     const user = JSON.parse(localStorage.getItem("user") || "");
-    setType(user?.message[0]?.type)
+    setType(user?.message[0]?.type);
     const token = user?.message[0]?.token;
     const tokenGet = new Headers();
     tokenGet.append("Authorization", `Bearer ${token}`);
 
     const formData = new FormData();
-    formData.append('accident_id', accidentId)
+    formData.append("accident_id", accidentId);
 
     fetch("https://zubitechs.com/ads_apis/api/close_case", {
       method: "POST",
@@ -52,74 +51,71 @@ const VehicleDetail = () => {
     })
       .then((response) => response.json())
       .then((result) => {
-        
         Swal.fire({
-          icon: 'success',
+          icon: "success",
           text: result.message,
-          confirmButtonText: 'Ok'
-        })
-  spin.style.display = "none";
+          confirmButtonText: "Ok",
+        });
+        spin.style.display = "none";
       })
       .catch((err) => {
-       
-        setError(err)
+        setError(err);
         Swal.fire({
-          icon: 'error',
+          icon: "error",
           text: error,
-          confirmButtonText: 'Ok',
+          confirmButtonText: "Ok",
           confirmButtonColor: "#9f2727",
-        })
-    spin.style.display = "none";
+        });
+        spin.style.display = "none";
       });
   };
 
-  const handleEach =(id:number | string)=>{
+  const handleEach = (id: number | string) => {
     const getToken = JSON.parse(localStorage.getItem("user") || "");
     // setLoading('Loading...')
 
-      const tokHead = new Headers();
-      tokHead.append("Authorization", `Bearer ${getToken.message[0].token}`);
-    fetch(`https://zubitechs.com/ads_apis/api/get_agent_details?id=${id}`,
-    {
-      method: 'GET',
-      headers: tokHead
+    const tokHead = new Headers();
+    tokHead.append("Authorization", `Bearer ${getToken.message[0].token}`);
+    fetch(`https://zubitechs.com/ads_apis/api/get_agent_details?id=${id}`, {
+      method: "GET",
+      headers: tokHead,
     })
-    .then((res)=> res.json())
-    .then((result) => {console.log(result)
-      // setLoading('')
+      .then((res) => res.json())
+      .then((result) => {
+        console.log(result);
+        // setLoading('')
 
-    setEachAgent(result)})
-    .catch(err => console.log(err))
-  }
-  
-
+        setEachAgent(result);
+      })
+      .catch((err) => console.log(err));
+  };
 
   useEffect(() => {
+    const getOne = () => {
+      const getToken = JSON.parse(localStorage.getItem("user") || "");
+      const tokHead = new Headers();
 
-  const getOne = () => {
-    const getToken = JSON.parse(localStorage.getItem("user") || "");
-    const tokHead = new Headers();
+      tokHead.append("Authorization", `Bearer ${getToken.message[0].token}`);
 
-    tokHead.append("Authorization", `Bearer ${getToken.message[0].token}`);
+      fetch(
+        `https://zubitechs.com/ads_apis/api/responder_details?id=${resId}`,
+        {
+          method: "GET",
+          headers: tokHead,
+        }
+      )
+        .then((response) => response.json())
+        .then((result) => {
+          console.log("vh:", result);
+          setResData(result);
+        })
+        .catch((err) => console.log(err));
+    };
 
-    fetch(
-      `https://zubitechs.com/ads_apis/api/responder_details?id=${resId}`,
-      {
-        method: "GET",
-        headers: tokHead,
-      }
-    )
-      .then((response) => response.json())
-      .then((result) => {
-       console.log('vh:',result)
-        setResData(result)
-      })
-      .catch((err) => console.log(err));}
-  
-    getOne()
-  },[resId,setResData]);
-  console.log(devicereport)
-  
+    getOne();
+  }, [resId, setResData]);
+  console.log(devicereport);
+
   return (
     <div className="flex flex-col lg:flex-row px-5 py-4 gap-4 lg:gap-0 items-center">
       <div className="w-full p-4 rounded-xl border border-[#CBD6D8] bg-white">
@@ -135,12 +131,15 @@ const VehicleDetail = () => {
             body="Vehicle Details"
           />
         </div>
-        
+
         <div className="w-full flex flex-col gap-2 pt-4  items-center justify-center">
           <div className="w-20 lg:w-24">
             <Image src={profile} alt="" className="w-full" />{" "}
           </div>
-          <Text className="text-lg lg:text-2xl font-bold" body={devicereport?.devicedetails?.vehicle_name} />
+          <Text
+            className="text-lg lg:text-2xl font-bold"
+            body={devicereport?.devicedetails?.vehicle_name}
+          />
           {devicereport?.accident_detected !== null && (
             <Text
               className="font-bold w-fit bg-[#ffc0bfa6] text-[#CE5347] px-3 py-2 rounded-full"
@@ -232,41 +231,61 @@ const VehicleDetail = () => {
         <div className="bg-white w-full">
           {devicereport?.accident_detected !== null && (
             <div className="flex items-center justify-between">
-            <div className="flex">
-            {type === 'agent' && <p className="font-bold text-tcolor">Responder:{devicereport?.responder_name}</p>}
-            {type === 'admin' && <>
-            <Link
-                
-                to={{
-                  pathname: "/agent/details_page",
-                  search: `?id=${devicereport?.agent_id}`,
-                }}
-              ><button className="text-tcolor flex mb-2  border border-tcolor py-1 md:py-2 px-2 rounded font-bold me-2" onClick={()=>handleEach(devicereport?.agent_id)}>View Agent</button></Link>
-            {( resId != 0 && resId !== null) && <Link
-                
-                to={{
-                  pathname: "/responder/details_page",
-                  search: `?id=${devicereport?.responder_id}`,
-                }}
-              ><button className="text-tcolor flex mb-2  border border-tcolor py-1 md:py-2 px-2 rounded font-bold"
-              onClick={()=>setEachResponder(resData?.details)}>View Responder</button>
-              </Link>}
-              </>}
+              <div className="flex">
+                {type === "agent" && (
+                  <p className="font-bold text-tcolor">
+                    Responder:{devicereport?.responder_name}
+                  </p>
+                )}
+                {type === "admin" && (
+                  <>
+                    <Link
+                      to={{
+                        pathname: "/agent/details_page",
+                        search: `?id=${devicereport?.agent_id}`,
+                      }}
+                    >
+                      <button
+                        className="text-tcolor flex mb-2  border border-tcolor py-1 md:py-2 px-2 rounded font-bold me-2"
+                        onClick={() => handleEach(devicereport?.agent_id)}
+                      >
+                        View Agent
+                      </button>
+                    </Link>
+                    {resId != 0 && resId !== null && (
+                      <Link
+                        to={{
+                          pathname: "/responder/details_page",
+                          search: `?id=${devicereport?.responder_id}`,
+                        }}
+                      >
+                        <button
+                          className="text-tcolor flex mb-2  border border-tcolor py-1 md:py-2 px-2 rounded font-bold"
+                          onClick={() => setEachResponder(resData?.details)}
+                        >
+                          View Responder
+                        </button>
+                      </Link>
+                    )}
+                  </>
+                )}
+              </div>
+              <button
+                className="text-tcolor flex mb-2 ml-auto  border border-tcolor py-1 md:py-2 px-6 rounded font-bold cursor-pointer"
+                onClick={() => setModal(true)}
+              >
+                View History
+              </button>
             </div>
+          )}
+          {devicereport?.accident_detected == null && (
             <button
-              className="text-tcolor flex mb-2  border border-tcolor py-1 md:py-2 px-6 rounded font-bold cursor-pointer"
+              className="text-tcolor flex mb-2 ml-auto  border border-tcolor py-1 md:py-2 px-6 rounded font-bold cursor-pointer"
               onClick={() => setModal(true)}
             >
               View History
             </button>
-            </div>
           )}
-          {devicereport?.accident_detected == null && <button
-              className="text-tcolor flex mb-2  border border-tcolor py-1 md:py-2 px-6 rounded font-bold cursor-pointer"
-              onClick={() => setModal(true)}
-            >
-              View History
-            </button>}
           <div className="lg:px-5 m-auto text-tcolor rounded-3xl bg-white">
             <div className="text-center w-full xl:w-[70%] m-auto">
               {devicereport?.accident_detected !== null ? (
@@ -336,9 +355,10 @@ const VehicleDetail = () => {
                 <button
                   className="w-full p-3 my-3 lg:p-4 m-auto text-white rounded-lg font-bold bg-bcolor flex  justify-center"
                   onClick={closeCase}
-                ><span className="animate-spin text-2xl" id="loader">
-                <BiLoaderCircle className="text-white" />
-              </span>{" "}
+                >
+                  <span className="animate-spin text-2xl" id="loader">
+                    <BiLoaderCircle className="text-white" />
+                  </span>{" "}
                   Close Case
                 </button>
               </>
@@ -349,9 +369,14 @@ const VehicleDetail = () => {
         </div>
       )}
       {/* respondent */}
-      {respondent && <Respondent onClick={()=>{
-        setRespondent(false)
-        setSide(true) }}/>}
+      {respondent && (
+        <Respondent
+          onClick={() => {
+            setRespondent(false);
+            setSide(true);
+          }}
+        />
+      )}
     </div>
   );
 };

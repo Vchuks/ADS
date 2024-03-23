@@ -67,12 +67,12 @@ setType(getToken.message[0].type)
   };
   useEffect(()=>{
     getUsers()
-  },[])
+  },[setBell,setResult,setReport])
   // setInterval(()=>{getUsers()},60000)
   
   useEffect(() => {
     const interval = setInterval(() => {
-      getUsers();
+      ()=>getUsers();
     }, 60000);
     return () => clearInterval(interval);
   }, []);
