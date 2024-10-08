@@ -34,7 +34,7 @@ const AgentProfile = () => {
      
 
       fetch(
-        `https://zubitechs.com/ads_apis/api/get_agent_details?id=${result?.id}`,
+        `http://zubitechnologies.com/ads_apis/api/get_agent_details?id=${result?.id}`,
         {
           method: "GET",
           // headers: tokHead,

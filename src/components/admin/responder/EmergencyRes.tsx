@@ -71,7 +71,7 @@ const EmergencyRes = () => {
     spin.style.display = "none";
 
     }else
-    {const url = "https://zubitechs.com/ads_apis/api/create_responder";
+    {const url = "http://zubitechnologies.com/ads_apis/api/create_responder";
     fetch(url, {
       method: "POST",
       headers: tokHead,

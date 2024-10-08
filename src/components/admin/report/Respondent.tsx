@@ -31,7 +31,7 @@ useEffect(() => {
     tokHead.append("Authorization", `Bearer ${getToken.message[0].token}`);
 
 
-    fetch("https://zubitechs.com/ads_apis/api/get_responder", {
+    fetch("http://zubitechnologies.com/ads_apis/api/get_responder", {
       method: "GET",
       headers: tokHead,
     })
@@ -64,7 +64,7 @@ setLoading('Assigning...')
       headers: header,
       body: formData
     }
-    fetch('https://zubitechs.com/ads_apis/api/assign_accident',reqMeth)
+    fetch('http://zubitechnologies.com/ads_apis/api/assign_accident',reqMeth)
     .then(response => response.json())
     .then(result => {
       setLoading('')

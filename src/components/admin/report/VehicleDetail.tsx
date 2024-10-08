@@ -44,7 +44,7 @@ const VehicleDetail = () => {
     const formData = new FormData();
     formData.append("accident_id", accidentId);
 
-    fetch("https://zubitechs.com/ads_apis/api/close_case", {
+    fetch("http://zubitechnologies.com/ads_apis/api/close_case", {
       method: "POST",
       headers: tokenGet,
       body: formData,
@@ -76,7 +76,7 @@ const VehicleDetail = () => {
 
     const tokHead = new Headers();
     tokHead.append("Authorization", `Bearer ${getToken.message[0].token}`);
-    fetch(`https://zubitechs.com/ads_apis/api/get_agent_details?id=${id}`, {
+    fetch(`http://zubitechnologies.com/ads_apis/api/get_agent_details?id=${id}`, {
       method: "GET",
       headers: tokHead,
     })
@@ -98,7 +98,7 @@ const VehicleDetail = () => {
       tokHead.append("Authorization", `Bearer ${getToken.message[0].token}`);
 
       fetch(
-        `https://zubitechs.com/ads_apis/api/responder_details?id=${resId}`,
+        `http://zubitechnologies.com/ads_apis/api/responder_details?id=${resId}`,
         {
           method: "GET",
           headers: tokHead,
@@ -106,15 +106,15 @@ const VehicleDetail = () => {
       )
         .then((response) => response.json())
         .then((result) => {
-          console.log("vh:", result);
-          setResData(result);
+          console.log(result)
+          // setResData(result);
         })
         .catch((err) => console.log(err));
     };
 
     getOne();
   }, [resId, setResData]);
-  console.log(devicereport);
+  
 
   return (
     <div className="flex flex-col lg:flex-row px-5 py-4 gap-4 lg:gap-0 items-center">

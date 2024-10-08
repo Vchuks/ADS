@@ -1,4 +1,4 @@
-import { useContext, useEffect, useState } from "react";
+import { useCallback, useContext, useEffect, useState } from "react";
 import { MapContext } from "../../context/MapContext";
 import { Link } from "react-router-dom";
 import { BiLoaderCircle } from "react-icons/bi";
@@ -46,14 +46,14 @@ const Responder = () => {
     }
   };
 
-  const fetchResponder = () => {
+  const fetchResponder = useCallback(() => {
     const getToken = JSON.parse(localStorage.getItem("user") || "");
     setType(getToken.message[0].type);
     const tokHead = new Headers();
     tokHead.append("Authorization", `Bearer ${getToken.message[0].token}`);
     setLoader(true);
 
-    fetch(`https://zubitechs.com/ads_apis/api/get_responder?page=${page}`, {
+    fetch(`http://zubitechnologies.com/ads_apis/api/get_responder?page=${page}`, {
       method: "GET",
       headers: tokHead,
     })
@@ -68,10 +68,10 @@ const Responder = () => {
         setGetResponder(result.data);
       })
       .catch((err) => console.log(err));
-  };
+  },[page,setGetResponder]);
   useEffect(() => {
     fetchResponder();
-  }, []);
+  }, [fetchResponder]);
 
   return (
     <>

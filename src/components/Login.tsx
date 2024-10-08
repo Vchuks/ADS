@@ -1,9 +1,10 @@
 import logo from "../assets/image/icon.png";
 import Image from "./atom/Image";
 import Text from "./atom/Text";
-import React, { useState } from "react";
+import React, { useContext, useState } from "react";
 import TextLink from "./atom/TextLink";
 import { BiLoaderCircle } from "react-icons/bi";
+import { MyContext } from "./context/MyContext";
 
 type AuthUser = {
   email: string;
@@ -11,6 +12,7 @@ type AuthUser = {
 };
 
 const Login = () => {
+  const {baseUrl} = useContext(MyContext)
   const [pass, setPass] = useState("password");
   const [invalid, setInvalid] = useState<string>("");
 
@@ -46,7 +48,7 @@ const Login = () => {
     };
 
     const res = await fetch(
-      "https://zubitechs.com/ads_apis/api/login",
+      `${baseUrl}/ads_apis/api/login`,
       reqData
     );
     const data = await res.json();
@@ -69,6 +71,8 @@ const Login = () => {
 
       setInvalid("Invalid Credentials");
     } else {
+      spin.style.display = "none";
+      setInvalid("Error!");
       return;
     }
   }

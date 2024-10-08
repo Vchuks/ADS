@@ -8,8 +8,8 @@ import {
 } from "react";
 
 type Geo = {
-  lat:  string;
-  log:  string;
+  lat: string;
+  log: string;
 };
 type Bell = {
   accident_type: string;
@@ -98,7 +98,7 @@ type Report = {
     accident_detected: string;
     attended_case: string;
     manualscan: string;
-    awaycase:string;
+    awaycase: string;
     offlinedevice: string;
     onlinedevice: string;
     pending_case: string;
@@ -155,7 +155,7 @@ type Agent = {
   agent_details: {
     account_disabled: number;
     email: string;
-    id: string ;
+    id: string;
     name: string;
     phone_number: string;
     status: string;
@@ -186,50 +186,50 @@ type EachResponder = {
   company_license: string;
 };
 type EachAgent = {
-    agent_details: {
-        id:  string;
+  agent_details: {
+    id: string;
+    name: string;
+    email: string;
+    type: string;
+    phone_number: string;
+    status: string;
+    account_disabled: number;
+  };
+  agent_unaccepted_logs: {
+    data: [];
+    count: number;
+  };
+  closedcases: {
+    data: [];
+    count: number;
+  };
+  attendedcases: {
+    data: [
+      {
+        id: number;
+        deviceid: string;
         name: string;
-        email: string;
-        type: string;
-        phone_number: string;
-        status: string;
-        account_disabled: number;
-    },
-    agent_unaccepted_logs: {
-        data: [],
-        count: number
-    },
-    closedcases: {
-        data: [],
-        count: number
-    },
-    attendedcases: {
-        data: [
-            {
-                id: number;
-                deviceid: string;
-                name: string;
-                lat: string;
-                log: string;
-                accident_type: string;
-                nature_of_request: string;
-                priority: string;
-                date: string;
-                time: string;
-                created_at: string;
-                responder_id: number;
-                agent_id: number;
-                request_accepted: number;
-                closed_status: number;
-                assigned_at: string;
-            }
-        ],
-        count: number;
-    },
-    pendingcases: {
-        data: [],
-        count: number
-    }
+        lat: string;
+        log: string;
+        accident_type: string;
+        nature_of_request: string;
+        priority: string;
+        date: string;
+        time: string;
+        created_at: string;
+        responder_id: number;
+        agent_id: number;
+        request_accepted: number;
+        closed_status: number;
+        assigned_at: string;
+      }
+    ];
+    count: number;
+  };
+  pendingcases: {
+    data: [];
+    count: number;
+  };
 };
 
 type AllAgents = {
@@ -285,8 +285,8 @@ type ContextProviderProps = {
 
 const defaultState = {
   geo: {
-    lat: '',
-    log: '',
+    lat: "",
+    log: "",
   },
   setGeo: () => {},
   bell: [
@@ -339,7 +339,7 @@ const defaultState = {
       accident_detected: "",
       attended_case: "",
       manualscan: "",
-      awaycase:'',
+      awaycase: "",
       offlinedevice: "",
       onlinedevice: "",
       pending_case: "",
@@ -373,8 +373,8 @@ const defaultState = {
     },
     accident_history: [],
     agent_id: 0,
-  responder_id: 0,
-  responder_name: '',
+    responder_id: 0,
+    responder_name: "",
     devicedetails: {
       device_id: "",
       device_ime: "",
@@ -398,7 +398,7 @@ const defaultState = {
     agent_details: {
       account_disabled: 0,
       email: "",
-      id: '',
+      id: "",
       name: "",
       phone_number: "",
       status: "",
@@ -441,7 +441,7 @@ const defaultState = {
   ],
   setGetResponder: () => {},
   eachResponder: {
-    id: '',
+    id: "",
     email: "",
     company_phone_number: "",
     company_address: "",
@@ -461,97 +461,96 @@ const defaultState = {
   },
   setResult: () => {},
 
-  eachAgent:{
+  eachAgent: {
     agent_details: {
-        id: '',
-        name: '',
-        email: '',
-        type: '',
-        phone_number:'',
-        status: '',
-        account_disabled: 1
+      id: "",
+      name: "",
+      email: "",
+      type: "",
+      phone_number: "",
+      status: "",
+      account_disabled: 1,
     },
     agent_unaccepted_logs: {
-        data: [],
-        count: 0
+      data: [],
+      count: 0,
     },
     closedcases: {
-        data: [],
-        count: 0
+      data: [],
+      count: 0,
     },
     attendedcases: {
-        data: [
-            {
-                id: 21,
-                deviceid: '',
-                name: '',
-                lat: '',
-                log: '',
-                accident_type: '' ,
-                nature_of_request: '',
-                priority: '',
-                date: '',
-                time: '',
-                created_at: '',
-                responder_id: 1,
-                agent_id: 1,
-                request_accepted: 1,
-                closed_status: 0,
-                assigned_at: "",
-            }
-        ],
-        count: 1,
+      data: [
+        {
+          id: 21,
+          deviceid: "",
+          name: "",
+          lat: "",
+          log: "",
+          accident_type: "",
+          nature_of_request: "",
+          priority: "",
+          date: "",
+          time: "",
+          created_at: "",
+          responder_id: 1,
+          agent_id: 1,
+          request_accepted: 1,
+          closed_status: 0,
+          assigned_at: "",
+        },
+      ],
+      count: 1,
     },
     pendingcases: {
-        data: [],
-        count: 0,
-    }
+      data: [],
+      count: 0,
+    },
   },
-  setEachAgent: ()=>{},
+  setEachAgent: () => {},
   resData: {
     closed_cases: [],
-  count: { total_closed_task: 0, task_assigned_count: 0 },
-  details: {
-    company_address: '',
-    company_license: '',
-    company_name: '',
-    company_phone_number: '',
-    email: '',
-    id: '',
-    nature_of_emergency: '',
-    type: '',
+    count: { total_closed_task: 0, task_assigned_count: 0 },
+    details: {
+      company_address: "",
+      company_license: "",
+      company_name: "",
+      company_phone_number: "",
+      email: "",
+      id: "",
+      nature_of_emergency: "",
+      type: "",
+    },
+    records: [
+      {
+        accident_type: "",
+        agent_id: 0,
+        assigned_at: "",
+        closed_status: 1,
+        created_at: "",
+        date: "",
+        deviceid: "",
+        id: 21,
+        lat: "",
+        log: "",
+        name: "",
+        nature_of_request: "",
+        priority: "",
+        request_accepted: 1,
+        responder_id: 2,
+        time: "",
+      },
+    ],
   },
-  records: [
-    {
-      accident_type: '',
-agent_id: 0,
-assigned_at: "",
-closed_status: 1,
-created_at: "",
-date: "",
-deviceid: "",
-id: 21,
-lat: "",
-log: "",
-name: "",
-nature_of_request: "",
-priority: "",
-request_accepted: 1,
-responder_id: 2,
-time: ""
-    }
-  ],
-  },
-  setResData: ()=>{},
-
+  setResData: () => {},
 } as StateProps;
 
 export const MapContext = createContext(defaultState);
 
 export function MapProvider({ children }: ContextProviderProps) {
   const [geo, setGeo] = useState<Geo>({
-    lat: '6.578249',
-    log: '3.364786',
+    lat: "6.578249",
+    log: "3.364786",
   });
 
   const [filter, setFilter] = useState<Filter>("");
@@ -563,7 +562,7 @@ export function MapProvider({ children }: ContextProviderProps) {
       attended_case: "",
       manualscan: "",
       offlinedevice: "",
-      awaycase:'',
+      awaycase: "",
       onlinedevice: "",
       pending_case: "",
       responders: "",
@@ -594,7 +593,7 @@ export function MapProvider({ children }: ContextProviderProps) {
     },
     agent_id: 0,
     responder_id: 0,
-    responder_name: '',
+    responder_name: "",
     accident_history: [],
     devicedetails: {
       device_id: "",
@@ -617,7 +616,7 @@ export function MapProvider({ children }: ContextProviderProps) {
   const [bell, setBell] = useState<Bell[]>([]);
   const [getResponder, setGetResponder] = useState<Responder[]>([]);
   const [eachResponder, setEachResponder] = useState<EachResponder>({
-    id: '',
+    id: "",
     email: "",
     company_phone_number: "",
     company_address: "",
@@ -627,37 +626,37 @@ export function MapProvider({ children }: ContextProviderProps) {
   });
   const [resData, setResData] = useState<ResData>({
     closed_cases: [],
-  count: { total_closed_task: 0, task_assigned_count: 0 },
-  details: {
-    company_address: '',
-    company_license: '',
-    company_name: '',
-    company_phone_number: '',
-    email: '',
-    id: '',
-    nature_of_emergency: '',
-    type: '',
-  },
-  records: [
-    {
-      accident_type: '',
-agent_id: 0,
-assigned_at: "",
-closed_status: 1,
-created_at: "",
-date: "",
-deviceid: "",
-id: 21,
-lat: "",
-log: "",
-name: "",
-nature_of_request: "",
-priority: "",
-request_accepted: 1,
-responder_id: 2,
-time: ""
-    }
-  ],
+    count: { total_closed_task: 0, task_assigned_count: 0 },
+    details: {
+      company_address: "",
+      company_license: "",
+      company_name: "",
+      company_phone_number: "",
+      email: "",
+      id: "",
+      nature_of_emergency: "",
+      type: "",
+    },
+    records: [
+      {
+        accident_type: "",
+        agent_id: 0,
+        assigned_at: "",
+        closed_status: 1,
+        created_at: "",
+        date: "",
+        deviceid: "",
+        id: 21,
+        lat: "",
+        log: "",
+        name: "",
+        nature_of_request: "",
+        priority: "",
+        request_accepted: 1,
+        responder_id: 2,
+        time: "",
+      },
+    ],
   });
 
   const [result, setResult] = useState<Detail>({
@@ -672,50 +671,50 @@ time: ""
 
   const [eachAgent, setEachAgent] = useState<EachAgent>({
     agent_details: {
-        id: '',
-        name: '',
-        email: '',
-        type: '',
-        phone_number:'',
-        status: '',
-        account_disabled: 1
+      id: "",
+      name: "",
+      email: "",
+      type: "",
+      phone_number: "",
+      status: "",
+      account_disabled: 1,
     },
     agent_unaccepted_logs: {
-        data: [],
-        count: 0
+      data: [],
+      count: 0,
     },
     closedcases: {
-        data: [],
-        count: 0
+      data: [],
+      count: 0,
     },
     attendedcases: {
-        data: [
-            {
-                id: 21,
-                deviceid: '',
-                name: '',
-                lat: '',
-                log: '',
-                accident_type: '' ,
-                nature_of_request: '',
-                priority: '',
-                date: '',
-                time: '',
-                created_at: '',
-                responder_id: 1,
-                agent_id: 1,
-                request_accepted: 1,
-                closed_status: 0,
-                assigned_at: "",
-            }
-        ],
-        count: 1,
+      data: [
+        {
+          id: 21,
+          deviceid: "",
+          name: "",
+          lat: "",
+          log: "",
+          accident_type: "",
+          nature_of_request: "",
+          priority: "",
+          date: "",
+          time: "",
+          created_at: "",
+          responder_id: 1,
+          agent_id: 1,
+          request_accepted: 1,
+          closed_status: 0,
+          assigned_at: "",
+        },
+      ],
+      count: 1,
     },
     pendingcases: {
-        data: [],
-        count: 0,
-    }
-  })
+      data: [],
+      count: 0,
+    },
+  });
 
   const [getAllAgents, setGetAllAgents] = useState<AllAgents>({
     current_page: 0,
@@ -731,13 +730,13 @@ time: ""
     prev_page_url: "",
     to: 0,
     total: 0,
-  })
+  });
 
   const [getAgent, setGetAgent] = useState<Agent>({
     agent_details: {
       account_disabled: 0,
       email: "",
-      id: '',
+      id: "",
       name: "",
       phone_number: "",
       status: "",
@@ -779,7 +778,7 @@ time: ""
         eachAgent,
         setEachAgent,
         resData,
-        setResData
+        setResData,
       }}
     >
       {children}

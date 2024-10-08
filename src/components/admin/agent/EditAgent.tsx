@@ -53,7 +53,7 @@ const EditAgent = () => {
     formdata.append("email", deviceData?.email );
    
 
-    const url = "https://zubitechs.com/ads_apis/api/update_agent";
+    const url = "http://zubitechnologies.com/ads_apis/api/update_agent";
 
     const tokenGet = new Headers();
     tokenGet.append("Authorization", `Bearer ${token}`);

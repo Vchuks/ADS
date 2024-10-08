@@ -57,7 +57,7 @@ const Agent = () => {
       const tokHead = new Headers();
       tokHead.append("Authorization", `Bearer ${getToken.message[0].token}`);
 
-      fetch(`https://zubitechs.com/ads_apis/api/get_agents?page=${page}`, {
+      fetch(`http://zubitechnologies.com/ads_apis/api/get_agents?page=${page}`, {
         method: "GET",
         headers: tokHead,
       })
@@ -88,7 +88,7 @@ const Agent = () => {
     setLoader(true);
     const tokHead = new Headers();
     tokHead.append("Authorization", `Bearer ${getToken.message[0].token}`);
-    fetch(`https://zubitechs.com/ads_apis/api/get_agent_details?id=${id}`, {
+    fetch(`http://zubitechnologies.com/ads_apis/api/get_agent_details?id=${id}`, {
       method: "GET",
       headers: tokHead,
     })

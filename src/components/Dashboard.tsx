@@ -30,7 +30,7 @@ type Data = {
 };
 
 const Dashboard = () => {
-  const { table, report, filter, setTable, setId } = useContext(MapContext);
+  const { table, filter, setTable, setId } = useContext(MapContext);
   const [loading, setLoading] = useState<string | null>(null);
   const [error, setError] = useState(null);
   const [device, setDevice] = useState<string>("");
@@ -48,7 +48,7 @@ const Dashboard = () => {
       setDLoading(null);
       setError(null);
       fetch(
-        `https://zubitechs.com/ads_apis/api/dashboard_api?filter_type=${filter}`,
+        `http://zubitechnologies.com/ads_apis/api/dashboard_api?filter_type=${filter}`,
         {
           method: "GET",
           headers: tokHead,
@@ -72,7 +72,7 @@ const Dashboard = () => {
         });
     }
   }, [filter, setTable, device]);
-console.log(tableP)
+
   const handleSearch = (event: React.MouseEvent<HTMLDivElement>) => {
     event.preventDefault();
     const getToken = JSON.parse(localStorage.getItem("user") || "");
@@ -82,7 +82,7 @@ console.log(tableP)
     setLoading("loading...");
 
     fetch(
-      `https://zubitechs.com/ads_apis/api/dashboard_api?searchvalue=${device}&filter_type=${filter}`,
+      `http://zubitechnologies.com/ads_apis/api/dashboard_api?searchvalue=${device}&filter_type=${filter}`,
       {
         method: "GET",
         headers: tokHead,
@@ -103,7 +103,7 @@ console.log(tableP)
       });
   };
 
-  console.log(report)
+  
   return (
     <div className="bg-[#E2E1FE]  max-h-full">
       <Header

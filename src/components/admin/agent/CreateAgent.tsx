@@ -41,7 +41,7 @@ const CreateAgent = () => {
     const tokHead = new Headers();
     tokHead.append("Authorization", `Bearer ${getToken.message[0].token}`);
 
-    const url = "https://zubitechs.com/ads_apis/api/create_agents";
+    const url = "http://zubitechnologies.com/ads_apis/api/create_agents";
     if (
       agent?.name === "" ||
       agent?.email === "" ||

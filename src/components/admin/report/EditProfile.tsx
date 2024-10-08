@@ -67,7 +67,7 @@ const EditProfile = () => {
     formdata.append("vehicle_chasses_number", deviceData?.vehicle_chasses_number);
     formdata.append("vehicle_model_year", deviceData?.vehicle_model_year);
 
-    const url = "https://zubitechs.com/ads_apis/api/updatedevices";
+    const url = "http://zubitechnologies.com/ads_apis/api/updatedevices";
 
     const tokenGet = new Headers();
     tokenGet.append("Authorization", `Bearer ${token}`);

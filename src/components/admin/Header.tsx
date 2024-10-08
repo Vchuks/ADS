@@ -34,7 +34,7 @@ const Header = (props: textProps) => {
   const { headText, subhead } = props;
   const [openSide, setOpenSide] = useState(false);
   const [notify, setNotify] = useState(false);
-  const [type, setType] = useState('');
+  const [type, setType] = useState("");
   const [, setAccept] = useState<string>();
 
   const handleNav = () => {
@@ -48,52 +48,50 @@ const Header = (props: textProps) => {
 
   const getUsers = () => {
     const getToken = JSON.parse(localStorage.getItem("user") || "");
-setType(getToken.message[0].type)
+    setType(getToken.message[0].type);
     const tokHead = new Headers();
     tokHead.append("Authorization", `Bearer ${getToken.message[0].token}`);
 
-    fetch("https://zubitechs.com/ads_apis/api/dashboard_api", {
+    fetch("http://zubitechnologies.com/ads_apis/api/dashboard_api", {
       method: "GET",
       headers: tokHead,
     })
       .then((response) => response.json())
       .then((result) => {
-        setReport(result)
-        setResult(result.details)
-        setBell(result.notifications)
-  
+        setReport(result);
+        setResult(result.details);
+        setBell(result.notifications);
       })
       .catch((err) => console.log(err));
   };
-  useEffect(()=>{
-    getUsers()
-  },[setBell,setResult,setReport])
+  useEffect(() => {
+    getUsers();
+  }, [setBell, setResult, setReport]);
   // setInterval(()=>{getUsers()},60000)
-  
+
   useEffect(() => {
     const interval = setInterval(() => {
-      ()=>getUsers();
+      () => getUsers();
     }, 60000);
     return () => clearInterval(interval);
   }, []);
 
-  const handleAccept = (id:number)=>{
+  const handleAccept = (id: number) => {
     const getToken = JSON.parse(localStorage.getItem("user") || "");
-    
-        const tokHead = new Headers();
-        tokHead.append("Authorization", `Bearer ${getToken.message[0].token}`);
-    
-        fetch(`https://zubitechs.com/ads_apis/api/accept?id=${id}`, {
-          method: "GET",
-          headers: tokHead,
-        })
-          .then((response) => response.json())
-          .then((result) => {
-           setAccept(result.message)
-      
-          })
-          .catch((err) => console.log(err));
-  }
+
+    const tokHead = new Headers();
+    tokHead.append("Authorization", `Bearer ${getToken.message[0].token}`);
+
+    fetch(`http://zubitechnologies.com/ads_apis/api/accept?id=${id}`, {
+      method: "GET",
+      headers: tokHead,
+    })
+      .then((response) => response.json())
+      .then((result) => {
+        setAccept(result.message);
+      })
+      .catch((err) => console.log(err));
+  };
 
   return (
     <>
@@ -137,27 +135,26 @@ setType(getToken.message[0].type)
                     {each?.deviceid}
                   </span>
                 </p>
-                {type === 'agent' ? (
+                {type === "agent" ? (
                   <Link
                     to={{
                       pathname: "/device_report/details_page",
                       search: `?device_id=${each.deviceid}`,
                     }}
                   >
-                  <>
-                    <p
-                      onClick={() =>{ 
-                        setId(each.deviceid)
-                        handleAccept(each.id)
-                        setNotify(false)
-                      }
-                      }
-                      className=" cursor-pointer text-bcolor "
-                    >Accept
-                    </p>
-                      
-                      </>
-                   </Link>
+                    <>
+                      <p
+                        onClick={() => {
+                          setId(each.deviceid);
+                          handleAccept(each.id);
+                          setNotify(false);
+                        }}
+                        className=" cursor-pointer text-bcolor "
+                      >
+                        Accept
+                      </p>
+                    </>
+                  </Link>
                 ) : (
                   <Link
                     to={{
@@ -166,11 +163,10 @@ setType(getToken.message[0].type)
                     }}
                   >
                     <p
-                      onClick={(e:React.MouseEvent<HTMLParagraphElement>) =>{ 
-                        setId(each.deviceid)
-                          e.currentTarget.style.color = '#464f60'
-                          setNotify(false)
-                        
+                      onClick={(e: React.MouseEvent<HTMLParagraphElement>) => {
+                        setId(each.deviceid);
+                        e.currentTarget.style.color = "#464f60";
+                        setNotify(false);
                       }}
                       className="cursor-pointer font-semibold"
                     >

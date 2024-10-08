@@ -34,7 +34,7 @@ const {setId} = useContext(MapContext)
   useEffect(() => {
     const getDevices = () => {
       setLoader(true)
-      fetch(`https://zubitechs.com/ads_apis/api/get_devices?page=${page}`)
+      fetch(`http://zubitechnologies.com/ads_apis/api/get_devices?page=${page}`)
         .then((response) => response.json())
         .then((result) => {
           setDresult(result.devices)

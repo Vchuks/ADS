@@ -60,7 +60,7 @@ const EditResponder = () => {
     formdata.append("password", deviceData?.password );
    
 
-    const url = "https://zubitechs.com/ads_apis/api/update_responder";
+    const url = "http://zubitechnologies.com/ads_apis/api/update_responder";
 
     const tokenGet = new Headers();
     tokenGet.append("Authorization", `Bearer ${token}`);

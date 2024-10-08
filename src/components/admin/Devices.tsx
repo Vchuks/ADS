@@ -45,7 +45,7 @@ const Devices = () => {
     setLoader(true)
     setError(null);
       fetch(
-        `https://zubitechs.com/ads_apis/api/dashboard_api?filter_type=${filter}`,
+        `http://zubitechnologies.com/ads_apis/api/dashboard_api?filter_type=${filter}`,
         {
           method: "GET",
           headers: tokHead,
@@ -79,7 +79,7 @@ const Devices = () => {
       setLoading(null);
       setLoader(true)
     setError(null);
-    fetch("https://zubitechs.com/ads_apis/api/dashboard_api", {
+    fetch("http://zubitechnologies.com/ads_apis/api/dashboard_api", {
       method: "GET",
       headers: tokHead,
     })
@@ -109,7 +109,7 @@ const Devices = () => {
     tokHead.append("Authorization", `Bearer ${getToken.message[0].token}`);
 
     fetch(
-      `https://zubitechs.com/ads_apis/api/dashboard_api?searchvalue=${device}&filter_type=${filter}`,
+      `http://zubitechnologies.com/ads_apis/api/dashboard_api?searchvalue=${device}&filter_type=${filter}`,
       {
         method: "GET",
         headers: tokHead,

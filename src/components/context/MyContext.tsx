@@ -1,19 +1,33 @@
-import { ReactNode, SetStateAction, Dispatch, createContext, useState } from "react";
+import {
+  ReactNode,
+  SetStateAction,
+  Dispatch,
+  createContext,
+  useState,
+} from "react";
 
 type StateProps = {
-    modal: boolean
-    setModal: Dispatch<SetStateAction<boolean>>
-}
+  modal: boolean;
+  setModal: Dispatch<SetStateAction<boolean>>;
+  baseUrl: string;
+};
 type ContextProviderProps = {
-    children?: ReactNode
-}
+  children?: ReactNode;
+};
 
 export const MyContext = createContext<StateProps>({
-    modal: false,
-    setModal: () => {}
+  modal: false,
+  setModal: () => {},
+  baseUrl: ""
 });
 
-export function MyDataProvider ({ children }: ContextProviderProps){
-    const [modal, setModal] = useState(false)
-    return <MyContext.Provider value={{modal, setModal}}>{children}</MyContext.Provider>
+export function MyDataProvider({ children }: ContextProviderProps) {
+  const [modal, setModal] = useState(false);
+  const baseUrl = "http://zubitechnologies.com"
+
+  return (
+    <MyContext.Provider value={{ modal, setModal, baseUrl }}>
+      {children}
+    </MyContext.Provider>
+  );
 }

@@ -2,9 +2,11 @@ import Header from "../admin/Header";
 import ViewDetails from "../admin/report/ViewDetails";
 import {  useContext, useEffect } from "react";
 import { MapContext } from "../context/MapContext";
+import { MyContext } from "../context/MyContext";
 
 const ViewDetailsPage = () => {
   const {id, setDeviceReport} = useContext(MapContext)
+  const {baseUrl} = useContext(MyContext)
   // const [item, setItem] = useState('')
   
 
@@ -21,7 +23,7 @@ const ViewDetailsPage = () => {
     
     const eachDetail = () => {
       fetch(
-        `https://zubitechs.com/ads_apis/api/get_device_details?device_id=${id}`,
+        `${baseUrl}/ads_apis/api/get_device_details?device_id=${id}`,
         {
           method: "GET",
           headers: tokHead,
@@ -29,13 +31,12 @@ const ViewDetailsPage = () => {
       )
         .then((res) => res.json())
         .then((result) => {
-          console.log(result);
           setDeviceReport(result)
         });
     };
     eachDetail()
   }
-  , [id,setDeviceReport]);
+  , [id,setDeviceReport,baseUrl]);
 
   return (
     <div>

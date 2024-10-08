@@ -1,4 +1,4 @@
-import {  useContext, useEffect } from "react";
+import {  useCallback, useContext, useEffect } from "react";
 import Box from "../atom/Box";
 import { MapContext } from "../context/MapContext";
 
@@ -23,29 +23,31 @@ const Users = () => {
   // const [user, setUser] = useState<Data>({} as Data);
 
   
-  const getUsers = () => {
-    const getToken = JSON.parse(localStorage.getItem("user") || "");
-
-    const tokHead = new Headers();
-    tokHead.append("Authorization", `Bearer ${getToken.message[0].token}`);
-
-    fetch("https://zubitechs.com/ads_apis/api/dashboard_api", {
-      method: "GET",
-      headers: tokHead,
-    })
-      .then((response) => response.json())
-      .then((result) => {
-        console.log(result)
-        setReport(result)
-        setResult(result.details)
-        setBell(result.notifications)
+  const getUsers = useCallback(()=>{
+    
+      const getToken = JSON.parse(localStorage.getItem("user") || "");
   
+      const tokHead = new Headers();
+      tokHead.append("Authorization", `Bearer ${getToken.message[0].token}`);
+  
+      fetch("http://zubitechnologies.com/ads_apis/api/dashboard_api", {
+        method: "GET",
+        headers: tokHead,
       })
-      .catch((err) => console.log(err));
-  };
+        .then((response) => response.json())
+        .then((result) => {
+          setReport(result)
+          setResult(result.details)
+          setBell(result.notifications)
+    
+        })
+        .catch((err) => console.log(err));
+  
+  },[setBell, setReport, setResult])
+ 
   useEffect(()=>{
     getUsers()
-  },[])
+  },[getUsers])
 //   setInterval(()=>{
 //     getUsers();
 
