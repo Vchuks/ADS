@@ -4,6 +4,7 @@ import { IoArrowBackOutline } from "react-icons/io5";
 import Swal from "sweetalert2";
 import { MapContext } from "../../context/MapContext";
 import { BiLoaderCircle } from "react-icons/bi";
+import { MyContext } from "../../context/MyContext";
 
 
 // type Data = {
@@ -24,6 +25,7 @@ import { BiLoaderCircle } from "react-icons/bi";
 
 const EditProfile = () => {
   const {devicereport} = useContext(MapContext)
+  const {baseUrl} = useContext(MyContext)
   const user = JSON.parse(localStorage.getItem("user") || "");
   const token = user?.message[0]?.token;
 
@@ -67,7 +69,7 @@ const EditProfile = () => {
     formdata.append("vehicle_chasses_number", deviceData?.vehicle_chasses_number);
     formdata.append("vehicle_model_year", deviceData?.vehicle_model_year);
 
-    const url = "http://zubitechnologies.com/ads_apis/api/updatedevices";
+    const url = `${baseUrl}/ads_apis/api/updatedevices`;
 
     const tokenGet = new Headers();
     tokenGet.append("Authorization", `Bearer ${token}`);

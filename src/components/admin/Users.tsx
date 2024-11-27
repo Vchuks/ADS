@@ -1,59 +1,11 @@
-import {  useCallback, useContext, useEffect } from "react";
+import {  useContext } from "react";
 import Box from "../atom/Box";
 import { MapContext } from "../context/MapContext";
 
-// type Data = {
-//   counts: {
-//     accident_detected: "";
-//     attended_case: "";
-//     manualscan: "";
-//     offlinedevice: "";
-//     onlinedevice: "";
-//     pending_case: "";
-//     responders: "";
-//     sos: "";
-//   };
-//   details: object;
-//   notifications: object;
-//   records: object
-// };
+
 
 const Users = () => {
-  const {setReport,setResult, setBell, report, filter} = useContext(MapContext)
-  // const [user, setUser] = useState<Data>({} as Data);
-
-  
-  const getUsers = useCallback(()=>{
-    
-      const getToken = JSON.parse(localStorage.getItem("user") || "");
-  
-      const tokHead = new Headers();
-      tokHead.append("Authorization", `Bearer ${getToken.message[0].token}`);
-  
-      fetch("http://zubitechnologies.com/ads_apis/api/dashboard_api", {
-        method: "GET",
-        headers: tokHead,
-      })
-        .then((response) => response.json())
-        .then((result) => {
-          setReport(result)
-          setResult(result.details)
-          setBell(result.notifications)
-    
-        })
-        .catch((err) => console.log(err));
-  
-  },[setBell, setReport, setResult])
- 
-  useEffect(()=>{
-    getUsers()
-  },[getUsers])
-//   setInterval(()=>{
-//     getUsers();
-
-// }, 60000)
-
-
+  const { report, filter} = useContext(MapContext)
 
   return (
     <>

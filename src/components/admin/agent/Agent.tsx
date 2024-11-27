@@ -5,6 +5,7 @@ import { GoDotFill } from "react-icons/go";
 import { Link } from "react-router-dom";
 import { BiLoaderCircle } from "react-icons/bi";
 import Paginate from "../../atom/Paginate";
+import { MyContext } from "../../context/MyContext";
 
 // import TextLink from "../../atom/TextLink";
 
@@ -32,6 +33,8 @@ const Agent = () => {
   const [loader, setLoader] = useState(false);
   const [agt, setAgt] = useState();
   const [page, setPage] = useState(1);
+  const {baseUrl} = useContext(MyContext)
+
 
   const handleView = () => {
     if (all) {
@@ -57,7 +60,7 @@ const Agent = () => {
       const tokHead = new Headers();
       tokHead.append("Authorization", `Bearer ${getToken.message[0].token}`);
 
-      fetch(`http://zubitechnologies.com/ads_apis/api/get_agents?page=${page}`, {
+      fetch(`${baseUrl}/ads_apis/api/get_agents?page=${page}`, {
         method: "GET",
         headers: tokHead,
       })
@@ -80,7 +83,7 @@ const Agent = () => {
         .catch((err) => console.log(err));
     };
     fetchAgent();
-  }, [setGetAllAgents, page]);
+  }, [setGetAllAgents, page, baseUrl]);
 
   const handleEach = (id: number | string) => {
     const getToken = JSON.parse(localStorage.getItem("user") || "");
@@ -88,7 +91,7 @@ const Agent = () => {
     setLoader(true);
     const tokHead = new Headers();
     tokHead.append("Authorization", `Bearer ${getToken.message[0].token}`);
-    fetch(`http://zubitechnologies.com/ads_apis/api/get_agent_details?id=${id}`, {
+    fetch(`${baseUrl}/ads_apis/api/get_agent_details?id=${id}`, {
       method: "GET",
       headers: tokHead,
     })

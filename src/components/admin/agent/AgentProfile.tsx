@@ -6,6 +6,7 @@ import carlogo from "../../../assets/image/Frame 20511.png";
 import Box from "../../atom/Box";
 import { useContext, useEffect } from "react";
 import { MapContext } from "../../context/MapContext";
+import { MyContext } from "../../context/MyContext";
 
 type Data = {
   accident_type: string;
@@ -27,6 +28,7 @@ type Data = {
 };
 const AgentProfile = () => {
   const { getAgent, result, setGetAgent } = useContext(MapContext);
+  const {baseUrl} = useContext(MyContext)
   
   
   useEffect(() => {
@@ -34,7 +36,7 @@ const AgentProfile = () => {
      
 
       fetch(
-        `http://zubitechnologies.com/ads_apis/api/get_agent_details?id=${result?.id}`,
+        `${baseUrl}/ads_apis/api/get_agent_details?id=${result?.id}`,
         {
           method: "GET",
           // headers: tokHead,
@@ -48,7 +50,7 @@ const AgentProfile = () => {
         .catch((err) => console.log(err));
     };
     fetchAnAgent();
-  }, [result, setGetAgent]);
+  }, [result, setGetAgent,baseUrl]);
 
   return (
     <div className="flex flex-col lg:flex-row px-5 py-4 gap-4 lg:gap-0 ">

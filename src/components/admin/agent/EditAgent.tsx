@@ -4,6 +4,7 @@ import { IoArrowBackOutline } from "react-icons/io5";
 import Swal from "sweetalert2";
 import { MapContext } from "../../context/MapContext";
 import { BiLoaderCircle } from "react-icons/bi";
+import { MyContext } from "../../context/MyContext";
 
 
 // type Data = {
@@ -24,6 +25,8 @@ import { BiLoaderCircle } from "react-icons/bi";
 
 const EditAgent = () => {
   const {eachAgent} = useContext(MapContext)
+  const {baseUrl} = useContext(MyContext)
+
   const user = JSON.parse(localStorage.getItem("user") || "");
   const token = user?.message[0]?.token;
 
@@ -53,7 +56,7 @@ const EditAgent = () => {
     formdata.append("email", deviceData?.email );
    
 
-    const url = "http://zubitechnologies.com/ads_apis/api/update_agent";
+    const url = `${baseUrl}/ads_apis/api/update_agent`;
 
     const tokenGet = new Headers();
     tokenGet.append("Authorization", `Bearer ${token}`);

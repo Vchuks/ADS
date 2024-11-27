@@ -23,7 +23,7 @@ export const MyContext = createContext<StateProps>({
 
 export function MyDataProvider({ children }: ContextProviderProps) {
   const [modal, setModal] = useState(false);
-  const baseUrl = "http://zubitechnologies.com"
+  const baseUrl = "https://zubitechnologies.com"
 
   return (
     <MyContext.Provider value={{ modal, setModal, baseUrl }}>

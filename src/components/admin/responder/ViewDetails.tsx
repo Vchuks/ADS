@@ -6,12 +6,14 @@ import carlogo from "../../../assets/image/Frame 20511.png";
 import { useContext, useEffect, useState } from "react";
 import { MapContext } from "../../context/MapContext";
 import TextLink from "../../atom/TextLink";
+import { MyContext } from "../../context/MyContext";
 
 const ViewDetails = () => {
   const loginDetails = JSON.parse(localStorage.getItem("user") || "");
   const [userData] = useState(loginDetails);
   const [isButtonDisabled, setButtonDisabled] = useState(false);
   const { eachResponder, resData, setResData } = useContext(MapContext);
+  const {baseUrl} = useContext(MyContext)
 
   const disableButton = () => {
     if (
@@ -33,7 +35,7 @@ const ViewDetails = () => {
 
         tokHead.append("Authorization", `Bearer ${getToken.message[0].token}`);
         fetch(
-          `http://zubitechnologies.com/ads_apis/api/responder_details?id=${eachResponder?.id}`,
+          `${baseUrl}/ads_apis/api/responder_details?id=${eachResponder?.id}`,
           {
             method: "GET",
             headers: tokHead,
@@ -51,7 +53,7 @@ const ViewDetails = () => {
     } catch (err) {
       console.log(err);
     }
-  }, [setResData, resData?.details.id, eachResponder.id]);
+  }, [setResData, resData?.details.id, eachResponder.id, baseUrl]);
 
   
   return (

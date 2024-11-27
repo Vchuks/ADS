@@ -5,6 +5,7 @@ import carlogo from "../../../assets/image/Frame 20511.png";
 import { useContext, useEffect, useState } from "react";
 import { MapContext } from "../../context/MapContext";
 import Swal from "sweetalert2";
+import { MyContext } from "../../context/MyContext";
 
 type D = {
   id: number | string;
@@ -18,6 +19,7 @@ type D = {
 
 const Respondent = ({onClick}) => {
   const {getResponder, devicereport, setGetResponder} = useContext(MapContext)
+  const {baseUrl} = useContext(MyContext)
   const [loading, setLoading] = useState<string>()
   const [error, setError] = useState<string>()
 
@@ -31,7 +33,7 @@ useEffect(() => {
     tokHead.append("Authorization", `Bearer ${getToken.message[0].token}`);
 
 
-    fetch("http://zubitechnologies.com/ads_apis/api/get_responder", {
+    fetch(`${baseUrl}/ads_apis/api/get_responder`, {
       method: "GET",
       headers: tokHead,
     })
@@ -47,7 +49,7 @@ useEffect(() => {
       });
   };
   fetchResponder();
-}, [setGetResponder]);
+}, [setGetResponder,baseUrl]);
   
   const assignAccident = (resid ) => {
     const getToken = JSON.parse(localStorage.getItem("user") || "");
@@ -64,7 +66,7 @@ setLoading('Assigning...')
       headers: header,
       body: formData
     }
-    fetch('http://zubitechnologies.com/ads_apis/api/assign_accident',reqMeth)
+    fetch(`${baseUrl}/ads_apis/api/assign_accident`,reqMeth)
     .then(response => response.json())
     .then(result => {
       setLoading('')

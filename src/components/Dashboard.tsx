@@ -10,6 +10,7 @@ import { IoArrowBackOutline } from "react-icons/io5";
 import { IoSearchSharp } from "react-icons/io5";
 import { Link } from "react-router-dom";
 import Paginate from "./atom/Paginate";
+import { MyContext } from "./context/MyContext";
 
 type Data = {
   id: number;
@@ -30,25 +31,28 @@ type Data = {
 };
 
 const Dashboard = () => {
-  const { table, filter, setTable, setId } = useContext(MapContext);
+  const { table, filter, setTable, setId, tableP, setTableP } =
+    useContext(MapContext);
+  const { baseUrl } = useContext(MyContext);
   const [loading, setLoading] = useState<string | null>(null);
   const [error, setError] = useState(null);
   const [device, setDevice] = useState<string>("");
   const [dloading, setDLoading] = useState<string | null>(null);
-  const [tableP, setTableP] =useState()
-  const [page, setPage] = useState(1)
+
+  const [page, setPage] = useState(1);
 
   useEffect(() => {
-    const getToken = JSON.parse(localStorage.getItem("user") || "");
+    const getToken = JSON.parse(localStorage.getItem("user") || "{}");
 
     const tokHead = new Headers();
-    tokHead.append("Authorization", `Bearer ${getToken.message[0].token}`);
+    tokHead.append("Authorization", `Bearer ${getToken.message[0]?.token}`);
     if (filter !== "") {
       setLoading("loading...");
       setDLoading(null);
       setError(null);
+
       fetch(
-        `http://zubitechnologies.com/ads_apis/api/dashboard_api?filter_type=${filter}`,
+        `${baseUrl}/ads_apis/api/dashboard_api?filter_type=${filter}&page=${page}`,
         {
           method: "GET",
           headers: tokHead,
@@ -57,11 +61,11 @@ const Dashboard = () => {
         .then((response) => response.json())
         .then((result) => {
           if (result.records.data) {
-            setTableP(result.notifications)
             setLoading(null);
             setDLoading(null);
             setError(null);
             setTable(result.records.data);
+            setTableP(result.notifications);
           }
         })
         .catch((err) => {
@@ -71,7 +75,7 @@ const Dashboard = () => {
           setError(err);
         });
     }
-  }, [filter, setTable, device]);
+  }, [filter, setTable, device, baseUrl, page, setTableP]);
 
   const handleSearch = (event: React.MouseEvent<HTMLDivElement>) => {
     event.preventDefault();
@@ -82,7 +86,7 @@ const Dashboard = () => {
     setLoading("loading...");
 
     fetch(
-      `http://zubitechnologies.com/ads_apis/api/dashboard_api?searchvalue=${device}&filter_type=${filter}`,
+      `${baseUrl}/ads_apis/api/dashboard_api?searchvalue=${device}&filter_type=${filter}`,
       {
         method: "GET",
         headers: tokHead,
@@ -90,7 +94,6 @@ const Dashboard = () => {
     )
       .then((response) => response.json())
       .then((result) => {
-        
         if (result.records.data) {
           setLoading(null);
           setError(null);
@@ -103,7 +106,6 @@ const Dashboard = () => {
       });
   };
 
-  
   return (
     <div className="bg-[#E2E1FE]  max-h-full">
       <Header
@@ -111,13 +113,8 @@ const Dashboard = () => {
         headText="Dashboard"
       />
       <div className="w-full bg-[#E2E1FE] xl:h-[90%] h-full relative">
-        
         <Users />
-        {/* {table.length <= 0 
-        || (table.length >0 && filter === '' || filter === 'Manual Scan' || filter === 'ACCIDENT DETECTED' || filter === 'pending_case' || filter === 'attended_case' || filter === 'SOS') 
-        && (
-          
-         )}  */}
+        
         {table.length > 0 && (filter === "offline" || filter === "online") ? (
           <>
             <div
@@ -149,130 +146,137 @@ const Dashboard = () => {
             <Map high="h-[50vh] lg:h-auto" />
           </div>
         )}
-        {table.length > 0 && (filter === "offline" || filter === "online" || filter === 'away') && (
-          <div className="flex flex-col  lg:flex-row px-5 py-4 gap-4 relative h-screen">
-            <div className="overflow-x-scroll bg-white rounded-2xl lg:absolute  w-full  lg:h-[70vh] lg:text-sm">
-              {dloading && <p>{dloading}</p>}
-              {/* <TextLink
+        {table.length > 0 &&
+          (filter === "offline" ||
+            filter === "online" ||
+            filter === "away") && (
+            <div className="flex flex-col  lg:flex-row px-5 py-4 gap-4 relative h-screen">
+              <div className="overflow-x-scroll bg-white rounded-2xl lg:absolute  w-full  lg:h-[70vh] lg:text-sm">
+                {dloading && <p className="text-3xl">{dloading}</p>}
+                {/* <TextLink
               to="/device_report/details_page"
               className=""
               body={ */}
-              <div className="w-max flex  font-bold bg-white text-[#6E7680]">
-                <div className="w-[150px] break-words px-2  border-b py-4 border-[#DDE5E9]">
-                  Device ID
-                </div>
-                <div className="w-[150px] break-words px-2  border-b py-4 border-[#DDE5E9]">
-                  Vehicle Name
-                </div>
+                <div className="w-max flex  font-bold bg-white text-[#6E7680]">
+                  <div className="w-[150px] break-words px-2  border-b py-4 border-[#DDE5E9]">
+                    Device ID
+                  </div>
+                  <div className="w-[150px] break-words px-2  border-b py-4 border-[#DDE5E9]">
+                    Vehicle Name
+                  </div>
 
-                <div className="w-[150px] break-words px-2  border-b py-4 border-[#DDE5E9]">
-                  Device Number
-                </div>
-                <div className="w-[150px] break-words px-2  border-b py-4 border-[#DDE5E9]">
-                  Device IME
-                </div>
+                  <div className="w-[150px] break-words px-2  border-b py-4 border-[#DDE5E9]">
+                    Device Number
+                  </div>
+                  <div className="w-[150px] break-words px-2  border-b py-4 border-[#DDE5E9]">
+                    Device IME
+                  </div>
 
-                <div className="w-[150px] break-words px-2  border-b py-4 border-[#DDE5E9]">
-                  Activity Status
-                </div>
-                <div className="w-[150px] break-words px-2  border-b py-4 border-[#DDE5E9]">
-                  Vehicle Chasses Num
-                </div>
-                <div className="w-[150px] break-words px-2  border-b py-4 border-[#DDE5E9]">
-                  Vehicle Model Year
-                </div>
-                <div className="w-[150px] break-words px-2  border-b py-4 border-[#DDE5E9]">
-                  Vehicle Plate Number
-                </div>
+                  <div className="w-[150px] break-words px-2  border-b py-4 border-[#DDE5E9]">
+                    Activity Status
+                  </div>
+                  <div className="w-[150px] break-words px-2  border-b py-4 border-[#DDE5E9]">
+                    Vehicle Chasses Num
+                  </div>
+                  <div className="w-[150px] break-words px-2  border-b py-4 border-[#DDE5E9]">
+                    Vehicle Model Year
+                  </div>
+                  <div className="w-[150px] break-words px-2  border-b py-4 border-[#DDE5E9]">
+                    Vehicle Plate Number
+                  </div>
 
-                <div className="w-[150px] break-words px-2  border-b py-4 border-[#DDE5E9]">
-                  Owner Email
+                  <div className="w-[150px] break-words px-2  border-b py-4 border-[#DDE5E9]">
+                    Owner Email
+                  </div>
+                  <div className="w-[150px] break-words px-2  border-b py-4 border-[#DDE5E9]">
+                    Owner Name
+                  </div>
+                  <div className="w-[150px] break-words px-2  border-b py-4 border-[#DDE5E9]">
+                    Owner Phone Number
+                  </div>
+                  <div className="w-[150px] break-words px-2  border-b py-4 border-[#DDE5E9]">
+                    Owner Address
+                  </div>
                 </div>
-                <div className="w-[150px] break-words px-2  border-b py-4 border-[#DDE5E9]">
-                  Owner Name
-                </div>
-                <div className="w-[150px] break-words px-2  border-b py-4 border-[#DDE5E9]">
-                  Owner Phone Number
-                </div>
-                <div className="w-[150px] break-words px-2  border-b py-4 border-[#DDE5E9]">
-                  Owner Address
-                </div>
+                {loading && <p className="text-3xl">{loading}</p>}
+                {error && error}
+                {table.length === 0 ? (
+                  <p className="font-bold p-2 bg-white">No Device!</p>
+                ) : (
+                  table?.map((each: Data) => {
+                    return (
+                      <React.Fragment key={each?.id}>
+                        <Link
+                          key={each.id}
+                          to={{
+                            pathname: "/device_report/details_page",
+                            search: `?device_id=${each.device_id}`,
+                          }}
+                        >
+                          <div
+                            className="w-max flex  bg-white text-[#6E7680]"
+                            onClick={() => setId(each.device_id)}
+                          >
+                            <div className="w-[150px] break-words px-2  border-b py-4 border-[#DDE5E9]">
+                              {each?.device_id}
+                            </div>
+                            <div className="w-[150px] break-words px-2  border-b py-4 border-[#DDE5E9]">
+                              {each?.vehicle_name}
+                            </div>
+                            <div className="w-[150px] break-words px-2  border-b py-4 border-[#DDE5E9]">
+                              {each?.device_number}
+                            </div>
+                            <div className="w-[150px] break-words px-2  border-b py-4 border-[#DDE5E9]">
+                              {each?.device_ime}
+                            </div>
+                            {each?.status === "online" && (
+                              <div className="w-[150px] break-words px-2  border-b py-4 border-[#DDE5E9]">
+                                <div className="flex gap-1 items-center bg-[#DAFCEB] text-[#04854D] rounded-2xl w-max px-2">
+                                  <GoDotFill className="text-[#06C270]" />
+                                  Online
+                                </div>
+                              </div>
+                            )}
+                            {each?.status === "offline" && (
+                              <div className="w-[150px] break-words px-2  border-b py-4 border-[#DDE5E9]">
+                                <div className="flex gap-1 items-center bg-[#FFF0F0] text-[#C99020] rounded-2xl w-max px-2">
+                                  <GoDotFill className="text-[#FFE5B0]" />
+                                  Offline
+                                </div>
+                              </div>
+                            )}
+                            <div className="w-[150px] break-words px-2  border-b py-4 border-[#DDE5E9]">
+                              {each?.vehicle_chasses_number}
+                            </div>
+                            <div className="w-[150px] break-words px-2  border-b py-4 border-[#DDE5E9]">
+                              {each?.vehicle_model_year}
+                            </div>
+                            <div className="w-[150px] break-words px-2  border-b py-4 border-[#DDE5E9]">
+                              {each?.vehicle_plate_number}
+                            </div>
+
+                            <div className="w-[150px] break-words px-2  border-b py-4 border-[#DDE5E9]">
+                              {each?.owner_email}
+                            </div>
+                            <div className="w-[150px] break-words px-2  border-b py-4 border-[#DDE5E9]">
+                              {each?.owner_name}
+                            </div>
+                            <div className="w-[150px] break-words px-2  border-b py-4 border-[#DDE5E9]">
+                              {each?.owner_phone_number}
+                            </div>
+                            <div className="w-[150px] break-words px-2  border-b py-4 border-[#DDE5E9]">
+                              {each?.owner_address}
+                            </div>
+                          </div>
+                        </Link>
+                      </React.Fragment>
+                    );
+                  })
+                )}
+                <Paginate page={page} data={tableP} setPage={setPage} />
               </div>
-              {loading && loading}
-              {error && error}
-              {table.length === 0 ? <p className="font-bold p-2 bg-white">No Device!</p> : table?.map((each: Data) => {
-                return (
-                  <React.Fragment key={each?.id}>
-                    <Link
-                      key={each.id}
-                      to={{
-                        pathname: "/device_report/details_page",
-                        search: `?device_id=${each.device_id}`,
-                      }}
-                    >
-                      <div
-                        className="w-max flex  bg-white text-[#6E7680]"
-                        onClick={() => setId(each.device_id)}
-                      >
-                        <div className="w-[150px] break-words px-2  border-b py-4 border-[#DDE5E9]">
-                          {each?.device_id}
-                        </div>
-                        <div className="w-[150px] break-words px-2  border-b py-4 border-[#DDE5E9]">
-                          {each?.vehicle_name}
-                        </div>
-                        <div className="w-[150px] break-words px-2  border-b py-4 border-[#DDE5E9]">
-                          {each?.device_number}
-                        </div>
-                        <div className="w-[150px] break-words px-2  border-b py-4 border-[#DDE5E9]">
-                          {each?.device_ime}
-                        </div>
-                        {each?.status === "online" && (
-                          <div className="w-[150px] break-words px-2  border-b py-4 border-[#DDE5E9]">
-                            <div className="flex gap-1 items-center bg-[#DAFCEB] text-[#04854D] rounded-2xl w-max px-2">
-                              <GoDotFill className="text-[#06C270]" />
-                              Online
-                            </div>
-                          </div>
-                        )}
-                        {each?.status === "offline" && (
-                          <div className="w-[150px] break-words px-2  border-b py-4 border-[#DDE5E9]">
-                            <div className="flex gap-1 items-center bg-[#FFF0F0] text-[#C99020] rounded-2xl w-max px-2">
-                              <GoDotFill className="text-[#FFE5B0]" />
-                              Offline
-                            </div>
-                          </div>
-                        )}
-                        <div className="w-[150px] break-words px-2  border-b py-4 border-[#DDE5E9]">
-                          {each?.vehicle_chasses_number}
-                        </div>
-                        <div className="w-[150px] break-words px-2  border-b py-4 border-[#DDE5E9]">
-                          {each?.vehicle_model_year}
-                        </div>
-                        <div className="w-[150px] break-words px-2  border-b py-4 border-[#DDE5E9]">
-                          {each?.vehicle_plate_number}
-                        </div>
-
-                        <div className="w-[150px] break-words px-2  border-b py-4 border-[#DDE5E9]">
-                          {each?.owner_email}
-                        </div>
-                        <div className="w-[150px] break-words px-2  border-b py-4 border-[#DDE5E9]">
-                          {each?.owner_name}
-                        </div>
-                        <div className="w-[150px] break-words px-2  border-b py-4 border-[#DDE5E9]">
-                          {each?.owner_phone_number}
-                        </div>
-                        <div className="w-[150px] break-words px-2  border-b py-4 border-[#DDE5E9]">
-                          {each?.owner_address}
-                        </div>
-                      </div>
-                    </Link>
-                  </React.Fragment>
-                );
-              })}
-            <Paginate page={page} data={tableP} setPage={setPage}/>
             </div>
-          </div>
-        )}
+          )}
       </div>
     </div>
   );

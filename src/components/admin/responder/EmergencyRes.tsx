@@ -1,8 +1,9 @@
-import { useState } from "react";
+import { useContext, useState } from "react";
 import Text from "../../atom/Text";
 import { IoArrowBackOutline } from "react-icons/io5";
 import Swal from "sweetalert2";
 import { BiLoaderCircle } from "react-icons/bi";
+import { MyContext } from "../../context/MyContext";
 
 
 type Data = {
@@ -14,6 +15,8 @@ type Data = {
   company_license: string;
 };
 const EmergencyRes = () => {
+  const {baseUrl} = useContext(MyContext)
+
   const [errors, setErrors] = useState({
     email: "",
     company_phone_number: "",
@@ -71,7 +74,7 @@ const EmergencyRes = () => {
     spin.style.display = "none";
 
     }else
-    {const url = "http://zubitechnologies.com/ads_apis/api/create_responder";
+    {const url = `${baseUrl}/ads_apis/api/create_responder`;
     fetch(url, {
       method: "POST",
       headers: tokHead,

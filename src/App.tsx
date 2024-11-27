@@ -40,7 +40,7 @@ function App() {
   return (
     <>
       <div className="flex box-border lg:h-screen justify-between">
-        {location.pathname !== "/ads" ? (
+        {location.pathname !== "/" ? (
           // lg:w-[22%]  xl:w-[18%] 2xl:w-[14%] xxxl:w-[10%]
           <div
             className={`hidden lg:block lg:w-[276px] xl:w-[273px] 2xl:w-[267px] xxxl:w-[250px] `}
@@ -51,13 +51,13 @@ function App() {
         <div
           className={
             // lg:w-[78%] xl:w-[82%] 2xl:w-[86%] xxxl:w-full
-            location.pathname !== "/ads" ? "w-full relative" : "w-full"
+            location.pathname !== "/" ? "w-full relative" : "w-full"
           }
         >
           <MyDataProvider>
             <MapProvider>
               <Routes>
-                <Route path="/ads" element={<Login />} />
+                <Route path="/" element={<Login />} />
                 <Route path="/forgot_password" element={<ForgotPassword />} />
                 <Route path="/verify" element={<Verify />} />
                 <Route path="/reset_password" element={<ResetPassword />} />

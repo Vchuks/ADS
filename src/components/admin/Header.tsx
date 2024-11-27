@@ -1,36 +1,20 @@
 import { GiHamburgerMenu } from "react-icons/gi";
 import Text from "../atom/Text";
-import { useContext, useState, useEffect } from "react";
+import { useContext, useState, useEffect, useCallback } from "react";
 import Sidebar from "../Sidebar";
 import { IoIosNotifications } from "react-icons/io";
 import { MapContext } from "../context/MapContext";
 import { Link } from "react-router-dom";
+import { MyContext } from "../context/MyContext";
 
 type textProps = {
   headText: string;
   subhead: string;
 };
-// type myType = {
-//   accident_type: "";
-//   agent_id: "";
-//   assigned_at: "";
-//   closed_status: null;
-//   created_at: "";
-//   date: "";
-//   deviceid: "";
-//   id: "";
-//   lat: "";
-//   log: "";
-//   name: "";
-//   nature_of_request: "";
-//   priority: "";
-//   request_accepted: "";
-//   responder_id: "";
-//   time: "";
-// };
 
 const Header = (props: textProps) => {
   const { bell, setId, setBell, setReport, setResult } = useContext(MapContext);
+  const { baseUrl } = useContext(MyContext);
   const { headText, subhead } = props;
   const [openSide, setOpenSide] = useState(false);
   const [notify, setNotify] = useState(false);
@@ -46,13 +30,19 @@ const Header = (props: textProps) => {
   const date = new Date();
   const d = date.toDateString();
 
-  const getUsers = () => {
-    const getToken = JSON.parse(localStorage.getItem("user") || "");
-    setType(getToken.message[0].type);
-    const tokHead = new Headers();
-    tokHead.append("Authorization", `Bearer ${getToken.message[0].token}`);
+  const getUsers = useCallback(() => {
+    const getToken = JSON.parse(localStorage.getItem("user") || "{}");
 
-    fetch("http://zubitechnologies.com/ads_apis/api/dashboard_api", {
+    if (getToken?.message?.[0]) {
+      setType(getToken.message[0].type);
+    } else {
+      console.error("User token is missing or invalid");
+      return;
+    }
+    const tokHead = new Headers();
+    tokHead.append("Authorization", `Bearer ${getToken.message[0]?.token}`);
+
+    fetch(`${baseUrl}/ads_apis/api/dashboard_api`, {
       method: "GET",
       headers: tokHead,
     })
@@ -63,26 +53,27 @@ const Header = (props: textProps) => {
         setBell(result.notifications);
       })
       .catch((err) => console.log(err));
-  };
+  }, [setBell, setResult, setReport, baseUrl]);
+
+  // fetch data initially
   useEffect(() => {
     getUsers();
-  }, [setBell, setResult, setReport]);
-  // setInterval(()=>{getUsers()},60000)
+  }, [getUsers]);
 
   useEffect(() => {
     const interval = setInterval(() => {
-      () => getUsers();
-    }, 60000);
+      getUsers();
+    }, 60000); // refetches every 60 seconds
     return () => clearInterval(interval);
-  }, []);
+  }, [getUsers]);
 
   const handleAccept = (id: number) => {
-    const getToken = JSON.parse(localStorage.getItem("user") || "");
+    const getToken = JSON.parse(localStorage.getItem("user") || "{}");
 
     const tokHead = new Headers();
-    tokHead.append("Authorization", `Bearer ${getToken.message[0].token}`);
+    tokHead.append("Authorization", `Bearer ${getToken.message[0]?.token}`);
 
-    fetch(`http://zubitechnologies.com/ads_apis/api/accept?id=${id}`, {
+    fetch(`${baseUrl}/ads_apis/api/accept?id=${id}`, {
       method: "GET",
       headers: tokHead,
     })

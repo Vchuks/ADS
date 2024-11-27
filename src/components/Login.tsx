@@ -59,13 +59,13 @@ const Login = () => {
     ) {
       spin.style.display = "none";
 
-      location.href = "/dashboard";
+      location.href = "/ads/dashboard";
     } else if (
       data?.message[0]?.token &&
       data?.message[0]?.type === "responder"
     ) {
       spin.style.display = "none";
-      location.href = "/responder/details_page";
+      location.href = "/ads/responder/details_page";
     } else if (data?.message === "Invalid credential") {
       spin.style.display = "none";
 

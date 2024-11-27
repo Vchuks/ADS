@@ -14,6 +14,7 @@ import { Link } from "react-router-dom";
 
 const VehicleDetail = () => {
   const { setModal } = useContext(MyContext);
+  const {baseUrl} = useContext(MyContext)
   const { devicereport, setEachAgent, resData, setEachResponder, setResData } =
     useContext(MapContext);
   const [side, setSide] = useState(true);
@@ -44,7 +45,7 @@ const VehicleDetail = () => {
     const formData = new FormData();
     formData.append("accident_id", accidentId);
 
-    fetch("http://zubitechnologies.com/ads_apis/api/close_case", {
+    fetch(`${baseUrl}/ads_apis/api/close_case`, {
       method: "POST",
       headers: tokenGet,
       body: formData,
@@ -76,7 +77,7 @@ const VehicleDetail = () => {
 
     const tokHead = new Headers();
     tokHead.append("Authorization", `Bearer ${getToken.message[0].token}`);
-    fetch(`http://zubitechnologies.com/ads_apis/api/get_agent_details?id=${id}`, {
+    fetch(`${baseUrl}/ads_apis/api/get_agent_details?id=${id}`, {
       method: "GET",
       headers: tokHead,
     })
@@ -98,7 +99,7 @@ const VehicleDetail = () => {
       tokHead.append("Authorization", `Bearer ${getToken.message[0].token}`);
 
       fetch(
-        `http://zubitechnologies.com/ads_apis/api/responder_details?id=${resId}`,
+        `${baseUrl}/ads_apis/api/responder_details?id=${resId}`,
         {
           method: "GET",
           headers: tokHead,
@@ -106,14 +107,14 @@ const VehicleDetail = () => {
       )
         .then((response) => response.json())
         .then((result) => {
-          console.log(result)
+          return result
           // setResData(result);
         })
         .catch((err) => console.log(err));
     };
 
     getOne();
-  }, [resId, setResData]);
+  }, [resId, setResData, baseUrl]);
   
 
   return (

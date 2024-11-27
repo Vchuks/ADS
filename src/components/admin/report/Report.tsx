@@ -8,6 +8,7 @@ import { Link } from "react-router-dom";
 import { MapContext } from "../../context/MapContext";
 import { BiLoaderCircle } from "react-icons/bi";
 import Paginate from "../../atom/Paginate";
+import { MyContext } from "../../context/MyContext";
 
 
 type Data = {
@@ -25,6 +26,7 @@ type Data = {
 
 const Report = () => {
 const {setId} = useContext(MapContext)
+const {baseUrl} = useContext(MyContext)
   const [devices, setDevices] = useState([]);
   const [page,setPage] = useState(1)
   const [dResult,setDresult] = useState()
@@ -34,7 +36,7 @@ const {setId} = useContext(MapContext)
   useEffect(() => {
     const getDevices = () => {
       setLoader(true)
-      fetch(`http://zubitechnologies.com/ads_apis/api/get_devices?page=${page}`)
+      fetch(`${baseUrl}/ads_apis/api/get_devices?page=${page}`)
         .then((response) => response.json())
         .then((result) => {
           setDresult(result.devices)
@@ -44,7 +46,7 @@ const {setId} = useContext(MapContext)
         .catch((err) => console.log(err));
     };
     getDevices();
-  }, [page]);
+  }, [page,baseUrl]);
 
   return (
     <div>

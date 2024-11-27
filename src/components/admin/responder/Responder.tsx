@@ -3,6 +3,7 @@ import { MapContext } from "../../context/MapContext";
 import { Link } from "react-router-dom";
 import { BiLoaderCircle } from "react-icons/bi";
 import Paginate from "../../atom/Paginate";
+import { MyContext } from "../../context/MyContext";
 
 // import { GoDotFill } from "react-icons/go";
 // import TextLink from "../../atom/TextLink";
@@ -24,6 +25,7 @@ const Responder = () => {
   const [color, setColor] = useState(true);
   const { getResponder, setGetResponder, setEachResponder } =
     useContext(MapContext);
+  const {baseUrl} = useContext(MyContext)
   const [access, setAccess] = useState(false);
   const [type, setType] = useState<string>("");
   const [page, setPage] = useState(1);
@@ -53,12 +55,16 @@ const Responder = () => {
     tokHead.append("Authorization", `Bearer ${getToken.message[0].token}`);
     setLoader(true);
 
-    fetch(`http://zubitechnologies.com/ads_apis/api/get_responder?page=${page}`, {
-      method: "GET",
-      headers: tokHead,
-    })
+    fetch(
+      `${baseUrl}/ads_apis/api/get_responder?page=${page}`,
+      {
+        method: "GET",
+        headers: tokHead,
+      }
+    )
       .then((res) => res.json())
       .then((result) => {
+        console.log(result)
         setLoader(false);
         setRes(result);
         if (result.success === false) {
@@ -68,7 +74,7 @@ const Responder = () => {
         setGetResponder(result.data);
       })
       .catch((err) => console.log(err));
-  },[page,setGetResponder]);
+  }, [page, setGetResponder, baseUrl]);
   useEffect(() => {
     fetchResponder();
   }, [fetchResponder]);

@@ -1,8 +1,9 @@
-import { useState } from "react";
+import { useContext, useState } from "react";
 import Text from "../../atom/Text";
 import { IoArrowBackOutline } from "react-icons/io5";
 import Swal from "sweetalert2";
 import { BiLoaderCircle } from "react-icons/bi";
+import { MyContext } from "../../context/MyContext";
 
 type Data = {
   name: string;
@@ -21,6 +22,8 @@ const CreateAgent = () => {
     email: "",
     phone_number: "",
   });
+
+  const {baseUrl} = useContext(MyContext)
 
   const handleChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     const { value, name } = event.target;
@@ -41,7 +44,7 @@ const CreateAgent = () => {
     const tokHead = new Headers();
     tokHead.append("Authorization", `Bearer ${getToken.message[0].token}`);
 
-    const url = "http://zubitechnologies.com/ads_apis/api/create_agents";
+    const url = `${baseUrl}/ads_apis/api/create_agents`;
     if (
       agent?.name === "" ||
       agent?.email === "" ||

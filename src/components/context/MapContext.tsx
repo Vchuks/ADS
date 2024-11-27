@@ -48,6 +48,22 @@ type Table = {
 };
 type ID = string | number;
 type Filter = string;
+type TableP = {
+  notifications: {
+    current_page: number;
+    data: [];
+    first_page_url: string | null;
+    from: number;
+    last_page: number;
+    last_page_url: string | null;
+    links: [];
+    next_page_url: string | null;
+    path: string | null;
+    prev_page_url: string | null;
+    to: number;
+    total: number;
+  };
+};
 
 type Detail = {
   account_disabled: number;
@@ -259,6 +275,8 @@ type StateProps = {
   setId: Dispatch<SetStateAction<ID>>;
   filter: Filter;
   setFilter: Dispatch<SetStateAction<Filter>>;
+  tableP: TableP;
+  setTableP: Dispatch<SetStateAction<TableP>>;
   report: Report;
   setReport: Dispatch<SetStateAction<Report>>;
   devicereport: DeviceReport;
@@ -334,6 +352,23 @@ const defaultState = {
   setId: () => {},
   filter: "",
   setFilter: () => {},
+  tableP: {
+    notifications: {
+      current_page: 0,
+      data: [],
+      first_page_url: "",
+      from: 0,
+      last_page: 0,
+      last_page_url: "",
+      links: [],
+      next_page_url:"",
+      path: "",
+      prev_page_url: "",
+      to: 0,
+      total: 0,
+    },
+  },
+  setTableP: () => {},
   report: {
     counts: {
       accident_detected: "",
@@ -748,6 +783,24 @@ export function MapProvider({ children }: ContextProviderProps) {
     pendingcases: { data: [], count: 0 },
   });
 
+  const [tableP, setTableP] = useState<TableP>({
+    
+      notifications: {
+        current_page: 0,
+        data: [],
+        first_page_url: "",
+        from: 0,
+        last_page: 0,
+        last_page_url: "",
+        links: [],
+        next_page_url:"",
+        path: "",
+        prev_page_url: "",
+        to: 0,
+        total: 0,
+      }
+  });
+
   return (
     <MapContext.Provider
       value={{
@@ -779,6 +832,8 @@ export function MapProvider({ children }: ContextProviderProps) {
         setEachAgent,
         resData,
         setResData,
+        tableP,
+        setTableP,
       }}
     >
       {children}
