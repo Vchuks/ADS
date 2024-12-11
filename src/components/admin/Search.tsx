@@ -23,7 +23,7 @@ const Search = () => {
       setButtonDisabled(true);
     } else {
       setButtonDisabled(false);
-      location.href = "/create_device";
+      location.href = "create_device";
     }
   };
 

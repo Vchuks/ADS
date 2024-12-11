@@ -3,17 +3,22 @@ import Text from "../../atom/Text";
 import Image from "../../atom/Image";
 import profile from "../../../assets/image/Group 20454.png";
 import carlogo from "../../../assets/image/Frame 20511.png";
-import { useContext, useState } from "react";
+import { useContext, useEffect, useState } from "react";
 import { MapContext } from "../../context/MapContext";
+import { MyContext } from "../../context/MyContext";
 import Box from "../../../components/atom/Box";
 import TextLink from "../../atom/TextLink";
+import { useSearchParams } from "react-router-dom";
 
 const ViewDetailAgent = () => {
   const loginDetails = JSON.parse(localStorage.getItem("user") || "");
   const [userData] = useState(loginDetails);
   const [isButtonDisabled, setButtonDisabled] = useState(false);
-  const { eachAgent } = useContext(MapContext);
-  // const { eachAgent, result, seteachAgent } = useContext(MapContext);
+  const { eachAgent, setEachAgent } = useContext(MapContext);
+  const { baseUrl } = useContext(MyContext);
+  const [search] = useSearchParams();
+  const [id, setId] = useState()
+  const [loading, setLoading] = useState(false);
 
   const disableButton = () => {
     if (
@@ -26,7 +31,38 @@ const ViewDetailAgent = () => {
       location.href = "#";
     }
   };
+
+  useEffect(()=>{
+  setId(search.get("id"))
+  },[search, setId])
+
+  useEffect(()=>{
+
+    const handleEach = () => {
+      const getToken = JSON.parse(localStorage.getItem("user") || "");
+      setLoading(true)
   
+      const tokHead = new Headers();
+      tokHead.append("Authorization", `Bearer ${getToken.message[0].token}`);
+      fetch(`${baseUrl}/ads_apis/api/get_agent_details?id=${id}`, {
+        method: "GET",
+        headers: tokHead,
+      })
+        .then((res) => res.json())
+        .then((result) => {
+          if(result.agent_details !== null){
+            setEachAgent(result);
+            setLoading(false)
+          }
+        })
+        .catch((err) => console.log(err));
+    };
+
+    handleEach()
+  },[baseUrl,id,setEachAgent,setLoading])
+
+  
+
   return (
     <div className="flex flex-col lg:flex-row px-5 py-4 gap-4 lg:gap-0">
       <div className="w-full p-4 rounded-xl border border-[#CBD6D8] bg-white">
@@ -42,6 +78,8 @@ const ViewDetailAgent = () => {
             body="Agent Details"
           />
         </div>
+        {eachAgent.message && <p className="text-2xl font-bold text-red-700">{eachAgent.message}!</p>}
+{loading && <h2 className="animate-pulse text-2xl font-bold">Loading....</h2>}
         <div className="w-full flex flex-col gap-2 pt-4  items-center justify-center">
           <div className="w-20 lg:w-24">
             <Image src={profile} alt="" className="w-full" />{" "}
@@ -61,9 +99,9 @@ const ViewDetailAgent = () => {
               body={eachAgent?.agent_details?.status}
             />
           )}
-          {eachAgent?.agent_details?.name === "" && (
-            <p className=" animate-pulse text-lg font-bold">Loading...</p>
-          )}
+          {/* {eachAgent?.agent_details?.name === "" && (
+            <p className=" animate-pulse text-2xl font-bold">Loading...</p>
+          )} */}
         </div>
         <div className="grid grid-cols-2 mt-3 lg:p-6 justify-between text-tcolor font-sm">
           <Text className="border-b border-[#CBD6D8] py-2" body="Agent Name" />
@@ -195,7 +233,7 @@ const ViewDetailAgent = () => {
               eachAgent?.attendedcases?.data.length === 0) && <p>No Record</p>}
             {eachAgent?.closedcases?.data?.map((each) => {
               return (
-                <div className="flex items-center justify-between py-4 px-2 res-all-box">
+                <div  key={each?.deviceid} className="flex items-center justify-between py-4 px-2 res-all-box">
                   <div className="flex gap-4 items-center">
                     <Image className="" src={carlogo} alt="" />
                     <div>
@@ -225,7 +263,7 @@ const ViewDetailAgent = () => {
             })}
             {eachAgent?.attendedcases?.data?.map((each) => {
               return (
-                <div className="flex items-center justify-between py-4 px-2 res-all-box">
+                <div key={each.deviceid} className="flex items-center justify-between py-4 px-2 res-all-box">
                   <div className="flex gap-4 items-center">
                     <Image className="" src={carlogo} alt="" />
                     <div>
@@ -255,7 +293,7 @@ const ViewDetailAgent = () => {
             })}
             {eachAgent?.pendingcases?.data?.map((each) => {
               return (
-                <div className="flex items-center justify-between py-4 px-2 res-all-box">
+                <div key={each.deviceid} className="flex items-center justify-between py-4 px-2 res-all-box">
                   <div className="flex gap-4 items-center">
                     <Image className="" src={carlogo} alt="" />
                     <div>

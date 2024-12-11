@@ -19,7 +19,7 @@ const ResponderHeader = () => {
       setButtonDisabled(true);
     } else {
       setButtonDisabled(false);
-      location.href = "/emergency_responder";
+      location.href = "emergency_responder";
     }
   };
   return (

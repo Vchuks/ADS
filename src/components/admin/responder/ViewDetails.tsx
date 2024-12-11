@@ -7,13 +7,17 @@ import { useContext, useEffect, useState } from "react";
 import { MapContext } from "../../context/MapContext";
 import TextLink from "../../atom/TextLink";
 import { MyContext } from "../../context/MyContext";
+import { useSearchParams } from "react-router-dom";
 
 const ViewDetails = () => {
   const loginDetails = JSON.parse(localStorage.getItem("user") || "");
   const [userData] = useState(loginDetails);
   const [isButtonDisabled, setButtonDisabled] = useState(false);
   const { eachResponder, resData, setResData } = useContext(MapContext);
-  const {baseUrl} = useContext(MyContext)
+  const { baseUrl } = useContext(MyContext);
+  const [id, setId] = useState<string>("");
+  const [search] = useSearchParams();
+  const [loading, setLoading] = useState(false);
 
   const disableButton = () => {
     if (
@@ -26,25 +30,29 @@ const ViewDetails = () => {
       location.href = "#";
     }
   };
+  useEffect(() => {
+    setId(search.get('id') || "");
+  }, [search, setId]);
 
   useEffect(() => {
     try {
       const getOne = () => {
+        setLoading(true);
         const getToken = JSON.parse(localStorage.getItem("user") || "");
         const tokHead = new Headers();
 
         tokHead.append("Authorization", `Bearer ${getToken.message[0].token}`);
-        fetch(
-          `${baseUrl}/ads_apis/api/responder_details?id=${eachResponder?.id}`,
-          {
-            method: "GET",
-            headers: tokHead,
-          }
-        )
+        fetch(`${baseUrl}/ads_apis/api/responder_details?id=${id}`, {
+          method: "GET",
+          headers: tokHead,
+        })
           .then((response) => response.json())
           .then((result) => {
-            console.log(result);
-            setResData(result);
+            if (result.details !== null) {
+              setLoading(false);
+              console.log(result);
+              setResData(result);
+            }
           })
           .catch((err) => console.log(err));
       };
@@ -53,9 +61,9 @@ const ViewDetails = () => {
     } catch (err) {
       console.log(err);
     }
-  }, [setResData, resData?.details.id, eachResponder.id, baseUrl]);
+  }, [setResData, resData?.details.id, id, eachResponder.id, baseUrl]);
 
-  
+  console.log(resData);
   return (
     <div className="flex flex-col lg:flex-row px-5 py-4 gap-4 lg:gap-0">
       <div className="w-full p-4 rounded-xl border border-[#CBD6D8] bg-white">
@@ -69,6 +77,10 @@ const ViewDetails = () => {
             body="Respondent Details"
           />
         </div>
+        {loading && (
+          <h2 className="animate-pulse text-2xl font-bold">Loading....</h2>
+        )}
+
         <div className="w-full flex flex-col gap-2 pt-4  items-center justify-center">
           <div className="w-20 lg:w-24">
             <Image src={profile} alt="" className="w-full" />{" "}

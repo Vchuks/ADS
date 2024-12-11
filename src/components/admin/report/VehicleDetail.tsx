@@ -15,7 +15,7 @@ import { Link } from "react-router-dom";
 const VehicleDetail = () => {
   const { setModal } = useContext(MyContext);
   const {baseUrl} = useContext(MyContext)
-  const { devicereport, setEachAgent, resData, setEachResponder, setResData } =
+  const { devicereport, setResData } =
     useContext(MapContext);
   const [side, setSide] = useState(true);
   const [respondent, setRespondent] = useState(false);
@@ -23,7 +23,8 @@ const VehicleDetail = () => {
   const [accidentId, setAccidentId] = useState("");
   const [type, setType] = useState("");
   const [resId, setResId] = useState<number | string>();
-  // const [loading, setLoading] = useState<string>()
+  const [loading, setLoading] = useState(false);
+
 
   useEffect(() => {
     devicereport;
@@ -71,28 +72,11 @@ const VehicleDetail = () => {
       });
   };
 
-  const handleEach = (id: number | string) => {
-    const getToken = JSON.parse(localStorage.getItem("user") || "");
-    // setLoading('Loading...')
-
-    const tokHead = new Headers();
-    tokHead.append("Authorization", `Bearer ${getToken.message[0].token}`);
-    fetch(`${baseUrl}/ads_apis/api/get_agent_details?id=${id}`, {
-      method: "GET",
-      headers: tokHead,
-    })
-      .then((res) => res.json())
-      .then((result) => {
-        console.log(result);
-        // setLoading('')
-
-        setEachAgent(result);
-      })
-      .catch((err) => console.log(err));
-  };
+  
 
   useEffect(() => {
     const getOne = () => {
+      setLoading(true)
       const getToken = JSON.parse(localStorage.getItem("user") || "");
       const tokHead = new Headers();
 
@@ -107,6 +91,7 @@ const VehicleDetail = () => {
       )
         .then((response) => response.json())
         .then((result) => {
+          setLoading(false)
           return result
           // setResData(result);
         })
@@ -132,6 +117,7 @@ const VehicleDetail = () => {
             body="Vehicle Details"
           />
         </div>
+        {loading && <h2 className="animate-pulse text-2xl font-bold">Loading....</h2>}
 
         <div className="w-full flex flex-col gap-2 pt-4  items-center justify-center">
           <div className="w-20 lg:w-24">
@@ -248,7 +234,7 @@ const VehicleDetail = () => {
                     >
                       <button
                         className="text-tcolor flex mb-2  border border-tcolor py-1 md:py-2 px-2 rounded font-bold me-2"
-                        onClick={() => handleEach(devicereport?.agent_id)}
+                        // onClick={() => handleEach(devicereport?.agent_id)}
                       >
                         View Agent
                       </button>
@@ -262,7 +248,7 @@ const VehicleDetail = () => {
                       >
                         <button
                           className="text-tcolor flex mb-2  border border-tcolor py-1 md:py-2 px-2 rounded font-bold"
-                          onClick={() => setEachResponder(resData?.details)}
+                          // onClick={() => setEachResponder(resData?.details)}
                         >
                           View Responder
                         </button>
@@ -313,7 +299,7 @@ const VehicleDetail = () => {
                   <Text className="font-bold" body="Nature Of Request" />
                   <Text
                     className="font-bold bg-[#ffc0bfa6] text-[#CE5347] p-2 lg:p-4 rounded-lg"
-                    body={devicereport?.accident_detected?.accident_type}
+                    body={devicereport?.accident_detected?.nature_of_request}
                   />
                 </div>
                 <div className="flex items-center  justify-between">
